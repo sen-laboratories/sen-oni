@@ -72,5 +72,5 @@ fi
 
 cp -a $ontology_path/* $SEN_CONFIG_ONTO/$ontology_name/
 
-echo Done. Please restart to apply changes.
+echo Done.
 exit 0

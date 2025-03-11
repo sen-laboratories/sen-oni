@@ -5,7 +5,7 @@ resource(1, "META:TYPE") "entity";
 
 resource(2, "META:L:DESC") #'MLDC' "A semantic entity representing anything.";
 
-resource(3, "META:S:DESC") #'MSDC' "Entity";
+resource(3, "META:S:DESC") #'MSDC' "generic abstract Entity";
 
 resource(4, "META:PREF_APP") #'MSIG' "application/x-vnd.Haiku-StyledEdit";
 
