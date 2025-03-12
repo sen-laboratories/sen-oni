@@ -1,8 +1,8 @@
 resource(0, "BEOS:TYPE") "application/x-vnd.Be-meta-mime";
 
-resource(1, "META:TYPE") "relation/x-vnd.sen-labs.relation.code.include";
+resource(1, "META:TYPE") "relation/x-vnd.sen-labs.relation.sourcecode.include";
 
-resource(2, "META:L:DESC") #'MSDC' "include dependency to some other sourcecode";
+resource(2, "META:L:DESC") #'MSDC' "include dependency to another sourcecode";
 
 resource(3, "META:S:DESC") #'MSDC' "Source Include";
 
@@ -39,11 +39,11 @@ resource(4, "META:ATTR_INFO") message(233) {
 	"attr:display_as" = "",
 	"attr:display_as" = "",
 	"attr:display_as" = "",
-	"type" = "relation/x-vnd.sen-labs.relation.code.include"
+	"type" = "relation/x-vnd.sen-labs.relation.sourcecode.include"
 };
 
 resource vector_icon {
-		$"6E6369660A0200060338D2F73CD163BF82B23B84A94B88504870C900FFEFA5BD"
+	$"6E6369660A0200060338D2F73CD163BF82B23B84A94B88504870C900FFEFA5BD"
 	$"FFFCC0FFFFF8900501020106023E49240000000000003CAAAA4940004A30007C"
 	$"F1B706FFFFFCC0040192020016023A55A6BAC2293F0DA33E958646C2EB47A1D6"
 	$"0001FF9E03010000020012023B98000000000000003C44004AD8004ADA000001"
