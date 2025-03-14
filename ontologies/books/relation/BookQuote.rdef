@@ -1,8 +1,8 @@
-resource(0, "BEOS:TYPE") "application/x-vnd.Be-meta-mime";
+resource(0, "BEOS:TYPE") #'MIMS' "application/x-vnd.Be-meta-mime";
 
 resource(1, "META:TYPE") "relation/book-quote";
 
-resource(2, "META:L:DESC") #'MSDC' "quotes some text in a book";
+resource(2, "META:L:DESC") #'MLDC' "quotes some text in a book";
 
 resource(3, "META:S:DESC") #'MSDC' "Book Quote";
 
