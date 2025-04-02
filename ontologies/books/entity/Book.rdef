@@ -1,4 +1,4 @@
-
+// defines an abstract Book entity
 resource(0, "BEOS:TYPE") #'MIMS' "application/x-vnd.Be-meta-mime";
 
 resource(1, "META:TYPE") "entity/book";

@@ -1,0 +1,18 @@
+resource(0, "BEOS:TYPE") #'MIMS' "application/x-vnd.Be-meta-mime";
+
+resource(1, "META:TYPE") "relation/x-vnd.sen-labs.relation.reference";
+
+resource(2, "META:L:DESC") #'MLDC' "generic reference to another entity.";
+
+resource(3, "META:S:DESC") #'MSDC' "Generic Reference";
+
+resource(4, "META:PREF_APP") #'MSIG' "application/x-vnd.Be-TRAK";
+
+resource(5, "META:ATTR_INFO") message(233) {
+    "sen:relation" = message('SCrd') {
+        "SEN:REL:Label" = "references"
+    },
+    "sen:reverse" = message('SCrd') {
+        "SEN:REL:Label" = "referenced by"
+    }
+};

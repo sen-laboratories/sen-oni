@@ -59,6 +59,18 @@ resource(5, "META:ATTR_INFO") message(233) {
 	"attr:display_as" = "",
 	"attr:display_as" = "",
 	"attr:display_as" = "",
+    // SEN specific properties
+    // is the relation bidirectional? (by default, yes)
+    "sen:bidir" = true,
+    // can the relation point back to its origin?
+    "sen:reflexive" = true,
+    // defines a META relation, e.g. classification
+    "sen:meta" = false,
+    // specific relation properties and defaults, defined in subtypes
+    "sen:relation" = 'MSGG',
+    // reverse (opposite) relation with any differing properties (or even a different type)
+    // will be automatically created unless declared unidirectional with 'sen:bidir' property of 'false'.
+    "sen:reverse" = 'MSGG',
 	"type" = "relation"
 };
 
