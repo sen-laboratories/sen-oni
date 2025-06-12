@@ -17,7 +17,7 @@ resource(4, "META:ATTR_INFO") message(233) {
 	"attr:public_name" = "Paragraph",
 	"attr:public_name" = "Anchor",
 	"attr:public_name" = "Heading",
-	"attr:type" = 'CSTR',
+	"attr:type" = 'CSTR',   /* for covering roman page numbers and flexible ranges */
 	"attr:type" = 'CSTR',
 	"attr:type" = 'CSTR',
 	"attr:type" = 'CSTR',

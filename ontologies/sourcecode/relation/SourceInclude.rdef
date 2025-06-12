@@ -39,7 +39,9 @@ resource(4, "META:ATTR_INFO") message(233) {
 	"attr:display_as" = "",
 	"attr:display_as" = "",
 	"attr:display_as" = "",
-	"type" = "relation/x-vnd.sen-labs.relation.sourcecode.include"
+	"type" = "relation/x-vnd.sen-labs.relation.sourcecode.include",
+    "sen:dynamic" = true,
+    "sen:self" = true
 };
 
 resource vector_icon {
