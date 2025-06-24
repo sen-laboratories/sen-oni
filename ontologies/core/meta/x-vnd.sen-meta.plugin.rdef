@@ -13,10 +13,10 @@ resource(3, "META:ATTR_INFO") message(233) {
 	"attr:public_name" = "enrich",
 	"attr:public_name" = "identify",
     "attr:public_name" = "navigate",
-	"attr:type" = 'MSGG',
-	"attr:type" = 'MSGG',
-	"attr:type" = 'MSGG',
-	"attr:type" = 'MSGG',
+	"attr:type" = 'SHRT',
+	"attr:type" = 'SHRT',
+	"attr:type" = 'SHRT',
+	"attr:type" = 'SHRT',
 	"attr:alignment" = 0,
 	"attr:alignment" = 0,
 	"attr:alignment" = 0,
@@ -29,15 +29,16 @@ resource(3, "META:ATTR_INFO") message(233) {
 	"attr:editable" = false,
 	"attr:editable" = false,
 	"attr:editable" = false,
-	"attr:viewable" = false,
-	"attr:viewable" = false,
-	"attr:viewable" = false,
-	"attr:viewable" = false,
+	"attr:viewable" = true,
+	"attr:viewable" = true,
+	"attr:viewable" = true,
+	"attr:viewable" = true,
 	"attr:width" = 30,
 	"attr:width" = 30,
 	"attr:width" = 30,
 	"attr:width" = 30,
-	"type" = "meta/x-vnd.sen-meta.plugin"
+	"type" = "meta/x-vnd.sen-meta.plugin",
+    "sen:internal" = true
 };
 
 resource(4, "META:ICON") #'VICN' array {
