@@ -11,10 +11,10 @@ resource(4, "META:EXTENS") message(234) {
 	"type" = "meta"
 };
 
-/* defined here for context, but only linked from Entities or possibly Relations */
+/* used for classification; defined here for context, but only linked from Entities */
 resource(5, "META:ATTR_INFO") message(233) {
-	"attr:name" = "SEN:Labels",
-	"attr:public_name" = "Labels",
+	"attr:name" = "SEN:META",
+	"attr:public_name" = "SEN Metadata",
 	"attr:type" = 'CSTR',
 	"attr:viewable" = false,
 	"attr:editable" = false,
