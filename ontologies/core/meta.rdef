@@ -11,12 +11,13 @@ resource(4, "META:EXTENS") message(234) {
 	"type" = "meta"
 };
 
+/* defined here for context, but only linked from Entities or possibly Relations */
 resource(5, "META:ATTR_INFO") message(233) {
-	"attr:name" = "SEN:Meta:Active",
-	"attr:public_name" = "Active",
-	"attr:type" = 'BOOL',
-	"attr:viewable" = true,
-	"attr:editable" = true,
+	"attr:name" = "SEN:Labels",
+	"attr:public_name" = "Labels",
+	"attr:type" = 'CSTR',
+	"attr:viewable" = false,
+	"attr:editable" = false,
     "attr:searchable" = true,
 	"attr:width" = 30,
 	"attr:alignment" = 1,
