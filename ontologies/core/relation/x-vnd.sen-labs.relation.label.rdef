@@ -1,5 +1,5 @@
 /*
- * META relation for classification, relates to meta-types Tag, Topic, Concept etc.
+ * META relation for classification, relates to meta-types Tag, Topic, Concept, Context etc.
  */
 resource(0, "META:TYPE") "relation/x-vnd.sen-labs.relation.label";
 

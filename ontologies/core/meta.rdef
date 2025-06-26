@@ -11,20 +11,6 @@ resource(4, "META:EXTENS") message(234) {
 	"type" = "meta"
 };
 
-/* used for classification; defined here for context, but only linked from Entities */
-resource(5, "META:ATTR_INFO") message(233) {
-	"attr:name" = "SEN:META",
-	"attr:public_name" = "SEN Metadata",
-	"attr:type" = 'CSTR',
-	"attr:viewable" = false,
-	"attr:editable" = false,
-    "attr:searchable" = true,
-	"attr:width" = 30,
-	"attr:alignment" = 1,
-	"attr:display_as" = "",
-	"type" = "meta"
-};
-
 resource(6, "META:ICON") #'VICN' array {
 	$"6E6369660E0500020016023A9DAAB462F736E45D3D2B8047139D4A2B710068FF"
 	$"39057D020016023B2B47BB18653D0FA53D225148297046CA1900EEFF9A020016"
