@@ -1,6 +1,6 @@
-resource(0, "META:TYPE") "meta/x-vnd.sen-meta.plugin";
+resource(0, "META:TYPE") "application/x-vnd.sen-labs.plugin";
 
-resource(1, "META:L:DESC") #'MLDC' "a SEN plugin for handling various semantic tasks on entities.";
+resource(1, "META:L:DESC") #'MLDC' "a SEN plugin for handling various semantic tasks on entities or relations.";
 
 resource(2, "META:S:DESC") #'MSDC' "SEN Plugin";
 
@@ -12,7 +12,7 @@ resource(3, "META:ATTR_INFO") message(233) {
 	"attr:public_name" = "extract",
 	"attr:public_name" = "enrich",
 	"attr:public_name" = "identify",
-    "attr:public_name" = "navigate",
+  "attr:public_name" = "navigate",
 	"attr:type" = 'SHRT',
 	"attr:type" = 'SHRT',
 	"attr:type" = 'SHRT',
@@ -37,8 +37,7 @@ resource(3, "META:ATTR_INFO") message(233) {
 	"attr:width" = 30,
 	"attr:width" = 30,
 	"attr:width" = 30,
-	"type" = "meta/x-vnd.sen-meta.plugin",
-    "sen:internal" = true
+	"type" = "application/x-vnd.sen-labs.plugin"
 };
 
 resource(4, "META:ICON") #'VICN' array {

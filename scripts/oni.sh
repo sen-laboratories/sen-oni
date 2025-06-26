@@ -46,6 +46,7 @@ function create_mime_type()
 mkdir -p $ontology_path/meta
 mkdir $ontology_path/entity
 mkdir $ontology_path/relation
+mkdir $ontology_path/application
 
 echo creating ontology $ontology_name from resource definitions...
 
