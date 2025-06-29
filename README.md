@@ -1,13 +1,16 @@
 <p align="center">
-  <img src="assets/images/meta/oni.jpg" width=320 />
+  <img src="images/sen-oni-logo.jpg" width=360 />
 </p>
 
-# SEN Ontology Interface
+<h1 align="center">SEN Ontology Interface</h1>
 
-This repository defines entities, their properties and relationships as resources to be consumed by SEN for installation in Haiku.
+<p align="center">
+This repository defines entities, their properties and relationships as resources to be consumed by SEN for installation in Haiku and its MIME type based file system featuring custom indexed attributes.
+</p>
+
+# About
 
 The aim is to provide a foundation of essential types to work with, so not every user has to start from scratch.
-
 The structure follows a common schema so it can be easily consumed and understood.
 
 Additionally, helpers for relation extraction and navigation, as well as entity and structure extraction may be provided.
@@ -17,5 +20,4 @@ However, they are often too complex and do not always define relations, or use p
 
 Lastly, also existing definitions from ONI should be reused where possible, and only referenced to indicate dependencies.
 
-This is all under heavy development and will change a lot, until the format and core ontologies have been worked out.
-Consider this a prototype.
+Still under development but getting there.

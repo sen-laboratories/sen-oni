@@ -11,7 +11,7 @@ set -e
 SEN_CONFIG_ONTO=$HOME/config/settings/sen/ontologies
 
 # SEN Ontology config
-SEN_ONTO_TYPE=meta/x-vnd.sen-meta.ontology
+SEN_ONTO_TYPE=application/x-vnd.sen-labs.ontology
 SEN_ONTO_AUTHOR_ATTR="SEN:onto:author"
 SEN_ONTO_SCHEMA_ATTR="SEN:onto:schema_url"
 SEN_ONTO_VERSION_ATTR="SEN:onto:version"
@@ -42,7 +42,7 @@ function create_mime_type()
     rm $rsrc_path || false
 }
 
-# setup execution context
+# setup execution context (init all supertypes used by ontologies as paths)
 mkdir -p $ontology_path/meta
 mkdir $ontology_path/entity
 mkdir $ontology_path/relation

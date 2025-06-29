@@ -1,6 +1,6 @@
-resource(0, "META:TYPE") "meta/x-vnd.sen-meta.context";
+resource(0, "META:TYPE") "meta/x-vnd.sen-labs.entity.context";
 
-resource(1, "META:L:DESC") #'MLDC' "used for grouping entities and files in a virtual container.";
+resource(1, "META:L:DESC") #'MLDC' "top-level container for grouping things";
 
 resource(2, "META:S:DESC") #'MSDC' "Context";
 

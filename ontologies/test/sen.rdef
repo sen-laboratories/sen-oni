@@ -1,11 +1,11 @@
 
 resource(0, "BEOS:TYPE") #'MIMS' "application/x-vnd.Be-meta-mime";
 
-resource(1, "META:TYPE") "meta";
+resource(1, "META:TYPE") "sen";
 
-resource(2, "META:L:DESC") #'MLDC' "Used for labelling and grouping entities in SEN.";
+resource(2, "META:L:DESC") #'MLDC' "a custom supertype for testing";
 
-resource(3, "META:S:DESC") #'MSDC' "Meta Types for Classification";
+resource(3, "META:S:DESC") #'MSDC' "SEN";
 
 resource(4, "META:PREF_APP") #'MSIG' "application/x-vnd.sen-labs.shoji";
 

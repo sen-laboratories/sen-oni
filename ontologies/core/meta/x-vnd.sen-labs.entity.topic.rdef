@@ -1,6 +1,6 @@
-resource(0, "META:TYPE") "meta/x-vnd.sen-meta.topic";
+resource(0, "META:TYPE") "meta/x-vnd.sen-labs.entity.topic";
 
-resource(1, "META:L:DESC") #'MLDC' "a concrete category grouping entities or files in SEN";
+resource(1, "META:L:DESC") #'MLDC' "a subject or theme associated with an entity";
 
 resource(2, "META:S:DESC") #'MSDC' "Topic";
 

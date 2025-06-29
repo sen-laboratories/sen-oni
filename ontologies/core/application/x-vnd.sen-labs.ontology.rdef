@@ -1,6 +1,6 @@
-resource(0, "META:TYPE") "meta/x-vnd.sen-meta.ontology";
+resource(0, "META:TYPE") "application/x-vnd.sen-labs.ontology";
 
-resource(1, "META:L:DESC") #'MLDC' "defines a set of entities, types and relations in SEN.";
+resource(1, "META:L:DESC") #'MLDC' "defines a set of file types for Entities and Relations in SEN.";
 
 resource(2, "META:S:DESC") #'MSDC' "Ontology";
 
@@ -8,7 +8,7 @@ resource(3, "META:ATTR_INFO") message(233) {
 	"attr:name" = "SEN:onto:schema_url",
 	"attr:name" = "SEN:onto:author",
 	"attr:name" = "SEN:onto:version",
-	"attr:name" = "SEN:onto:description",
+    "attr:name" = "SEN:onto:description",
     "attr:name" = "SEN:onto:stable",
 	"attr:public_name" = "Schema URL",
 	"attr:public_name" = "Author",
@@ -45,7 +45,7 @@ resource(3, "META:ATTR_INFO") message(233) {
 	"attr:width" = 30,
 	"attr:width" = 60,
 	"attr:width" = 30,
-	"type" = "meta/x-vnd.sen-meta.ontology"
+	"type" = "application/x-vnd.sen-labs.ontology"
 };
 
 resource(4, "META:ICON") #'VICN' array {

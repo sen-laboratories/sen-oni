@@ -1,6 +1,22 @@
-
 resource(0, "META:TYPE") "relation/x-vnd.sen-labs.relation.association";
 
-resource(1, "META:L:DESC") #'MLDC' "a general associative relation in SEN";
+resource(1, "META:L:DESC") #'MLDC' "special relation used for classification.";
 
 resource(2, "META:S:DESC") #'MSDC' "Association";
+
+resource(3, "META:ATTR_INFO") message(233) {
+   /* This relation is UNI-directional so we don't blow up the meta nodes.
+    * Meta->Entity links are resolved by reverse relation query.
+    */
+    "sen:bidir" = false,
+    "sen:relation" = message('SCrd') {
+        "SEN:REL:Label" = "associated with"
+    }
+};
+
+resource(4, "META:ICON") #'VICN' array {
+	$"6E636966030400350552020116033CAFF435C55DB7EF123ECDAC491F23473F83"
+	$"00E559D0FFF101040D2E27B601322A324A324A324C3C56404A4AC3BB4C4A4A28"
+	$"48263C3A2846BEF34ABDB94AC01D4A42462E030A00010030242401178C22040A"
+	$"0101001001178C22040A020100100117842004"
+};
