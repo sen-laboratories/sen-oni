@@ -11,7 +11,13 @@ resource(2, "META:S:DESC") #'MSDC' "Contains";
  */
 resource(3, "META:ATTR_INFO") message(233) {
     "sen:dynamic" = true,
-    "sen:self" = true
+    "sen:self" = true,
+    "sen:relation" = message('SCrd') {
+        "SEN:REL:Label" = "contains"
+    },
+    "sen:inverse" = message('SCrd') {
+        "SEN:REL:Label" = "contained by"
+    }
 };
 
 resource(4, "META:ICON") #'VICN' array {

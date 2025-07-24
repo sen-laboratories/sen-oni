@@ -12,7 +12,7 @@ resource(5, "META:ATTR_INFO") message(233) {
     "sen:relation" = message('SCrd') {
         "SEN:REL:Label" = "author of"
     },
-    "sen:reverse" = message('SCrd') {
+    "sen:inverse" = message('SCrd') {
         "SEN:REL:Label" = "authored by"
     }
 };

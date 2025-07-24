@@ -64,13 +64,13 @@ resource(5, "META:ATTR_INFO") message(233) {
     "sen:bidir" = true,
     // can the relation point back to its origin?
     "sen:reflexive" = true,
-    // defines a META relation, e.g. classification
+    // defines a META relation, e.g. classification - todo: remove this, not needed now anymore
     "sen:meta" = false,
     // specific relation properties and defaults, defined in subtypes
     "sen:relation" = 'MSGG',
-    // reverse (opposite) relation with any differing properties (or even a different type)
+    // inverse (opposite) relation with any differing properties (or even a different type)
     // will be automatically created unless declared unidirectional with 'sen:bidir' property of 'false'.
-    "sen:reverse" = 'MSGG',
+    "sen:inverse" = 'MSGG',
 	"type" = "relation"
 };
 
