@@ -1,4 +1,4 @@
-resource(0, "META:TYPE") "meta/x-vnd.sen-labs.entity.topic";
+resource(0, "META:TYPE") "classification/x-vnd.sen-labs.entity.topic";
 
 resource(1, "META:L:DESC") #'MLDC' "a subject or theme associated with an entity";
 

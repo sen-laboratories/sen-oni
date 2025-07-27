@@ -1,4 +1,4 @@
-resource(0, "META:TYPE") "meta/x-vnd.sen-labs.entity.concept";
+resource(0, "META:TYPE") "classification/x-vnd.sen-labs.entity.concept";
 
 resource(1, "META:L:DESC") #'MLDC' "an abstract concept in SEN";
 

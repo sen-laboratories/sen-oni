@@ -1,4 +1,4 @@
-resource(0, "META:TYPE") "meta/x-vnd.sen-labs.entity.collection";
+resource(0, "META:TYPE") "classification/x-vnd.sen-labs.entity.collection";
 
 resource(1, "META:L:DESC") #'MLDC' "a lose bag for grouping similar things in SEN";
 

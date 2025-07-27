@@ -43,17 +43,28 @@ function create_mime_type()
 }
 
 # setup execution context (init all supertypes used by ontologies as paths)
-mkdir -p $ontology_path/meta
+mkdir -p $ontology_path/classification
+mkdir $ontology_path/meta
 mkdir $ontology_path/entity
 mkdir $ontology_path/relation
 mkdir $ontology_path/application
 
 echo creating ontology $ontology_name from resource definitions...
 
-find $1 -iname *.rdef -print0 | while IFS= read -r -d '' file
+# First, process .rdef files in the top-level directory to create any super types first
+for file in "$1"/*.rdef; do
+    # Check if any .rdef files exist in the top-level directory
+    [ -e "$file" ] || continue
+    
+    echo "  $file ..."
+    create_mime_type "$file" || (echo "Aborting."; exit 1)
+done
+
+# Then, use find to process .rdef files in subdirectories only
+find "$1" -mindepth 1 -iname "*.rdef" -print0 | while IFS= read -r -d '' file
 do
     echo "  $file ..."
-    create_mime_type $file || (echo "Aborting."; exit 1)
+    create_mime_type "$file" || (echo "Aborting."; exit 1)
 done
 
 echo registering ontology in SEN configuration...

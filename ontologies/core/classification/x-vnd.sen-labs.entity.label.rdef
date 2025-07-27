@@ -1,4 +1,4 @@
-resource(0, "META:TYPE") "meta/x-vnd.sen-labs.entity.label";
+resource(0, "META:TYPE") "classification/x-vnd.sen-labs.entity.label";
 
 resource(1, "META:L:DESC") #'MLDC' "a more generic label or tag used for simple classification";
 
