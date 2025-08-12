@@ -46,12 +46,21 @@ resource(4, "META:ATTR_INFO") message(233) {
 	"attr:width" = 60,
 	"attr:width" = 60,
 	"attr:width" = 60,
-	"attr:width" = 60,
-    "sen:dynamic" = true,
-    "sen:self" = true
+	"attr:width" = 60
 };
 
-resource(5, "META:ICON") #'VICN' array {
+resource(5, "SEN:REL:CONFIG") message(233) {
+    "sen:dynamic" = true,
+    "sen:self" = true,
+    "sen:relation" = message('SCrd') {
+        "SEN:REL:Label" = "references"
+    },
+    "sen:inverse" = message('SCrd') {
+        "SEN:REL:Label" = "referenced by"
+    }
+};
+
+resource(6, "META:ICON") #'VICN' array {
 	$"6E63696608010100006B02001602BA6666BB33323B3332BA6666480CCD4BD333"
 	$"00D8FFEC0200160439D755BC0F313C0F3139D7554AE7974ABAE901FA1C8C7934"
 	$"FFC202001603378CEDB9CE9739CE97378CED4AADF149868800B684FAFFD20200"

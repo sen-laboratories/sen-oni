@@ -58,23 +58,21 @@ resource(5, "META:ATTR_INFO") message(233) {
 	"attr:display_as" = "",
 	"attr:display_as" = "",
 	"attr:display_as" = "",
-	"attr:display_as" = "",
+	"attr:display_as" = ""
+};
+
+resource(6, "SEN:REL:CONFIG") message {
     // SEN specific properties
     // is the relation bidirectional? (by default, yes)
     "sen:bidir" = true,
-    // can the relation point back to its origin?
-    "sen:reflexive" = true,
-    // defines a META relation, e.g. classification - todo: remove this, not needed now anymore
-    "sen:meta" = false,
     // specific relation properties and defaults, defined in subtypes
     "sen:relation" = 'MSGG',
     // inverse (opposite) relation with any differing properties (or even a different type)
     // will be automatically created unless declared unidirectional with 'sen:bidir' property of 'false'.
-    "sen:inverse" = 'MSGG',
-	"type" = "relation"
+    "sen:inverse" = 'MSGG'
 };
 
-resource(6, "META:ICON") #'VICN' array {
+resource(7, "META:ICON") #'VICN' array {
 	$"6E636966060500020006023B7DA8BABA2A3CB2743D73CA4786E04984C100FFEC"
 	$"4BFFF0A506020006023AF09B3071D1B2419A3CB69F497B2A49590F00FFFFFFFF"
 	$"FFF28902000602387D5937D1D7BBB5BC3C6B074AAA364A348800F99B05FFFCB2"
