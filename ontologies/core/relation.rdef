@@ -64,12 +64,12 @@ resource(5, "META:ATTR_INFO") message(233) {
 resource(6, "SEN:REL:CONFIG") message {
     // SEN specific properties
     // is the relation bidirectional? (by default, yes)
-    "sen:bidir" = true,
+    "SEN:bidir" = true,
     // specific relation properties and defaults, defined in subtypes
-    "sen:relation" = 'MSGG',
+    "SEN:relation" = 'MSGG',
     // inverse (opposite) relation with any differing properties (or even a different type)
     // will be automatically created unless declared unidirectional with 'sen:bidir' property of 'false'.
-    "sen:inverse" = 'MSGG'
+    "SEN:inverse" = 'MSGG'
 };
 
 resource(7, "META:ICON") #'VICN' array {

@@ -6,10 +6,12 @@ resource(2, "META:S:DESC") #'MSDC' "Association";
 
 resource(3, "SEN:REL:CONFIG") message(233) {
    /* This relation is UNI-directional so we don't blow up the meta nodes.
-    * Meta->Entity links are resolved by reverse relation query.
+    * Association links are resolved by reverse relation query,
+    * except for links between 2 Associations, these are still bidirectional;
+    * this logic is handled in code.
     */
-    "sen:bidir" = false,
-    "sen:relation" = message('SCrd') {
+    "SEN:bidir" = false,
+    "SEN:relation" = message('SCrd') {
         "SEN:REL:Label" = "associated with"
     }
 };

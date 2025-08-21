@@ -10,12 +10,12 @@ resource(2, "META:S:DESC") #'MSDC' "Contains";
  * and their respective settings will come from the extracted types.
  */
 resource(3, "SEN:REL:CONFIG") message(233) {
-    "sen:dynamic" = true,
-    "sen:self" = true,
-    "sen:relation" = message('SCrd') {
+    "SEN:dynamic" = true,
+    "SEN:self" = true,
+    "SEN:relation" = message('SCrd') {
         "SEN:REL:Label" = "contains"
     },
-    "sen:inverse" = message('SCrd') {
+    "SEN:inverse" = message('SCrd') {
         "SEN:REL:Label" = "contained by"
     }
 };
