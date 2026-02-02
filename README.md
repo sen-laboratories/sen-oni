@@ -2,7 +2,7 @@
   <img src="images/sen-oni-logo.jpg" width=360 />
 </p>
 
-<h1 align="center">SEN Ontology Interface</h1>
+<h1 align="center">SEN Ontology Native Interface</h1>
 
 <p align="center">
 This repository defines entities, their properties and relationships as resources to be consumed by SEN for installation in Haiku and its MIME type based file system featuring custom indexed attributes.
