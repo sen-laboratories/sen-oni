@@ -7,35 +7,27 @@ resource(2, "META:S:DESC") #'MSDC' "Source Include";
 resource(3, "META:PREF_APP") #'MSIG' "application/x-vnd.sen-labs.SenTextNavigator";
 
 resource(4, "META:ATTR_INFO") message(233) {
-	"attr:name" = "SEN:REL:SourceInclude:path",
-	"attr:name" = "SEN:REL:SourceInclude:search_path",
+	"attr:name" = "SEN:REL:path",
 	"attr:name" = "SEN:REL:SourceInclude:global",
 	"attr:name" = "be:line",
 	"attr:public_name" = "Include Path",
-	"attr:public_name" = "Search Path",
 	"attr:public_name" = "Global?",
 	"attr:public_name" = "Line",
-	"attr:type" = 'CSTR',
 	"attr:type" = 'CSTR',
 	"attr:type" = 'BOOL',
 	"attr:type" = 'SHRT',
 	"attr:viewable" = true,
 	"attr:viewable" = true,
 	"attr:viewable" = true,
-	"attr:viewable" = true,
 	"attr:editable" = true,
 	"attr:editable" = true,
 	"attr:editable" = true,
-	"attr:editable" = true,
-	"attr:width" = 60,
 	"attr:width" = 60,
 	"attr:width" = 30,
 	"attr:width" = 30,
 	"attr:alignment" = 0,
 	"attr:alignment" = 0,
 	"attr:alignment" = 0,
-	"attr:alignment" = 0,
-	"attr:display_as" = "",
 	"attr:display_as" = "",
 	"attr:display_as" = "",
 	"attr:display_as" = "",
@@ -44,7 +36,7 @@ resource(4, "META:ATTR_INFO") message(233) {
 
 resource(5, "SEN:REL:CONFIG") message(233) {
     "sen:dynamic" = true,
-    "sen:self" = true
+    "sen:self" = true       // MAY be represented as self relation
 };
 
 resource vector_icon {

@@ -6,7 +6,7 @@
 
 # The name of the binary.
 NAME = mime
-TARGET_DIR = bin
+TARGET_DIR = ../../bin
 
 # The type of binary, must be one of:
 #	APP:	Application

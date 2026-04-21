@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="images/sen-oni-logo.jpg" width=360 />
+  <img src="assets/images/sen-oni-logo.jpg" width=360 />
 </p>
 
 <h1 align="center">SEN Ontology Native Interface</h1>

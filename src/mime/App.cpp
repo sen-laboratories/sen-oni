@@ -210,7 +210,8 @@ status_t InstallMimeTypeFromResource(const char* path) {
     // prefs won't override it! (also, it doesn't belong into ATTR_INFO)
     // since the MimeType API doesn't support custom data, we need to write
     // into the filesystem's MIME DB directly.
-    senConfig = resources.LoadResource(B_MESSAGE_TYPE, SEN_MIME_CONFIG, size);
+    senConfig = resources.LoadResource(B_MESSAGE_TYPE, SEN_RELATION_CONFIG_ATTR, size);
+
     if (senConfig != NULL && message.Unflatten(reinterpret_cast<const char*>(senConfig)) == B_OK) {
         BPath path;
         result = find_directory(B_USER_SETTINGS_DIRECTORY, &path);
@@ -243,7 +244,7 @@ status_t InstallMimeTypeFromResource(const char* path) {
             return result;
         }
 
-        size_t sizeResult = mimeNode.WriteAttr(SEN_MIME_CONFIG, B_MESSAGE_TYPE, 0, senConfig, *size);
+        size_t sizeResult = mimeNode.WriteAttr(SEN_RELATION_CONFIG_ATTR, B_MESSAGE_TYPE, 0, senConfig, *size);
         if (sizeResult < *size) {
             if (sizeResult < 0)
                 result = sizeResult;
@@ -252,6 +253,21 @@ status_t InstallMimeTypeFromResource(const char* path) {
 
             fprintf(stderr, "error writing SEN:CONFIG to MIME DB file %s: %s\n", mimeType.Type(), strerror(result));
             return result;
+        }
+
+        // write additional optional collection icon (e.g. for relation folders)
+        icon = resources.LoadResource(B_VECTOR_ICON_TYPE, SEN_RELATION_FOLDER_ICON, size);
+        if (icon != NULL && *size > 0) {
+            size_t sizeResult = mimeNode.WriteAttr(SEN_RELATION_FOLDER_ICON, B_VECTOR_ICON_TYPE, 0, icon, *size);
+            if (sizeResult < *size) {
+                if (sizeResult < 0)
+                    result = sizeResult;
+                else
+                    result = B_ERROR;
+
+                fprintf(stderr, "error writing SEN:ICON:FOLDER to MIME DB file %s: %s\n", mimeType.Type(), strerror(result));
+                return result;
+            }
         }
     }
 
