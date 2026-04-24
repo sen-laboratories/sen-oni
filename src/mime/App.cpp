@@ -18,7 +18,7 @@
 #include <Volume.h>
 #include <VolumeRoster.h>
 
-#include "Sen.h"
+#include <sen/Sen.h>
 
 status_t InstallMimeTypeFromResource(const char* path);
 status_t DeleteMimeType(const char* mimeType);
@@ -211,7 +211,6 @@ status_t InstallMimeTypeFromResource(const char* path) {
     // since the MimeType API doesn't support custom data, we need to write
     // into the filesystem's MIME DB directly.
     senConfig = resources.LoadResource(B_MESSAGE_TYPE, SEN_RELATION_CONFIG_ATTR, size);
-
     if (senConfig != NULL && message.Unflatten(reinterpret_cast<const char*>(senConfig)) == B_OK) {
         BPath path;
         result = find_directory(B_USER_SETTINGS_DIRECTORY, &path);

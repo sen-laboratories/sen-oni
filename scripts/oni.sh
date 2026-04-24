@@ -38,7 +38,7 @@ function create_mime_type()
     rsrc_path=$oni_output/$type_path/$type_name.rsrc
 
     rc -o $rsrc_path $1 && \
-    $SEN_HOME/bin/mime install $rsrc_path &&
+    mime/bin/mime install $rsrc_path &&
     rm $rsrc_path || false
 }
 
