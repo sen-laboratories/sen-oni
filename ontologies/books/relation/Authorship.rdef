@@ -9,10 +9,10 @@ resource(3, "META:S:DESC") #'MSDC' "Authorship";
 resource(4, "META:PREF_APP") #'MSIG' "application/x-vnd.Be-TRAK";
 
 resource(5, "SEN:REL:CONFIG") message(233) {
-    "sen:relation" = message('SCrd') {
+    "SEN:relation" = message('SCrd') {
         "SEN:REL:Label" = "author of"
     },
-    "sen:inverse" = message('SCrd') {
+    "SEN:inverse" = message('SCrd') {
         "SEN:REL:Label" = "authored by"
     }
 };

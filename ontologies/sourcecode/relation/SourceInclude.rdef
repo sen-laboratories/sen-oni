@@ -35,8 +35,8 @@ resource(4, "META:ATTR_INFO") message(233) {
 };
 
 resource(5, "SEN:REL:CONFIG") message(233) {
-    "sen:dynamic" = true,
-    "sen:self" = true       // MAY be represented as self relation
+    "SEN:dynamic" = true,
+    "SEN:self" = true       // MAY be represented as self relation
 };
 
 resource vector_icon {
