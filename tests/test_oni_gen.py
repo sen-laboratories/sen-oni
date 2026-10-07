@@ -227,6 +227,18 @@ class SentoConsistencyTest(unittest.TestCase):
                      'kOntologyVersion', 'kOntologyDescription', 'kOntologyStable'):
             self.assertIn(constants[name], attributes, f'{name} = {constants[name]} is not defined in the ontology')
 
+    def test_chunked_lists_match_the_api(self):
+        """SEN:TO and SEN:META continue in SEN:TO:1 ... (BFS indexes only 255 bytes): as many attributes as the API allows."""
+        attributes = all_schema_attributes()
+        text = read(os.path.join(SENTO, 'src', 'cpp', 'include', 'SenIdList.h'))
+        chunks = int(re.search(r'kMaxChunks = (\d+);', text).group(1))
+        for base in ('SEN:TO', 'SEN:META'):
+            for index in range(chunks):
+                name = base if index == 0 else f'{base}:{index}'
+                self.assertIn(name, attributes, f'{name} is not defined')
+                self.assertTrue(attributes[name].searchable, f'{name} must be indexed')
+            self.assertNotIn(f'{base}:{chunks}', attributes, f'the schema has more chunks than the API allows')
+
     def test_plugin_features_are_defined(self):
         attributes = set(all_schema_attributes())
         text = read(os.path.join(SENTO, 'src', 'cpp', 'include', 'Sensei.h'))

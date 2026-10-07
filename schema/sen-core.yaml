@@ -38,11 +38,11 @@ slots:
   sen_to:
     description: IDs of the targets of the normal relations of the object (chunked, see SEN:TO:<n>).
     title: SEN Target IDs
-    annotations: {attribute: "SEN:TO", viewable: false, editable: false, searchable: true}
+    annotations: {attribute: "SEN:TO", viewable: false, editable: false, searchable: true, chunks: 8}
   sen_meta:
     description: IDs of the targets of the meta relations (classification and context) of the object.
     title: SEN Meta IDs
-    annotations: {attribute: "SEN:META", viewable: false, editable: false, searchable: true}
+    annotations: {attribute: "SEN:META", viewable: false, editable: false, searchable: true, chunks: 8}
   semantic_type:
     description: >-
       Semantic type of a file, e.g. document/scientific-paper, set by identify plugins (Haiku itself only knows the

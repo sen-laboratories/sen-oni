@@ -59,6 +59,8 @@ class Attribute:
     alignment: int = 0
     display_as: str = ''
     description: str = ''
+    chunks: int = 1    # a list that continues in <name>:1, <name>:2, ... (all with the same definition)
+    is_chunk: bool = False   # one of those continuation attributes
 
 
 def camel(name):
@@ -100,7 +102,20 @@ def read_attribute(sv, slot_name):
         viewable=bool(annotation(slot, 'viewable', True)), editable=bool(annotation(slot, 'editable', True)),
         searchable=searchable, width=int(annotation(slot, 'width', 60)),
         alignment=int(annotation(slot, 'alignment', 0)), display_as=str(annotation(slot, 'display_as', '')),
-        description=one_line(slot.description))
+        description=one_line(slot.description), chunks=int(annotation(slot, 'chunks', 1)))
+
+
+def expand(attribute):
+    """The attributes a slot stands for: the attribute itself, and for a list that is chunked (BFS indexes only the first 255
+    bytes of a string) the attributes that it continues in: SEN:TO, SEN:TO:1, SEN:TO:2, ..."""
+    result = [attribute]
+    for index in range(1, attribute.chunks):
+        result.append(Attribute(
+            slot=f'{attribute.slot}_{index}', name=f'{attribute.name}:{index}', public=f'{attribute.public} ({index + 1})',
+            type=attribute.type, viewable=attribute.viewable, editable=attribute.editable, searchable=attribute.searchable,
+            width=attribute.width, alignment=attribute.alignment, display_as=attribute.display_as,
+            description=attribute.description, chunks=1, is_chunk=True))
+    return result
 
 
 def all_attributes(sv):
@@ -114,7 +129,8 @@ def all_attributes(sv):
                 f'attribute {attribute.name} is defined twice with different type or index flag '
                 f'({known.slot}: {known.type}/{known.searchable}, {slot_name}: {attribute.type}/{attribute.searchable}); '
                 f'one name must have one type, and the installer removes the index of an attribute marked as not searchable')
-        attributes[attribute.name] = attribute
+        for each in expand(attribute):
+            attributes[each.name] = each
     return attributes
 
 
@@ -154,7 +170,7 @@ def read_classes(sv, schema_dir):
         for icon in (mc.icon, mc.folder_icon):
             if icon and not os.path.exists(os.path.join(schema_dir, 'icons', icon + '.hex')):
                 raise SchemaError(f'class {cls_name}: icon file icons/{icon}.hex does not exist')
-        mc.attributes = [read_attribute(sv, slot) for slot in (cls.slots or [])]
+        mc.attributes = [each for slot in (cls.slots or []) for each in expand(read_attribute(sv, slot))]
         flags = {key: annotation(cls, key) for key in ('bidir', 'dynamic', 'contained', 'label', 'inverse_label')}
         if any(value is not None for value in flags.values()):
             if not (mime.startswith('relation/') or mime == 'relation'):
@@ -268,14 +284,15 @@ def render_header(sv, classes, schema_file):
             out.append(f'/** {a.description} */')
         out.append(f'inline constexpr char k{camel(slot_name)}[] = "{a.name}";')
     out += ['}\t// namespace attr', '']
-    indices = [a for a in (read_attribute(sv, s) for s in schema.slots) if a.searchable]
+    indices = [e for s in schema.slots for e in expand(read_attribute(sv, s)) if e.searchable]
     if indices:
         out += ['#pragma GCC diagnostic push', '#pragma GCC diagnostic ignored "-Wmultichar"', '',
                 '/** An attribute that is queried and needs a BFS index on every volume (the type of the index is that of the attribute). */',
                 'struct Index {', '\tconst char* name;', '\tuint32_t    type;', '};',
                 '/** The indices of this ontology: created by the ontology installer and by the SEN server on every mounted volume. */',
                 'inline constexpr Index kIndices[] = {']
-        out += [f"\t{{attr::k{camel(a.slot)}, '{a.type}'}}," for a in indices]
+        out += [f"\t{{\"{a.name}\", '{a.type}'}}," if a.is_chunk else f"\t{{attr::k{camel(a.slot)}, '{a.type}'}},"
+                for a in indices]
         out += ['};', 'inline constexpr unsigned kIndexCount = sizeof(kIndices) / sizeof(kIndices[0]);', '',
                 '#pragma GCC diagnostic pop', '']
     out += ['namespace mime {']

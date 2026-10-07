@@ -80,7 +80,21 @@ struct Index {
 inline constexpr Index kIndices[] = {
 	{attr::kSenId, 'CSTR'},
 	{attr::kSenTo, 'CSTR'},
+	{"SEN:TO:1", 'CSTR'},
+	{"SEN:TO:2", 'CSTR'},
+	{"SEN:TO:3", 'CSTR'},
+	{"SEN:TO:4", 'CSTR'},
+	{"SEN:TO:5", 'CSTR'},
+	{"SEN:TO:6", 'CSTR'},
+	{"SEN:TO:7", 'CSTR'},
 	{attr::kSenMeta, 'CSTR'},
+	{"SEN:META:1", 'CSTR'},
+	{"SEN:META:2", 'CSTR'},
+	{"SEN:META:3", 'CSTR'},
+	{"SEN:META:4", 'CSTR'},
+	{"SEN:META:5", 'CSTR'},
+	{"SEN:META:6", 'CSTR'},
+	{"SEN:META:7", 'CSTR'},
 	{attr::kSemanticType, 'CSTR'},
 };
 inline constexpr unsigned kIndexCount = sizeof(kIndices) / sizeof(kIndices[0]);
