@@ -1,0 +1,35 @@
+# SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: 2026 SEN Labs e.U.
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  schema:
+    name: Schemas, generated files and consistency
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          path: sen-oni
+      # the consistency tests compare the ontologies with the API constants and the plugin resources
+      - uses: actions/checkout@v7
+        with:
+          repository: sen-laboratories/sento
+          path: sento
+      - uses: actions/checkout@v7
+        with:
+          repository: sen-laboratories/sensei
+          path: sensei
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install linkml-runtime
+      - name: Generated files are up to date
+        working-directory: sen-oni
+        run: ./generate.sh --check
+      - name: Tests
+        working-directory: sen-oni
+        run: python -m unittest discover -s tests -v

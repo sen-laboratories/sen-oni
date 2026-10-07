@@ -1,0 +1,64 @@
+# SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: 2024-2026 SEN Labs e.U.
+#
+# First draft of a simple music ontology.
+id: https://sen-labs.org/ns/oni/music
+name: sen_music
+title: SEN Music
+description: Simple ontology to handle music related information like references to Songs, Pieces, Movements etc.
+version: 0.1.0
+license: MIT
+prefixes:
+  linkml: https://w3id.org/linkml/
+  sen: https://sen-labs.org/ns/sen#
+  dc: http://purl.org/dc/elements/1.1/
+  dcterms: http://purl.org/dc/terms/
+  schema: https://schema.org/
+  oa: http://www.w3.org/ns/oa#
+  be: https://www.haiku-os.org/ns/be#
+default_prefix: sen
+default_range: string
+imports:
+  - linkml:types
+  - sen-core
+annotations:
+  oni_author: Gregor B. Rosenauer <gregor.rosenauer@gmail.com>
+  oni_stable: false
+  oni_schema_url: https://github.com/sen-laboratories/sen-oni/tree/main/schema/sen-music.yaml
+
+classes:
+  MusicWork:
+    description: a musical work or piece of music (general)
+    title: Music work
+    is_a: Entity
+    annotations: {mime: entity/x-vnd.sen-labs.entity.music.work}
+  Song:
+    description: an individual piece of music
+    title: Song
+    is_a: Entity
+    annotations: {mime: entity/x-vnd.sen-labs.entity.music.song}
+  Movement:
+    description: a movement of a musical work
+    title: Movement
+    is_a: Entity
+    annotations: {mime: entity/x-vnd.sen-labs.entity.music.movement}
+  MusicAlbum:
+    description: a music album containing songs or pieces
+    title: Music album
+    is_a: Entity
+    annotations: {mime: entity/x-vnd.sen-labs.entity.music.album}
+  MusicMedium:
+    description: a physical music medium (CD,DVD,Bluray etc.)
+    title: Music medium
+    is_a: Entity
+    annotations: {mime: entity/x-vnd.sen-labs.entity.music.medium}
+  TransitionTo:
+    description: suitable as a transition from this song.
+    title: Music transition to
+    is_a: Relation
+    annotations: {mime: relation/x-vnd.sen-labs.relation.music.transition.to}
+  TransitionFrom:
+    description: suitable as a transition to this song
+    title: Music transition from
+    is_a: Relation
+    annotations: {mime: relation/x-vnd.sen-labs.relation.music.transition.from}

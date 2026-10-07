@@ -1,22 +1,47 @@
+// Generated from schema/sen-core.yaml by oni_gen.py: do not edit.
+// SPDX-License-Identifier: MIT
+// SPDX-FileCopyrightText: 2024-2026 SEN Labs e.U.
+
 resource(0, "META:TYPE") "application/x-vnd.sen-labs.plugin";
-
 resource(1, "META:L:DESC") #'MLDC' "a SEN plugin for handling various semantic tasks on entities or relations.";
-
 resource(2, "META:S:DESC") #'MSDC' "SEN Plugin";
-
 resource(3, "META:ATTR_INFO") message(233) {
 	"attr:name" = "SEN:plugin:extract",
 	"attr:name" = "SEN:plugin:enrich",
 	"attr:name" = "SEN:plugin:identify",
 	"attr:name" = "SEN:plugin:navigate",
+	"attr:name" = "SEN:plugin:search",
 	"attr:public_name" = "extract",
 	"attr:public_name" = "enrich",
 	"attr:public_name" = "identify",
-  "attr:public_name" = "navigate",
+	"attr:public_name" = "navigate",
+	"attr:public_name" = "search",
 	"attr:type" = 'SHRT',
 	"attr:type" = 'SHRT',
 	"attr:type" = 'SHRT',
 	"attr:type" = 'SHRT',
+	"attr:type" = 'SHRT',
+	"attr:viewable" = true,
+	"attr:viewable" = true,
+	"attr:viewable" = true,
+	"attr:viewable" = true,
+	"attr:viewable" = true,
+	"attr:editable" = false,
+	"attr:editable" = false,
+	"attr:editable" = false,
+	"attr:editable" = false,
+	"attr:editable" = false,
+	"attr:searchable" = true,
+	"attr:searchable" = true,
+	"attr:searchable" = true,
+	"attr:searchable" = true,
+	"attr:searchable" = true,
+	"attr:width" = 30,
+	"attr:width" = 30,
+	"attr:width" = 30,
+	"attr:width" = 30,
+	"attr:width" = 30,
+	"attr:alignment" = 0,
 	"attr:alignment" = 0,
 	"attr:alignment" = 0,
 	"attr:alignment" = 0,
@@ -25,21 +50,9 @@ resource(3, "META:ATTR_INFO") message(233) {
 	"attr:display_as" = "",
 	"attr:display_as" = "",
 	"attr:display_as" = "",
-	"attr:editable" = false,
-	"attr:editable" = false,
-	"attr:editable" = false,
-	"attr:editable" = false,
-	"attr:viewable" = true,
-	"attr:viewable" = true,
-	"attr:viewable" = true,
-	"attr:viewable" = true,
-	"attr:width" = 30,
-	"attr:width" = 30,
-	"attr:width" = 30,
-	"attr:width" = 30,
+	"attr:display_as" = "",
 	"type" = "application/x-vnd.sen-labs.plugin"
 };
-
 resource(4, "META:ICON") #'VICN' array {
 	$"6E636966090500040063020006023A9CFB3B0744BD682D3CF09A498CD74A02F0"
 	$"006499E8FF1B63CE0200060238EA6C384F35BBB9AF3C5A084B739A499E0D0010"

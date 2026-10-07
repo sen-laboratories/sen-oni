@@ -24,8 +24,8 @@ status_t InstallMimeTypeFromResource(const char* path);
 status_t DeleteMimeType(const char* mimeType);
 status_t GetInstalledMimeTypes(const char* supertype, BMessage* types);
 void PrintUsage(const char* name);
+void CreateIndexOnAllVolumes(const char* attrName, uint32 attrType);
 
-#define ATTR_INDEX "attr:searchable"
 
 int
 main(int argc, char** argv)
@@ -167,42 +167,19 @@ status_t InstallMimeTypeFromResource(const char* path) {
     if (attrInfo != NULL && message.Unflatten(reinterpret_cast<const char*>(attrInfo)) == B_OK) {
         mimeType.SetAttrInfo(&message);
 
-        // check if attribute should be added to index
-        int32 indexAttrCount;
-        message.GetInfo(ATTR_INDEX, NULL, &indexAttrCount);
-        BVolume bootVolume; // FIXME
-        BVolumeRoster().GetBootVolume(&bootVolume);
+        // create the indices of the attributes that are marked searchable, on every mounted volume that supports them.
+        // An index is never removed here: attribute names are shared with other programs (dc:title, ...).
+        int32 attrCount = 0;
+        message.GetInfo("attr:name", NULL, &attrCount);
 
-        for (int i = 0; i < indexAttrCount; i++) {
+        for (int32 i = 0; i < attrCount; i++) {
+            if (! message.GetBool("attr:searchable", i, false))
+                continue;
+
             const char* attrName = message.GetString("attr:name", i, "");
-            const char* attrPublicName = message.GetString("attr:public_name", i, "");
             uint32      attrType = message.GetUInt32("attr:type", i, B_STRING_TYPE);
 
-            result = message.FindBool("attr:searchable", i);
-            if (result == B_OK) {
-                bool addToIndex = message.GetBool("attr:searchable", i);
-                int result = 0;
-                if (addToIndex) {
-                    // add to index
-                    printf("* adding attribute %s ['%s'] to index...", attrPublicName, attrName);
-                    result = fs_create_index(bootVolume.Device(), attrName, attrType, 0);
-                } else {
-                    printf("* removing attribute %s ['%s'] from index...", attrPublicName, attrName);
-                    result = fs_remove_index(bootVolume.Device(), attrName);
-                }
-
-                if (result == B_OK) {
-                    printf("OK\n");
-                } else {
-                    if (errno == B_FILE_EXISTS) {
-                        printf("EXISTS, skipping.\n");
-                    } else if (errno == B_ENTRY_NOT_FOUND) {
-                        printf("NOT FOUND, skipping.\n");
-                    } else {
-                        fprintf(stderr, "ERROR: %s\n", strerror(errno));
-                    }
-                }
-            }
+            CreateIndexOnAllVolumes(attrName, attrType);
         }
     }
 
@@ -210,7 +187,7 @@ status_t InstallMimeTypeFromResource(const char* path) {
     // prefs won't override it! (also, it doesn't belong into ATTR_INFO)
     // since the MimeType API doesn't support custom data, we need to write
     // into the filesystem's MIME DB directly.
-    senConfig = resources.LoadResource(B_MESSAGE_TYPE, SEN_RELATION_CONFIG_ATTR, size);
+    senConfig = resources.LoadResource(B_MESSAGE_TYPE, sen::attr::kRelationConfig, size);
     if (senConfig != NULL && message.Unflatten(reinterpret_cast<const char*>(senConfig)) == B_OK) {
         BPath path;
         result = find_directory(B_USER_SETTINGS_DIRECTORY, &path);
@@ -243,7 +220,7 @@ status_t InstallMimeTypeFromResource(const char* path) {
             return result;
         }
 
-        size_t sizeResult = mimeNode.WriteAttr(SEN_RELATION_CONFIG_ATTR, B_MESSAGE_TYPE, 0, senConfig, *size);
+        size_t sizeResult = mimeNode.WriteAttr(sen::attr::kRelationConfig, B_MESSAGE_TYPE, 0, senConfig, *size);
         if (sizeResult < *size) {
             if (sizeResult < 0)
                 result = sizeResult;
@@ -255,9 +232,9 @@ status_t InstallMimeTypeFromResource(const char* path) {
         }
 
         // write additional optional collection icon (e.g. for relation folders)
-        icon = resources.LoadResource(B_VECTOR_ICON_TYPE, SEN_RELATION_FOLDER_ICON, size);
+        icon = resources.LoadResource(B_VECTOR_ICON_TYPE, sen::attr::kRelationFolderIcon, size);
         if (icon != NULL && *size > 0) {
-            size_t sizeResult = mimeNode.WriteAttr(SEN_RELATION_FOLDER_ICON, B_VECTOR_ICON_TYPE, 0, icon, *size);
+            size_t sizeResult = mimeNode.WriteAttr(sen::attr::kRelationFolderIcon, B_VECTOR_ICON_TYPE, 0, icon, *size);
             if (sizeResult < *size) {
                 if (sizeResult < 0)
                     result = sizeResult;
@@ -298,4 +275,33 @@ status_t
 GetInstalledMimeTypes(const char* supertype, BMessage* types)
 {
 	return BMimeType::GetInstalledTypes(supertype, types);
+}
+
+/**
+ * @brief Create the index for an attribute on every mounted volume that can have one (BFS, queries and attributes supported).
+ *
+ * @param attrName the attribute to index
+ * @param attrType the type code of the attribute (an index has the type of its attribute)
+ */
+void
+CreateIndexOnAllVolumes(const char* attrName, uint32 attrType)
+{
+    BVolumeRoster roster;
+    BVolume volume;
+
+    while (roster.GetNextVolume(&volume) == B_OK) {
+        if (! volume.KnowsQuery() || ! volume.KnowsAttr() || volume.IsReadOnly())
+            continue;
+
+        char volumeName[B_FILE_NAME_LENGTH];
+        volume.GetName(volumeName);
+
+        if (fs_create_index(volume.Device(), attrName, attrType, 0) == 0) {
+            printf("* created index for '%s' on volume %s\n", attrName, volumeName);
+        } else if (errno == B_FILE_EXISTS) {
+            printf("* index for '%s' exists on volume %s, skipping.\n", attrName, volumeName);
+        } else {
+            fprintf(stderr, "failed to create index for '%s' on volume %s: %s\n", attrName, volumeName, strerror(errno));
+        }
+    }
 }

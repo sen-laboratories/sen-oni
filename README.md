@@ -21,3 +21,19 @@ However, they are often too complex and do not always define relations, or use p
 Lastly, also existing definitions from ONI should be reused where possible, and only referenced to indicate dependencies.
 
 Still under development but getting there.
+
+# How it works
+
+The ontologies are written as [LinkML](https://linkml.io) schemas in `schema/` (one per ontology, `sen-core.yaml` is the meta ontology
+that the others import). The Haiku resource definitions in `ontologies/` and the C++ headers in `include/` are **generated** from them, see
+[generator/README.md](generator/README.md):
+
+```sh
+./generate.sh                      # schema -> ontologies/*.rdef, manifests, include/SenOnto*.h
+./install-headers.sh               # on Haiku: installs the headers next to the SEN API (sento)
+make                               # on Haiku: builds bin/mime, the MIME type installer
+./scripts/oni.sh ontologies/core   # on Haiku: compiles and installs an ontology (MIME types, attribute info, indices)
+```
+
+Indices for attributes marked searchable are created on every mounted volume; an index is never removed.
+

@@ -1,0 +1,16 @@
+// Generated from schema/sen-books.yaml by oni_gen.py: do not edit.
+// SPDX-License-Identifier: MIT
+// SPDX-FileCopyrightText: 2024-2026 SEN Labs e.U.
+
+resource(0, "META:TYPE") "relation/x-vnd.sen-labs.relation.authorship";
+resource(1, "META:L:DESC") #'MLDC' "authorship of a particular work";
+resource(2, "META:S:DESC") #'MSDC' "Authorship";
+resource(3, "META:PREF_APP") #'MSIG' "application/x-vnd.Be-TRAK";
+resource(4, "SEN:REL:CONFIG") message(233) {
+	"SEN:relation" = message('SCrd') {
+		"SEN:REL:Label" = "author of"
+	},
+	"SEN:inverse" = message('SCrd') {
+		"SEN:REL:Label" = "authored by"
+	}
+};

@@ -1,0 +1,48 @@
+# SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: 2024-2026 SEN Labs e.U.
+id: https://sen-labs.org/ns/oni/sourcecode
+name: sen_sourcecode
+title: SEN Source Code
+description: This ontology defines entities and relations for software development.
+version: 0.1.0
+license: MIT
+prefixes:
+  linkml: https://w3id.org/linkml/
+  sen: https://sen-labs.org/ns/sen#
+  dc: http://purl.org/dc/elements/1.1/
+  dcterms: http://purl.org/dc/terms/
+  schema: https://schema.org/
+  oa: http://www.w3.org/ns/oa#
+  be: https://www.haiku-os.org/ns/be#
+default_prefix: sen
+default_range: string
+imports:
+  - linkml:types
+  - sen-core
+annotations:
+  oni_author: Gregor B. Rosenauer <gregor.rosenauer@gmail.com>
+  oni_stable: false
+  oni_schema_url: https://github.com/sen-laboratories/sen-oni/tree/main/schema/sen-sourcecode.yaml
+
+slots:
+  include_path:
+    description: The path of the include as written in the source.
+    title: Include Path
+    annotations: {attribute: "SEN:REL:includePath"}
+  include_global:
+    description: A global (system) include (angle brackets), not a local one.
+    title: Global?
+    range: boolean
+    annotations: {attribute: "SEN:REL:includeGlobal", width: 30}
+
+classes:
+  SourceInclude:
+    description: include dependency to another sourcecode
+    title: Source Include
+    is_a: Relation
+    slots: [include_path, include_global, line]
+    annotations:
+      mime: relation/x-vnd.sen-labs.relation.sourcecode.include
+      app: application/x-vnd.sen-labs.SenTextNavigator
+      dynamic: true
+      contained: true     # MAY be represented as a contained relation

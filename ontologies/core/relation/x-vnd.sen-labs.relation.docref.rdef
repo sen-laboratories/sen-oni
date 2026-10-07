@@ -1,65 +1,69 @@
+// Generated from schema/sen-core.yaml by oni_gen.py: do not edit.
+// SPDX-License-Identifier: MIT
+// SPDX-FileCopyrightText: 2024-2026 SEN Labs e.U.
+
 resource(0, "META:TYPE") "relation/x-vnd.sen-labs.relation.docref";
-
 resource(1, "META:L:DESC") #'MLDC' "structural reference to a document outline element.";
-
 resource(2, "META:S:DESC") #'MSDC' "Document Reference";
-
 resource(3, "META:PREF_APP") #'MSIG' "application/x-vnd.sen-labs.PdfNavigator";
-
 resource(4, "META:ATTR_INFO") message(233) {
-	"attr:name" = "SEN:REL:docref:page",
-	"attr:name" = "SEN:REL:docref:section",
-	"attr:name" = "SEN:REL:docref:paragraph",
-	"attr:name" = "SEN:REL:docref:anchor",
-	"attr:name" = "SEN:REL:docref:heading",
-	"attr:public_name" = "Page",    /* multiple pages could be provided as an array? */
+	"attr:name" = "schema:pageStart",
+	"attr:name" = "SEN:REL:section",
+	"attr:name" = "SEN:REL:paragraph",
+	"attr:name" = "SEN:REL:anchor",
+	"attr:name" = "SEN:REL:heading",
+	"attr:public_name" = "Page",
 	"attr:public_name" = "Section",
 	"attr:public_name" = "Paragraph",
 	"attr:public_name" = "Anchor",
 	"attr:public_name" = "Heading",
-	"attr:type" = 'LONG',   /* Note: also roman page numbers are always mapped to physical pages */
+	"attr:type" = 'LONG',
 	"attr:type" = 'CSTR',
 	"attr:type" = 'CSTR',
 	"attr:type" = 'CSTR',
 	"attr:type" = 'CSTR',
-	"attr:alignment" = 0,
-	"attr:alignment" = 0,
-	"attr:alignment" = 0,
-	"attr:alignment" = 0,
-	"attr:alignment" = 0,
-	"attr:display_as" = "",
-	"attr:display_as" = "",
-	"attr:display_as" = "",
-	"attr:display_as" = "",
-	"attr:display_as" = "",
-	"attr:editable" = true,
-	"attr:editable" = true,
-	"attr:editable" = true,
-	"attr:editable" = true,
-	"attr:editable" = true,
 	"attr:viewable" = true,
 	"attr:viewable" = true,
 	"attr:viewable" = true,
 	"attr:viewable" = true,
 	"attr:viewable" = true,
+	"attr:editable" = true,
+	"attr:editable" = true,
+	"attr:editable" = true,
+	"attr:editable" = true,
+	"attr:editable" = true,
+	"attr:searchable" = false,
+	"attr:searchable" = false,
+	"attr:searchable" = false,
+	"attr:searchable" = false,
+	"attr:searchable" = false,
+	"attr:width" = 30,
 	"attr:width" = 60,
 	"attr:width" = 60,
 	"attr:width" = 60,
 	"attr:width" = 60,
-	"attr:width" = 60
+	"attr:alignment" = 0,
+	"attr:alignment" = 0,
+	"attr:alignment" = 0,
+	"attr:alignment" = 0,
+	"attr:alignment" = 0,
+	"attr:display_as" = "",
+	"attr:display_as" = "",
+	"attr:display_as" = "",
+	"attr:display_as" = "",
+	"attr:display_as" = "",
+	"type" = "relation/x-vnd.sen-labs.relation.docref"
 };
-
 resource(5, "SEN:REL:CONFIG") message(233) {
-    "SEN:dynamic" = true,
-    "SEN:self" = true,
-    "SEN:relation" = message('SCrd') {
-        "SEN:REL:Label" = "references"
-    },
-    "SEN:inverse" = message('SCrd') {
-        "SEN:REL:Label" = "referenced by"
-    }
+	"SEN:dynamic" = true,
+	"SEN:self" = true,
+	"SEN:relation" = message('SCrd') {
+		"SEN:REL:Label" = "references"
+	},
+	"SEN:inverse" = message('SCrd') {
+		"SEN:REL:Label" = "referenced by"
+	}
 };
-
 resource(6, "META:ICON") #'VICN' array {
 	$"6E63696608010100006B02001602BA6666BB33323B3332BA6666480CCD4BD333"
 	$"00D8FFEC0200160439D755BC0F313C0F3139D7554AE7974ABAE901FA1C8C7934"
@@ -79,8 +83,6 @@ resource(6, "META:ICON") #'VICN' array {
 	$"0101000A010102000A020103000A030104000A040105000A0606060708090A0B"
 	$"000A06010C1001178422040A07010C00"
 };
-
-// used for relation folders that are also document references themselves (e.g. heading with children)
 resource(7, "SEN:ICON:FOLDER") #'VICN' array {
 	$"6E6369660F0500020006023841813C9B3BBEAB393A4F584B254D4A7AEB00FFE2"
 	$"ACFFF49806020016022C60673CAAABBEBB082E6EFB4BBA064A22B000FFFF8E02"

@@ -1,0 +1,55 @@
+// Generated from schema/sen-books.yaml by oni_gen.py: do not edit.
+// SPDX-License-Identifier: MIT
+// SPDX-FileCopyrightText: 2024-2026 SEN Labs e.U.
+
+resource(0, "META:TYPE") "relation/x-vnd.sen-labs.relation.book.quote";
+resource(1, "META:L:DESC") #'MLDC' "quotes some text in a book";
+resource(2, "META:S:DESC") #'MSDC' "Book Quote";
+resource(3, "META:ATTR_INFO") message(233) {
+	"attr:name" = "schema:pageStart",
+	"attr:name" = "schema:pageEnd",
+	"attr:name" = "SEN:REL:textStart",
+	"attr:name" = "SEN:REL:textEnd",
+	"attr:name" = "dc:source",
+	"attr:public_name" = "Page",
+	"attr:public_name" = "End Page",
+	"attr:public_name" = "Start Text",
+	"attr:public_name" = "End Text",
+	"attr:public_name" = "Source",
+	"attr:type" = 'LONG',
+	"attr:type" = 'LONG',
+	"attr:type" = 'CSTR',
+	"attr:type" = 'CSTR',
+	"attr:type" = 'CSTR',
+	"attr:viewable" = true,
+	"attr:viewable" = true,
+	"attr:viewable" = true,
+	"attr:viewable" = true,
+	"attr:viewable" = true,
+	"attr:editable" = true,
+	"attr:editable" = true,
+	"attr:editable" = true,
+	"attr:editable" = true,
+	"attr:editable" = true,
+	"attr:searchable" = false,
+	"attr:searchable" = false,
+	"attr:searchable" = false,
+	"attr:searchable" = false,
+	"attr:searchable" = false,
+	"attr:width" = 30,
+	"attr:width" = 30,
+	"attr:width" = 60,
+	"attr:width" = 60,
+	"attr:width" = 60,
+	"attr:alignment" = 0,
+	"attr:alignment" = 0,
+	"attr:alignment" = 0,
+	"attr:alignment" = 0,
+	"attr:alignment" = 0,
+	"attr:display_as" = "",
+	"attr:display_as" = "",
+	"attr:display_as" = "",
+	"attr:display_as" = "",
+	"attr:display_as" = "",
+	"type" = "relation/x-vnd.sen-labs.relation.book.quote"
+};

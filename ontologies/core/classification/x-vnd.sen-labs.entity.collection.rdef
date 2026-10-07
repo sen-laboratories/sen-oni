@@ -1,9 +1,10 @@
+// Generated from schema/sen-core.yaml by oni_gen.py: do not edit.
+// SPDX-License-Identifier: MIT
+// SPDX-FileCopyrightText: 2024-2026 SEN Labs e.U.
+
 resource(0, "META:TYPE") "classification/x-vnd.sen-labs.entity.collection";
-
-resource(1, "META:L:DESC") #'MLDC' "a lose bag for grouping similar things in SEN";
-
+resource(1, "META:L:DESC") #'MLDC' "a group of entities";
 resource(2, "META:S:DESC") #'MSDC' "Collection";
-
 resource(3, "META:ICON") #'VICN' array {
 	$"6E636966090301000002000602B87FA13B71ABBBC2A0B8BA5D4AD8A2499B1D00"
 	$"FFCC99FFBD87520399663302000602BB12A83A8F8CBA8F8CBB12A84AF4464AF0"

@@ -1,0 +1,327 @@
+# SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: 2024-2026 SEN Labs e.U.
+#
+# SEN Core ontology: the meta ontology with the types that SEN needs to work (entities, relations, classification,
+# plugins). The Haiku resource definitions (.rdef) and the other artifacts are generated from this schema by
+# generator/oni_gen.py. Annotations that the generator understands are documented in generator/README.md.
+id: https://sen-labs.org/ns/oni/core
+name: sen_core
+title: SEN Core
+description: SEN Core schema defining necessary types for the core functionality.
+version: 0.1.0
+license: MIT
+
+prefixes:
+  linkml: https://w3id.org/linkml/
+  sen: https://sen-labs.org/ns/sen#
+  dc: http://purl.org/dc/elements/1.1/
+  dcterms: http://purl.org/dc/terms/
+  schema: https://schema.org/
+  oa: http://www.w3.org/ns/oa#
+  be: https://www.haiku-os.org/ns/be#
+default_prefix: sen
+default_range: string
+imports:
+  - linkml:types
+
+annotations:
+  oni_author: Gregor B. Rosenauer <gregor.rosenauer@gmail.com>
+  oni_stable: false
+  oni_schema_url: https://github.com/sen-laboratories/sen-oni/tree/main/schema/sen-core.yaml
+
+slots:
+  # ---- identity of every linked object (the only attributes that must be indexed)
+  sen_id:
+    description: Unique identifier of the object, a TSID.
+    title: SEN ID
+    annotations: {attribute: "SEN:ID", viewable: false, editable: false, searchable: true}
+  sen_to:
+    description: IDs of the targets of the normal relations of the object (chunked, see SEN:TO:<n>).
+    title: SEN Target IDs
+    annotations: {attribute: "SEN:TO", viewable: false, editable: false, searchable: true}
+  sen_meta:
+    description: IDs of the targets of the meta relations (classification and context) of the object.
+    title: SEN Meta IDs
+    annotations: {attribute: "SEN:META", viewable: false, editable: false, searchable: true}
+  fictional:
+    description: The entity is fictional.
+    title: Fictional
+    range: boolean
+    annotations: {attribute: "SEN:fictional"}
+
+  # ---- common attributes of relations (the files that materialize a relation)
+  rel_source:
+    description: ID of the source of the relation.
+    title: Source ID
+    annotations: {attribute: "SEN:REL:ID", viewable: false, editable: false, width: 16}
+  rel_target:
+    description: ID of the target of the relation.
+    title: Target ID
+    annotations: {attribute: "SEN:REL:TO", viewable: false, editable: false, width: 16}
+  rel_source_ref:
+    description: entry_ref of the source, for sources without a SEN:ID.
+    title: Source Ref
+    annotations: {attribute: "SEN:REL:SRC", bfs_type: RREF, viewable: false, editable: false}
+  rel_target_ref:
+    description: entry_ref of the target.
+    title: Target Ref
+    annotations: {attribute: "SEN:REL:TRG", bfs_type: RREF, viewable: false, editable: false}
+  rel_label:
+    description: Label of the relation.
+    title: Label
+    annotations: {attribute: "SEN:REL:Label"}
+  rel_kind:
+    title: Kind
+    annotations: {attribute: "SEN:REL:Kind"}
+  rel_desc:
+    title: Description
+    annotations: {attribute: "SEN:REL:Desc"}
+  rel_role:
+    title: Role
+    annotations: {attribute: "SEN:REL:Role"}
+
+  # ---- places in documents and texts (used by several relation types; Web Annotation selectors translate to these)
+  page_start:
+    description: First page of the place (the number of the physical page; roman page numbers are mapped).
+    title: Page
+    slot_uri: schema:pageStart
+    range: integer
+    annotations: {attribute: "schema:pageStart", width: 30}
+  page_end:
+    description: Last page of the place.
+    title: End Page
+    slot_uri: schema:pageEnd
+    range: integer
+    annotations: {attribute: "schema:pageEnd", width: 30}
+  section:
+    title: Section
+    annotations: {attribute: "SEN:REL:section"}
+  paragraph:
+    title: Paragraph
+    annotations: {attribute: "SEN:REL:paragraph"}
+  anchor:
+    title: Anchor
+    annotations: {attribute: "SEN:REL:anchor"}
+  heading:
+    title: Heading
+    annotations: {attribute: "SEN:REL:heading"}
+  text_start:
+    description: Offset of the first character of the selection (oa:TextPositionSelector).
+    title: Selection Start
+    slot_uri: oa:start
+    range: integer
+    annotations: {attribute: "oa:start", width: 30}
+  text_end:
+    description: Offset after the last character of the selection.
+    title: Selection End
+    slot_uri: oa:end
+    range: integer
+    annotations: {attribute: "oa:end", width: 30}
+  line_start:
+    title: Line From
+    range: integer
+    annotations: {attribute: "SEN:REL:lineStart", width: 30}
+  line_end:
+    title: Line To
+    range: integer
+    annotations: {attribute: "SEN:REL:lineEnd", width: 30}
+  line:
+    description: Line of the place (the attribute that Haiku's editors understand).
+    title: Line
+    range: integer
+    annotations: {attribute: "be:line", width: 30}
+  column:
+    title: Column
+    range: integer
+    annotations: {attribute: "be:column", width: 30}
+
+  # ---- plugins
+  plugin_extract:
+    title: extract
+    range: integer
+    annotations: {attribute: "SEN:plugin:extract", bfs_type: SHRT, editable: false, searchable: true, width: 30}
+  plugin_enrich:
+    title: enrich
+    range: integer
+    annotations: {attribute: "SEN:plugin:enrich", bfs_type: SHRT, editable: false, searchable: true, width: 30}
+  plugin_identify:
+    title: identify
+    range: integer
+    annotations: {attribute: "SEN:plugin:identify", bfs_type: SHRT, editable: false, searchable: true, width: 30}
+  plugin_navigate:
+    title: navigate
+    range: integer
+    annotations: {attribute: "SEN:plugin:navigate", bfs_type: SHRT, editable: false, searchable: true, width: 30}
+  plugin_search:
+    title: search
+    range: integer
+    annotations: {attribute: "SEN:plugin:search", bfs_type: SHRT, editable: false, searchable: true, width: 30}
+
+  # ---- ontologies
+  onto_schema_url:
+    title: Schema URL
+    annotations: {attribute: "SEN:onto:schema_url", editable: false}
+  onto_author:
+    title: Author
+    annotations: {attribute: "SEN:onto:author", editable: false}
+  onto_version:
+    title: Version
+    annotations: {attribute: "SEN:onto:version", editable: false}
+  onto_description:
+    title: Description
+    annotations: {attribute: "SEN:onto:description", editable: false}
+  onto_stable:
+    title: Stable?
+    range: boolean
+    annotations: {attribute: "SEN:onto:stable", editable: false}
+
+classes:
+  # ---- supertypes
+  Entity:
+    description: A semantic entity representing anything.
+    title: Abstract Entity
+    abstract: true
+    slots: [sen_id, sen_to, sen_meta, fictional]
+    annotations:
+      mime: entity
+      supertype: true
+      app: application/x-vnd.sen-labs.shoji
+      icon: entity
+
+  Classification:
+    description: Used for labelling and grouping entities in SEN.
+    title: native types used for classification
+    abstract: true
+    annotations:
+      mime: classification
+      supertype: true
+      app: application/x-vnd.sen-labs.shoji
+      icon: classification
+
+  Relation:
+    description: a semantic relationship between files and entities in SEN.
+    title: SEN Relation
+    abstract: true
+    slots: [rel_source, rel_target, rel_source_ref, rel_target_ref, rel_label, rel_kind, rel_desc, rel_role]
+    annotations:
+      mime: relation
+      supertype: true
+      icon: relation
+      bidir: true
+
+  # ---- entities
+  Object:
+    description: a general object or Thing in SEN
+    title: Object
+    is_a: Entity
+    annotations: {mime: entity/x-vnd.sen-labs.entity.object}
+
+  DocumentOutlineItem:
+    description: a structural component in a document, e.g. bookmark or label.
+    title: Document Outline
+    is_a: Entity
+    annotations: {mime: entity/x-vnd.sen-labs.entity.document.outline-item}
+
+  # ---- classification
+  Label:
+    description: a more generic label or tag used for simple classification
+    title: Label
+    is_a: Classification
+    annotations: {mime: classification/x-vnd.sen-labs.entity.label, icon: x-vnd.sen-labs.entity.label}
+  Topic:
+    description: a subject or theme associated with an entity
+    title: Topic
+    is_a: Classification
+    annotations: {mime: classification/x-vnd.sen-labs.entity.topic, icon: x-vnd.sen-labs.entity.topic}
+  Concept:
+    description: an abstract idea
+    title: Concept
+    is_a: Classification
+    annotations: {mime: classification/x-vnd.sen-labs.entity.concept, icon: x-vnd.sen-labs.entity.concept}
+  Collection:
+    description: a group of entities
+    title: Collection
+    is_a: Classification
+    annotations: {mime: classification/x-vnd.sen-labs.entity.collection, icon: x-vnd.sen-labs.entity.collection}
+  Context:
+    description: top-level container for grouping things
+    title: Context
+    is_a: Classification
+    annotations: {mime: classification/x-vnd.sen-labs.entity.context, icon: x-vnd.sen-labs.entity.context}
+
+  # ---- relations
+  Association:
+    description: special relation used for classification.
+    title: Association
+    is_a: Relation
+    annotations:
+      mime: relation/x-vnd.sen-labs.relation.association
+      icon: x-vnd.sen-labs.relation.association
+      # Unidirectional so the meta nodes do not blow up: associations are resolved by reverse query (SEN:META),
+      # except for links between two classification entities, which stay bidirectional (handled in code).
+      bidir: false
+      label: associated with
+
+  Reference:
+    description: generic reference to another entity.
+    title: Generic Reference
+    is_a: Relation
+    annotations:
+      mime: relation/x-vnd.sen-labs.relation.reference
+      app: application/x-vnd.Be-TRAK
+      label: references
+      inverse_label: referenced by
+
+  Contains:
+    description: relates to self contained components or parts.
+    title: Contains
+    is_a: Relation
+    annotations:
+      mime: relation/x-vnd.sen-labs.relation.contains
+      icon: x-vnd.sen-labs.relation.contains
+      # only meta info for SEN: the attributes come from the extracted types
+      dynamic: true
+      contained: true
+      label: contains
+      inverse_label: contained by
+
+  DocumentReference:
+    description: structural reference to a document outline element.
+    title: Document Reference
+    is_a: Relation
+    slots: [page_start, section, paragraph, anchor, heading]
+    annotations:
+      mime: relation/x-vnd.sen-labs.relation.docref
+      app: application/x-vnd.sen-labs.PdfNavigator
+      icon: x-vnd.sen-labs.relation.docref
+      folder_icon: x-vnd.sen-labs.relation.docref.folder
+      dynamic: true
+      contained: true
+      label: references
+      inverse_label: referenced by
+
+  TextReference:
+    description: reference to a plaintext document.
+    title: Textual Reference
+    is_a: Relation
+    slots: [text_start, text_end, line_start, line_end, line, column]
+    annotations:
+      mime: relation/x-vnd.sen-labs.relation.textref
+      app: application/x-vnd.sen-labs.SenTextNavigator
+      icon: x-vnd.sen-labs.relation.textref
+
+  # ---- applications
+  Plugin:
+    description: a SEN plugin for handling various semantic tasks on entities or relations.
+    title: SEN Plugin
+    slots: [plugin_extract, plugin_enrich, plugin_identify, plugin_navigate, plugin_search]
+    annotations:
+      mime: application/x-vnd.sen-labs.plugin
+      icon: x-vnd.sen-labs.plugin
+  Ontology:
+    description: defines a set of file types for Entities and Relations in SEN.
+    title: Ontology
+    slots: [onto_schema_url, onto_author, onto_version, onto_description, onto_stable]
+    annotations:
+      mime: application/x-vnd.sen-labs.ontology
+      icon: x-vnd.sen-labs.ontology

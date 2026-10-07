@@ -1,0 +1,7 @@
+// Generated from schema/sen-movies.yaml by oni_gen.py: do not edit.
+// SPDX-License-Identifier: MIT
+// SPDX-FileCopyrightText: 2024-2026 SEN Labs e.U.
+
+resource(0, "META:TYPE") "entity/x-vnd.sen-labs.entity.movie.medium";
+resource(1, "META:L:DESC") #'MLDC' "a physical movie medium (VHS,DVD,Bluray)";
+resource(2, "META:S:DESC") #'MSDC' "Movie medium";

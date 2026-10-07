@@ -1,9 +1,10 @@
+// Generated from schema/sen-core.yaml by oni_gen.py: do not edit.
+// SPDX-License-Identifier: MIT
+// SPDX-FileCopyrightText: 2024-2026 SEN Labs e.U.
+
 resource(0, "META:TYPE") "classification/x-vnd.sen-labs.entity.topic";
-
 resource(1, "META:L:DESC") #'MLDC' "a subject or theme associated with an entity";
-
 resource(2, "META:S:DESC") #'MSDC' "Topic";
-
 resource(3, "META:ICON") #'VICN' array {
 	$"6E636966070401580501020102023E60000000000000003D9AAA49EFFF467555"
 	$"00FFFC04C8E4FFFC0300020106023AC0000000000000003AC00049A000458000"

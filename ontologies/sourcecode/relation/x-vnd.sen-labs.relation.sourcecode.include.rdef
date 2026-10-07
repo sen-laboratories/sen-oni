@@ -1,0 +1,42 @@
+// Generated from schema/sen-sourcecode.yaml by oni_gen.py: do not edit.
+// SPDX-License-Identifier: MIT
+// SPDX-FileCopyrightText: 2024-2026 SEN Labs e.U.
+
+resource(0, "META:TYPE") "relation/x-vnd.sen-labs.relation.sourcecode.include";
+resource(1, "META:L:DESC") #'MLDC' "include dependency to another sourcecode";
+resource(2, "META:S:DESC") #'MSDC' "Source Include";
+resource(3, "META:PREF_APP") #'MSIG' "application/x-vnd.sen-labs.SenTextNavigator";
+resource(4, "META:ATTR_INFO") message(233) {
+	"attr:name" = "SEN:REL:includePath",
+	"attr:name" = "SEN:REL:includeGlobal",
+	"attr:name" = "be:line",
+	"attr:public_name" = "Include Path",
+	"attr:public_name" = "Global?",
+	"attr:public_name" = "Line",
+	"attr:type" = 'CSTR',
+	"attr:type" = 'BOOL',
+	"attr:type" = 'LONG',
+	"attr:viewable" = true,
+	"attr:viewable" = true,
+	"attr:viewable" = true,
+	"attr:editable" = true,
+	"attr:editable" = true,
+	"attr:editable" = true,
+	"attr:searchable" = false,
+	"attr:searchable" = false,
+	"attr:searchable" = false,
+	"attr:width" = 60,
+	"attr:width" = 30,
+	"attr:width" = 30,
+	"attr:alignment" = 0,
+	"attr:alignment" = 0,
+	"attr:alignment" = 0,
+	"attr:display_as" = "",
+	"attr:display_as" = "",
+	"attr:display_as" = "",
+	"type" = "relation/x-vnd.sen-labs.relation.sourcecode.include"
+};
+resource(5, "SEN:REL:CONFIG") message(233) {
+	"SEN:dynamic" = true,
+	"SEN:self" = true
+};

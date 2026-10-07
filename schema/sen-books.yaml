@@ -1,0 +1,111 @@
+# SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: 2024-2026 SEN Labs e.U.
+#
+# Entities and relations for working with books. Attributes use the established vocabularies (Dublin Core, schema.org),
+# the same names that Toji writes to the files it opens.
+id: https://sen-labs.org/ns/oni/books
+name: sen_books
+title: SEN Books
+description: This ontology defines entities and relations for working with books.
+version: 0.1.0
+license: MIT
+prefixes:
+  linkml: https://w3id.org/linkml/
+  sen: https://sen-labs.org/ns/sen#
+  dc: http://purl.org/dc/elements/1.1/
+  dcterms: http://purl.org/dc/terms/
+  schema: https://schema.org/
+  oa: http://www.w3.org/ns/oa#
+  be: https://www.haiku-os.org/ns/be#
+default_prefix: sen
+default_range: string
+imports:
+  - linkml:types
+  - sen-core
+annotations:
+  oni_author: Gregor B. Rosenauer <gregor.rosenauer@gmail.com>
+  oni_stable: false
+  oni_schema_url: https://github.com/sen-laboratories/sen-oni/tree/main/schema/sen-books.yaml
+
+slots:
+  title:
+    title: Title
+    slot_uri: dc:title
+    annotations: {attribute: "dc:title"}
+  creator:
+    description: The authors.
+    title: Authors
+    slot_uri: dc:creator
+    annotations: {attribute: "dc:creator"}
+  subject:
+    title: Subjects
+    slot_uri: dc:subject
+    annotations: {attribute: "dc:subject"}
+  language:
+    title: Languages
+    slot_uri: dc:language
+    annotations: {attribute: "dc:language"}
+  publisher:
+    title: Publisher
+    slot_uri: dc:publisher
+    annotations: {attribute: "dc:publisher"}
+  date:
+    description: Date of publication of the edition.
+    title: Date
+    slot_uri: dc:date
+    range: datetime
+    annotations: {attribute: "dc:date", width: 30}
+  book_class:
+    description: Classification code of the library (Dewey, LoC, ...).
+    title: Classification
+    annotations: {attribute: "SEN:classification", viewable: false, editable: false}
+  book_format:
+    title: Format
+    slot_uri: schema:bookFormat
+    annotations: {attribute: "schema:bookFormat", viewable: false, editable: false}
+  isbn:
+    title: ISBN
+    slot_uri: schema:isbn
+    annotations: {attribute: "schema:isbn", searchable: true, width: 30}
+  number_of_pages:
+    title: Pages
+    slot_uri: schema:numberOfPages
+    range: integer
+    annotations: {attribute: "schema:numberOfPages", width: 30}
+  quote_start:
+    description: The first words of the quote.
+    title: Start Text
+    annotations: {attribute: "SEN:REL:textStart"}
+  quote_end:
+    description: The last words of the quote.
+    title: End Text
+    annotations: {attribute: "SEN:REL:textEnd"}
+  quote_source:
+    title: Source
+    slot_uri: dc:source
+    annotations: {attribute: "dc:source"}
+
+classes:
+  Book:
+    description: describes a book entity
+    title: Book
+    is_a: Entity
+    slots: [isbn, subject, title, creator, language, publisher, date, book_class, book_format, number_of_pages]
+    annotations: {mime: entity/x-vnd.sen-labs.entity.book, icon: Book}
+
+  Authorship:
+    description: authorship of a particular work
+    title: Authorship
+    is_a: Relation
+    annotations:
+      mime: relation/x-vnd.sen-labs.relation.authorship
+      app: application/x-vnd.Be-TRAK
+      label: author of
+      inverse_label: authored by
+
+  BookQuote:
+    description: quotes some text in a book
+    title: Book Quote
+    is_a: Relation
+    slots: [page_start, page_end, quote_start, quote_end, quote_source]
+    annotations: {mime: relation/x-vnd.sen-labs.relation.book.quote}

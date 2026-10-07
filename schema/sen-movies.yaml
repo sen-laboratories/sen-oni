@@ -1,0 +1,68 @@
+# SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: 2024-2026 SEN Labs e.U.
+id: https://sen-labs.org/ns/oni/movies
+name: sen_movies
+title: SEN Movies
+description: This ontology defines entities and relations for working with movies (film analysis, writing).
+version: 0.1.0
+license: MIT
+prefixes:
+  linkml: https://w3id.org/linkml/
+  sen: https://sen-labs.org/ns/sen#
+  dc: http://purl.org/dc/elements/1.1/
+  dcterms: http://purl.org/dc/terms/
+  schema: https://schema.org/
+  oa: http://www.w3.org/ns/oa#
+  be: https://www.haiku-os.org/ns/be#
+default_prefix: sen
+default_range: string
+imports:
+  - linkml:types
+  - sen-core
+annotations:
+  oni_author: Gregor B. Rosenauer <gregor.rosenauer@gmail.com>
+  oni_stable: false
+  oni_schema_url: https://github.com/sen-laboratories/sen-oni/tree/main/schema/sen-movies.yaml
+
+slots:
+  scene:
+    title: Scene
+    annotations: {attribute: "SEN:REL:scene"}
+  chapter_start:
+    title: Chapter Start
+    range: integer
+    annotations: {attribute: "SEN:REL:chapterStart", width: 30}
+  chapter_end:
+    title: Chapter End
+    range: integer
+    annotations: {attribute: "SEN:REL:chapterEnd", width: 30}
+  time_start:
+    description: Start of the place in the movie, in seconds.
+    title: Time Code Start
+    slot_uri: schema:startOffset
+    range: integer
+    annotations: {attribute: "schema:startOffset", width: 30}
+  time_end:
+    description: End of the place in the movie, in seconds.
+    title: Time Code End
+    slot_uri: schema:endOffset
+    range: integer
+    annotations: {attribute: "schema:endOffset", width: 30}
+
+classes:
+  Movie:
+    description: a movie
+    title: Movie
+    is_a: Entity
+    annotations: {mime: entity/x-vnd.sen-labs.entity.movie}
+  MovieMedium:
+    description: a physical movie medium (VHS,DVD,Bluray)
+    title: Movie medium
+    is_a: Entity
+    annotations: {mime: entity/x-vnd.sen-labs.entity.movie.medium}
+  MovieReference:
+    description: Reference to a Movie
+    title: Movie Reference
+    is_a: Relation
+    slots: [scene, chapter_start, chapter_end, time_start, time_end]
+    annotations: {mime: relation/x-vnd.sen-labs.relation.movie.reference}

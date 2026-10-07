@@ -35,3 +35,6 @@
 generated/
 objects.*
 shoji
+__pycache__/
+*.pyc
+.DS_Store

@@ -4,6 +4,9 @@
 
 set -e
 
+# the MIME type installer is built into bin/ of the repository
+ONI_ROOT=$(cd "$(dirname "$0")/.." && pwd)
+
 # read manifest
 . $1/manifest.properties
 
@@ -37,8 +40,9 @@ function create_mime_type()
     type_path=$(dirname $1)
     rsrc_path=$oni_output/$type_path/$type_name.rsrc
 
+    mkdir -p "$(dirname "$rsrc_path")" && \
     rc -o $rsrc_path $1 && \
-    mime/bin/mime install $rsrc_path &&
+    "$ONI_ROOT/bin/mime" install $rsrc_path &&
     rm $rsrc_path || false
 }
 

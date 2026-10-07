@@ -1,0 +1,39 @@
+# SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: 2024-2026 SEN Labs e.U.
+#
+# Types for testing SEN (a custom supertype and a type).
+id: https://sen-labs.org/ns/oni/test
+name: sen_test
+title: SEN Test
+description: SEN Test schema for bug tracking.
+version: 0.1.0
+license: MIT
+prefixes:
+  linkml: https://w3id.org/linkml/
+  sen: https://sen-labs.org/ns/sen#
+  dc: http://purl.org/dc/elements/1.1/
+  dcterms: http://purl.org/dc/terms/
+  schema: https://schema.org/
+  oa: http://www.w3.org/ns/oa#
+  be: https://www.haiku-os.org/ns/be#
+default_prefix: sen
+default_range: string
+imports:
+  - linkml:types
+  - sen-core
+annotations:
+  oni_author: Gregor B. Rosenauer <gregor.rosenauer@gmail.com>
+  oni_stable: false
+  oni_schema_url: https://github.com/sen-laboratories/sen-oni/tree/main/schema/sen-test.yaml
+
+classes:
+  SenTestSupertype:
+    description: a custom supertype for testing
+    title: SEN
+    abstract: true
+    annotations: {mime: sen, supertype: true, app: application/x-vnd.sen-labs.shoji, icon: sen}
+  SenTest:
+    description: a custom test type
+    title: Test
+    is_a: SenTestSupertype
+    annotations: {mime: sen/x-vnd.sen-labs.sen.test, icon: x-vnd.sen-labs.sen.test}

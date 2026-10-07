@@ -1,9 +1,10 @@
+// Generated from schema/sen-core.yaml by oni_gen.py: do not edit.
+// SPDX-License-Identifier: MIT
+// SPDX-FileCopyrightText: 2024-2026 SEN Labs e.U.
+
 resource(0, "META:TYPE") "classification/x-vnd.sen-labs.entity.label";
-
 resource(1, "META:L:DESC") #'MLDC' "a more generic label or tag used for simple classification";
-
 resource(2, "META:S:DESC") #'MSDC' "Label";
-
 resource(3, "META:ICON") #'VICN' array {
 	$"6E6369660604003A020012023CC1A1B8F5E63C131C3FDCF74A7F99432B5F0000"
 	$"65FF000003344251037C96B10300337F020006023ACB9A3B338BBE124B3D9E13"

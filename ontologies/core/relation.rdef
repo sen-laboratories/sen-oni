@@ -1,52 +1,70 @@
+// Generated from schema/sen-core.yaml by oni_gen.py: do not edit.
+// SPDX-License-Identifier: MIT
+// SPDX-FileCopyrightText: 2024-2026 SEN Labs e.U.
 
 resource(0, "BEOS:TYPE") #'MIMS' "application/x-vnd.Be-meta-mime";
-
 resource(1, "META:TYPE") "relation";
-
 resource(2, "META:L:DESC") #'MLDC' "a semantic relationship between files and entities in SEN.";
-
 resource(3, "META:S:DESC") #'MSDC' "SEN Relation";
-
-resource(4, "META:EXTENS") message(234) {
-	"type" = "relation"
-};
-
-resource(5, "META:ATTR_INFO") message(233) {
+resource(4, "META:ATTR_INFO") message(233) {
 	"attr:name" = "SEN:REL:ID",
 	"attr:name" = "SEN:REL:TO",
+	"attr:name" = "SEN:REL:SRC",
+	"attr:name" = "SEN:REL:TRG",
 	"attr:name" = "SEN:REL:Label",
 	"attr:name" = "SEN:REL:Kind",
 	"attr:name" = "SEN:REL:Desc",
 	"attr:name" = "SEN:REL:Role",
 	"attr:public_name" = "Source ID",
 	"attr:public_name" = "Target ID",
+	"attr:public_name" = "Source Ref",
+	"attr:public_name" = "Target Ref",
 	"attr:public_name" = "Label",
 	"attr:public_name" = "Kind",
 	"attr:public_name" = "Description",
 	"attr:public_name" = "Role",
 	"attr:type" = 'CSTR',
 	"attr:type" = 'CSTR',
+	"attr:type" = 'RREF',
+	"attr:type" = 'RREF',
 	"attr:type" = 'CSTR',
 	"attr:type" = 'CSTR',
 	"attr:type" = 'CSTR',
 	"attr:type" = 'CSTR',
 	"attr:viewable" = false,
 	"attr:viewable" = false,
+	"attr:viewable" = false,
+	"attr:viewable" = false,
 	"attr:viewable" = true,
 	"attr:viewable" = true,
 	"attr:viewable" = true,
+	"attr:viewable" = true,
+	"attr:editable" = false,
+	"attr:editable" = false,
 	"attr:editable" = false,
 	"attr:editable" = false,
 	"attr:editable" = true,
 	"attr:editable" = true,
 	"attr:editable" = true,
 	"attr:editable" = true,
+	"attr:searchable" = false,
+	"attr:searchable" = false,
+	"attr:searchable" = false,
+	"attr:searchable" = false,
+	"attr:searchable" = false,
+	"attr:searchable" = false,
+	"attr:searchable" = false,
+	"attr:searchable" = false,
 	"attr:width" = 16,
 	"attr:width" = 16,
 	"attr:width" = 60,
 	"attr:width" = 60,
 	"attr:width" = 60,
 	"attr:width" = 60,
+	"attr:width" = 60,
+	"attr:width" = 60,
+	"attr:alignment" = 0,
+	"attr:alignment" = 0,
 	"attr:alignment" = 0,
 	"attr:alignment" = 0,
 	"attr:alignment" = 0,
@@ -58,21 +76,15 @@ resource(5, "META:ATTR_INFO") message(233) {
 	"attr:display_as" = "",
 	"attr:display_as" = "",
 	"attr:display_as" = "",
-	"attr:display_as" = ""
+	"attr:display_as" = "",
+	"attr:display_as" = "",
+	"attr:display_as" = "",
+	"type" = "relation"
 };
-
-resource(6, "SEN:REL:CONFIG") message {
-    // SEN specific properties
-    // is the relation bidirectional? (by default, yes)
-    "SEN:bidir" = true,
-    // specific relation properties and defaults, defined in subtypes
-    "SEN:relation" = 'MSGG',
-    // inverse (opposite) relation with any differing properties (or even a different type)
-    // will be automatically created unless declared unidirectional with 'sen:bidir' property of 'false'.
-    "SEN:inverse" = 'MSGG'
+resource(5, "SEN:REL:CONFIG") message(233) {
+	"SEN:bidir" = true
 };
-
-resource(7, "META:ICON") #'VICN' array {
+resource(6, "META:ICON") #'VICN' array {
 	$"6E636966060500020006023B7DA8BABA2A3CB2743D73CA4786E04984C100FFEC"
 	$"4BFFF0A506020006023AF09B3071D1B2419A3CB69F497B2A49590F00FFFFFFFF"
 	$"FFF28902000602387D5937D1D7BBB5BC3C6B074AAA364A348800F99B05FFFCB2"

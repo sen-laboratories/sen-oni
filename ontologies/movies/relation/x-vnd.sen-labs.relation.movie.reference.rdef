@@ -1,0 +1,55 @@
+// Generated from schema/sen-movies.yaml by oni_gen.py: do not edit.
+// SPDX-License-Identifier: MIT
+// SPDX-FileCopyrightText: 2024-2026 SEN Labs e.U.
+
+resource(0, "META:TYPE") "relation/x-vnd.sen-labs.relation.movie.reference";
+resource(1, "META:L:DESC") #'MLDC' "Reference to a Movie";
+resource(2, "META:S:DESC") #'MSDC' "Movie Reference";
+resource(3, "META:ATTR_INFO") message(233) {
+	"attr:name" = "SEN:REL:scene",
+	"attr:name" = "SEN:REL:chapterStart",
+	"attr:name" = "SEN:REL:chapterEnd",
+	"attr:name" = "schema:startOffset",
+	"attr:name" = "schema:endOffset",
+	"attr:public_name" = "Scene",
+	"attr:public_name" = "Chapter Start",
+	"attr:public_name" = "Chapter End",
+	"attr:public_name" = "Time Code Start",
+	"attr:public_name" = "Time Code End",
+	"attr:type" = 'CSTR',
+	"attr:type" = 'LONG',
+	"attr:type" = 'LONG',
+	"attr:type" = 'LONG',
+	"attr:type" = 'LONG',
+	"attr:viewable" = true,
+	"attr:viewable" = true,
+	"attr:viewable" = true,
+	"attr:viewable" = true,
+	"attr:viewable" = true,
+	"attr:editable" = true,
+	"attr:editable" = true,
+	"attr:editable" = true,
+	"attr:editable" = true,
+	"attr:editable" = true,
+	"attr:searchable" = false,
+	"attr:searchable" = false,
+	"attr:searchable" = false,
+	"attr:searchable" = false,
+	"attr:searchable" = false,
+	"attr:width" = 60,
+	"attr:width" = 30,
+	"attr:width" = 30,
+	"attr:width" = 30,
+	"attr:width" = 30,
+	"attr:alignment" = 0,
+	"attr:alignment" = 0,
+	"attr:alignment" = 0,
+	"attr:alignment" = 0,
+	"attr:alignment" = 0,
+	"attr:display_as" = "",
+	"attr:display_as" = "",
+	"attr:display_as" = "",
+	"attr:display_as" = "",
+	"attr:display_as" = "",
+	"type" = "relation/x-vnd.sen-labs.relation.movie.reference"
+};
