@@ -34,6 +34,10 @@ inline constexpr char kRelTarget[] = "SEN:REL:TO";
 inline constexpr char kRelSourceRef[] = "SEN:REL:SRC";
 /** entry_ref of the target. */
 inline constexpr char kRelTargetRef[] = "SEN:REL:TRG";
+/** Identifier of the relation, only present where several relations of one type exist between two files. */
+inline constexpr char kRelId[] = "SEN:REL:relationId";
+/** The target of the relation does not exist (any more). */
+inline constexpr char kRelMissing[] = "SEN:REL:missing";
 /** Label of the relation. */
 inline constexpr char kRelLabel[] = "SEN:REL:Label";
 inline constexpr char kRelKind[] = "SEN:REL:Kind";

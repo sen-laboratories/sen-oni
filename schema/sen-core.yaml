@@ -72,6 +72,15 @@ slots:
     description: entry_ref of the target.
     title: Target Ref
     annotations: {attribute: "SEN:REL:TRG", bfs_type: RREF, viewable: false, editable: false}
+  rel_id:
+    description: Identifier of the relation, only present where several relations of one type exist between two files.
+    title: Relation ID
+    annotations: {attribute: "SEN:REL:relationId", viewable: false, editable: false}
+  rel_missing:
+    description: The target of the relation does not exist (any more).
+    title: Target missing
+    range: boolean
+    annotations: {attribute: "SEN:REL:missing", editable: false, width: 30}
   rel_label:
     description: Label of the relation.
     title: Label
@@ -209,7 +218,7 @@ classes:
     description: a semantic relationship between files and entities in SEN.
     title: SEN Relation
     abstract: true
-    slots: [rel_source, rel_target, rel_source_ref, rel_target_ref, rel_label, rel_kind, rel_desc, rel_role]
+    slots: [rel_source, rel_target, rel_source_ref, rel_target_ref, rel_id, rel_missing, rel_label, rel_kind, rel_desc, rel_role]
     annotations:
       mime: relation
       supertype: true
