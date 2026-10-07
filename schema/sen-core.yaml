@@ -141,28 +141,28 @@ slots:
     range: integer
     annotations: {attribute: "be:column", width: 30}
 
-  # ---- plugins: the feature flags are 16 bit values. BFS cannot index those, so plugins are found by their (indexed)
-  # type and the flags are read from the files.
+  # ---- plugins: the feature flags are int32 attributes. They are not indexed: a query needs only one indexed attribute,
+  # so plugins are found by META:TYPE (indexed, always first in the predicate) and the flag is compared on those files.
   plugin_extract:
     title: extract
     range: integer
-    annotations: {attribute: "SEN:plugin:extract", bfs_type: SHRT, editable: false, width: 30}
+    annotations: {attribute: "SEN:plugin:extract", editable: false, width: 30}
   plugin_enrich:
     title: enrich
     range: integer
-    annotations: {attribute: "SEN:plugin:enrich", bfs_type: SHRT, editable: false, width: 30}
+    annotations: {attribute: "SEN:plugin:enrich", editable: false, width: 30}
   plugin_identify:
     title: identify
     range: integer
-    annotations: {attribute: "SEN:plugin:identify", bfs_type: SHRT, editable: false, width: 30}
+    annotations: {attribute: "SEN:plugin:identify", editable: false, width: 30}
   plugin_navigate:
     title: navigate
     range: integer
-    annotations: {attribute: "SEN:plugin:navigate", bfs_type: SHRT, editable: false, width: 30}
+    annotations: {attribute: "SEN:plugin:navigate", editable: false, width: 30}
   plugin_search:
     title: search
     range: integer
-    annotations: {attribute: "SEN:plugin:search", bfs_type: SHRT, editable: false, width: 30}
+    annotations: {attribute: "SEN:plugin:search", editable: false, width: 30}
 
   # ---- ontologies
   onto_schema_url:
