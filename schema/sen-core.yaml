@@ -43,6 +43,12 @@ slots:
     description: IDs of the targets of the meta relations (classification and context) of the object.
     title: SEN Meta IDs
     annotations: {attribute: "SEN:META", viewable: false, editable: false, searchable: true}
+  semantic_type:
+    description: >-
+      Semantic type of a file, e.g. document/scientific-paper, set by identify plugins (Haiku itself only knows the
+      technical MIME type). Plugins carry the plugin type here.
+    title: Semantic Type
+    annotations: {attribute: "META:TYPE", editable: false, searchable: true}
   fictional:
     description: The entity is fictional.
     title: Fictional
@@ -135,27 +141,28 @@ slots:
     range: integer
     annotations: {attribute: "be:column", width: 30}
 
-  # ---- plugins
+  # ---- plugins: the feature flags are 16 bit values. BFS cannot index those, so plugins are found by their (indexed)
+  # type and the flags are read from the files.
   plugin_extract:
     title: extract
     range: integer
-    annotations: {attribute: "SEN:plugin:extract", bfs_type: SHRT, editable: false, searchable: true, width: 30}
+    annotations: {attribute: "SEN:plugin:extract", bfs_type: SHRT, editable: false, width: 30}
   plugin_enrich:
     title: enrich
     range: integer
-    annotations: {attribute: "SEN:plugin:enrich", bfs_type: SHRT, editable: false, searchable: true, width: 30}
+    annotations: {attribute: "SEN:plugin:enrich", bfs_type: SHRT, editable: false, width: 30}
   plugin_identify:
     title: identify
     range: integer
-    annotations: {attribute: "SEN:plugin:identify", bfs_type: SHRT, editable: false, searchable: true, width: 30}
+    annotations: {attribute: "SEN:plugin:identify", bfs_type: SHRT, editable: false, width: 30}
   plugin_navigate:
     title: navigate
     range: integer
-    annotations: {attribute: "SEN:plugin:navigate", bfs_type: SHRT, editable: false, searchable: true, width: 30}
+    annotations: {attribute: "SEN:plugin:navigate", bfs_type: SHRT, editable: false, width: 30}
   plugin_search:
     title: search
     range: integer
-    annotations: {attribute: "SEN:plugin:search", bfs_type: SHRT, editable: false, searchable: true, width: 30}
+    annotations: {attribute: "SEN:plugin:search", bfs_type: SHRT, editable: false, width: 30}
 
   # ---- ontologies
   onto_schema_url:
@@ -181,7 +188,7 @@ classes:
     description: A semantic entity representing anything.
     title: Abstract Entity
     abstract: true
-    slots: [sen_id, sen_to, sen_meta, fictional]
+    slots: [sen_id, sen_to, sen_meta, semantic_type, fictional]
     annotations:
       mime: entity
       supertype: true
@@ -314,7 +321,7 @@ classes:
   Plugin:
     description: a SEN plugin for handling various semantic tasks on entities or relations.
     title: SEN Plugin
-    slots: [plugin_extract, plugin_enrich, plugin_identify, plugin_navigate, plugin_search]
+    slots: [semantic_type, plugin_extract, plugin_enrich, plugin_identify, plugin_navigate, plugin_search]
     annotations:
       mime: application/x-vnd.sen-labs.plugin
       icon: x-vnd.sen-labs.plugin

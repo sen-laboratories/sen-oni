@@ -5,6 +5,8 @@
  */
 #pragma once
 
+#include <stdint.h>
+
 /**
  * @file SenOntoMovies.h
  * @brief Attribute names and MIME types of the ontology "SEN Movies": use these instead of string literals.

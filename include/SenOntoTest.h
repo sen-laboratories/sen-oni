@@ -5,6 +5,8 @@
  */
 #pragma once
 
+#include <stdint.h>
+
 /**
  * @file SenOntoTest.h
  * @brief Attribute names and MIME types of the ontology "SEN Test": use these instead of string literals.

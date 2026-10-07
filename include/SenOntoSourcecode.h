@@ -5,6 +5,8 @@
  */
 #pragma once
 
+#include <stdint.h>
+
 /**
  * @file SenOntoSourcecode.h
  * @brief Attribute names and MIME types of the ontology "SEN Source Code": use these instead of string literals.

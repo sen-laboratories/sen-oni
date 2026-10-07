@@ -259,7 +259,7 @@ def render_header(sv, classes, schema_file):
     ns = namespace_of(schema)
     out = ['/*', f' * Generated from {schema_file} by oni_gen.py: do not edit.',
            ' * SPDX-License-Identifier: MIT', ' * SPDX-FileCopyrightText: 2024-2026 SEN Labs e.U.', ' */',
-           '#pragma once', '', '/**', f' * @file SenOnto{camel(ns)}.h',
+           '#pragma once', '', '#include <stdint.h>', '', '/**', f' * @file SenOnto{camel(ns)}.h',
            f' * @brief Attribute names and MIME types of the ontology "{schema.title}": use these instead of string literals.',
            ' */', f'namespace sen {{', 'namespace onto {', f'namespace {ns} {{', '', 'namespace attr {']
     for slot_name in schema.slots:
@@ -267,7 +267,18 @@ def render_header(sv, classes, schema_file):
         if a.description:
             out.append(f'/** {a.description} */')
         out.append(f'inline constexpr char k{camel(slot_name)}[] = "{a.name}";')
-    out += ['}\t// namespace attr', '', 'namespace mime {']
+    out += ['}\t// namespace attr', '']
+    indices = [a for a in (read_attribute(sv, s) for s in schema.slots) if a.searchable]
+    if indices:
+        out += ['#pragma GCC diagnostic push', '#pragma GCC diagnostic ignored "-Wmultichar"', '',
+                '/** An attribute that is queried and needs a BFS index on every volume (the type of the index is that of the attribute). */',
+                'struct Index {', '\tconst char* name;', '\tuint32_t    type;', '};',
+                '/** The indices of this ontology: created by the ontology installer and by the SEN server on every mounted volume. */',
+                'inline constexpr Index kIndices[] = {']
+        out += [f"\t{{attr::k{camel(a.slot)}, '{a.type}'}}," for a in indices]
+        out += ['};', 'inline constexpr unsigned kIndexCount = sizeof(kIndices) / sizeof(kIndices[0]);', '',
+                '#pragma GCC diagnostic pop', '']
+    out += ['namespace mime {']
     for mc in classes:
         out.append(f'/** {mc.title}: {mc.description} */')
         out.append(f'inline constexpr char k{mc.cls_name}[] = "{mc.mime}";')

@@ -5,6 +5,8 @@
  */
 #pragma once
 
+#include <stdint.h>
+
 /**
  * @file SenOntoCore.h
  * @brief Attribute names and MIME types of the ontology "SEN Core": use these instead of string literals.
@@ -20,6 +22,8 @@ inline constexpr char kSenId[] = "SEN:ID";
 inline constexpr char kSenTo[] = "SEN:TO";
 /** IDs of the targets of the meta relations (classification and context) of the object. */
 inline constexpr char kSenMeta[] = "SEN:META";
+/** Semantic type of a file, e.g. document/scientific-paper, set by identify plugins (Haiku itself only knows the technical MIME type). Plugins carry the plugin type here. */
+inline constexpr char kSemanticType[] = "META:TYPE";
 /** The entity is fictional. */
 inline constexpr char kFictional[] = "SEN:fictional";
 /** ID of the source of the relation. */
@@ -63,6 +67,25 @@ inline constexpr char kOntoVersion[] = "SEN:onto:version";
 inline constexpr char kOntoDescription[] = "SEN:onto:description";
 inline constexpr char kOntoStable[] = "SEN:onto:stable";
 }	// namespace attr
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wmultichar"
+
+/** An attribute that is queried and needs a BFS index on every volume (the type of the index is that of the attribute). */
+struct Index {
+	const char* name;
+	uint32_t    type;
+};
+/** The indices of this ontology: created by the ontology installer and by the SEN server on every mounted volume. */
+inline constexpr Index kIndices[] = {
+	{attr::kSenId, 'CSTR'},
+	{attr::kSenTo, 'CSTR'},
+	{attr::kSenMeta, 'CSTR'},
+	{attr::kSemanticType, 'CSTR'},
+};
+inline constexpr unsigned kIndexCount = sizeof(kIndices) / sizeof(kIndices[0]);
+
+#pragma GCC diagnostic pop
 
 namespace mime {
 /** Abstract Entity: A semantic entity representing anything. */

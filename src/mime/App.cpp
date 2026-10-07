@@ -177,7 +177,7 @@ status_t InstallMimeTypeFromResource(const char* path) {
                 continue;
 
             const char* attrName = message.GetString("attr:name", i, "");
-            uint32      attrType = message.GetUInt32("attr:type", i, B_STRING_TYPE);
+            uint32      attrType = (uint32) message.GetInt32("attr:type", i, B_STRING_TYPE);   // stored as int32 by rdef
 
             CreateIndexOnAllVolumes(attrName, attrType);
         }

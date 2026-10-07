@@ -5,6 +5,8 @@
  */
 #pragma once
 
+#include <stdint.h>
+
 /**
  * @file SenOntoBooks.h
  * @brief Attribute names and MIME types of the ontology "SEN Books": use these instead of string literals.
@@ -33,6 +35,22 @@ inline constexpr char kQuoteStart[] = "SEN:REL:textStart";
 inline constexpr char kQuoteEnd[] = "SEN:REL:textEnd";
 inline constexpr char kQuoteSource[] = "dc:source";
 }	// namespace attr
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wmultichar"
+
+/** An attribute that is queried and needs a BFS index on every volume (the type of the index is that of the attribute). */
+struct Index {
+	const char* name;
+	uint32_t    type;
+};
+/** The indices of this ontology: created by the ontology installer and by the SEN server on every mounted volume. */
+inline constexpr Index kIndices[] = {
+	{attr::kIsbn, 'CSTR'},
+};
+inline constexpr unsigned kIndexCount = sizeof(kIndices) / sizeof(kIndices[0]);
+
+#pragma GCC diagnostic pop
 
 namespace mime {
 /** Book: describes a book entity */

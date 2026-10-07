@@ -5,6 +5,8 @@
  */
 #pragma once
 
+#include <stdint.h>
+
 /**
  * @file SenOntoMusic.h
  * @brief Attribute names and MIME types of the ontology "SEN Music": use these instead of string literals.
