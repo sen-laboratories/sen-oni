@@ -1,4 +1,7 @@
 #!/bin/bash
+#
+# SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: 2024-2026 SEN Labs e.U.
 
 # todo: params check and usage info
 
