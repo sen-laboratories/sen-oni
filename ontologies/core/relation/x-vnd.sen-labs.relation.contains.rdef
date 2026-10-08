@@ -5,7 +5,8 @@
 resource(0, "META:TYPE") "relation/x-vnd.sen-labs.relation.contains";
 resource(1, "META:L:DESC") #'MLDC' "relates to self contained components or parts.";
 resource(2, "META:S:DESC") #'MSDC' "Contains";
-resource(3, "SEN:REL:CONFIG") message(233) {
+resource(3, "META:PREF_APP") #'MSIG' "application/x-vnd.sen-labs.MimeTypeNavigator";
+resource(4, "SEN:REL:CONFIG") message(233) {
 	"SEN:dynamic" = true,
 	"SEN:self" = true,
 	"SEN:relation" = message('SCrd') {
@@ -15,7 +16,7 @@ resource(3, "SEN:REL:CONFIG") message(233) {
 		"SEN:REL:Label" = "contained by"
 	}
 };
-resource(4, "META:ICON") #'VICN' array {
+resource(5, "META:ICON") #'VICN' array {
 	$"6E6369660A0500020006023841813C9B3BBEAB393A4F584B254D4A7AEB00FFE2"
 	$"ACFFF49806020016022C60673CAAABBEBB082E6EFB4BBA064A22B000FFFF8E02"
 	$"0006022C25F43C6917BEBB082E6EFB4BAFBF497E0B00FACE79FFBC410503A03D"
