@@ -23,7 +23,7 @@
 #include <sen/SenOntoCore.h>
 
 status_t InstallMimeTypeFromResource(const char* path, BString* installedType);
-status_t RelateToMimeType(const char* file, const char* mimeType, const char* label);
+status_t RelateToMimeType(const char* file, const char* mimeType, const char* label, bool remove = false);
 status_t DeleteMimeType(const char* mimeType);
 status_t GetInstalledMimeTypes(const char* supertype, BMessage* types);
 void PrintUsage(const char* name);
@@ -48,6 +48,15 @@ main(int argc, char** argv)
             // the installer script reads the type from this line
             printf("successfully installed MIME type %s.\n", installedType.String());
         }
+    }
+    else if (strcmp(command, "unrelate") == 0) {
+        if (argc < 4) {
+            PrintUsage(argv[0]);
+            return EXIT_FAILURE;
+        }
+        result = RelateToMimeType(argv[2], argv[3], "provides", true);
+        if (result != B_OK)
+            fprintf(stderr, "failed to remove the relation of %s to MIME type %s: %s\n", argv[2], argv[3], strerror(result));
     }
     else if (strcmp(command, "relate") == 0) {
         if (argc < 4) {
@@ -102,6 +111,7 @@ void PrintUsage(const char* progname) {
 
     printf("install     installs MIME type in MIME db\n");
     printf("relate      <file> <mime-type> [label]: relates the file to the installed MIME type (label: provides), see SEN server\n");
+    printf("unrelate    <file> <mime-type>: removes that relation again\n");
     printf("uninstall   uninstalls MIME type from MIME db\n");
     printf("list        lists entities and relations in MIME db\n");
 
@@ -328,7 +338,7 @@ CreateIndexOnAllVolumes(const char* attrName, uint32 attrType)
 
 /** Relate a file (e.g. the placeholder of an ontology) to the file of an installed MIME type in the MIME database, with a generic
  *  reference of the SEN server. Relating again is not an error: the server tells that the relation exists (409). */
-status_t RelateToMimeType(const char* file, const char* mimeType, const char* label) {
+status_t RelateToMimeType(const char* file, const char* mimeType, const char* label, bool remove) {
     BMimeType type(mimeType);
     if (!type.IsValid() || !type.IsInstalled()) {
         fprintf(stderr, "MIME type %s is not installed.\n", mimeType);
@@ -354,7 +364,7 @@ status_t RelateToMimeType(const char* file, const char* mimeType, const char* la
     BMessage properties;
     properties.AddString(sen::attr::kRelationLabel, label);
 
-    BMessage message(sen::cmd::kRelationAdd);
+    BMessage message(remove ? sen::cmd::kRelationRemove : sen::cmd::kRelationAdd);
     message.AddRef(sen::key::kSourceRef, &source);
     message.AddString(sen::key::kRelationType, sen::onto::core::mime::kReference);
     message.AddRef(sen::key::kTargetRef, &target);
@@ -371,8 +381,8 @@ status_t RelateToMimeType(const char* file, const char* mimeType, const char* la
         return result;
 
     int32 status = reply.GetInt32(sen::key::kStatus, -1);
-    if (status == sen::status::kErrConflict)
-        return B_OK;    // exists already
+    if (status == sen::status::kErrConflict || (remove && status == sen::status::kErrNotFound))
+        return B_OK;    // exists already, or is not there (any more)
     if (status < 200 || status >= 300) {
         fprintf(stderr, "the SEN server answered %d: %s\n", (int) status, reply.GetString(sen::key::kDetail, ""));
         return B_ERROR;

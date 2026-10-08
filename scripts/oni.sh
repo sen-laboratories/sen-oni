@@ -25,8 +25,9 @@ SEN_CONFIG_ONTO=$HOME/config/settings/sen/ontologies
 oni_output=/tmp/.oni-out
 mkdir -p $SEN_CONFIG_ONTO $oni_output
 
-# the MIME types of the ontology that is installed, one per line
+# the MIME types of the ontology that is installed, one per line, and its supertypes
 types_file=
+supertypes_file=
 
 function create_mime_type()
 {
@@ -41,6 +42,8 @@ function create_mime_type()
     # remember the type for the relations of the ontology: not a supertype (entity, relation,...), which is a folder in the
     # MIME database that holds the types of all ontologies, so a relation to it would show them all
     echo "$install_out" | sed -n 's/^successfully installed MIME type \(.*\/.*\)\.$/\1/p' >> $types_file
+    # (older installers related the ontology to its supertypes, too: those relations are removed below)
+    echo "$install_out" | sed -n 's/^successfully installed MIME type \([^\/]*\)\.$/\1/p' >> $supertypes_file
     rm $rsrc_path
 }
 
@@ -49,7 +52,9 @@ function install_ontology()
     local folder=${1%/}
     local ontology_name=$(basename $folder)
     types_file=$oni_output/$ontology_name.types
+    supertypes_file=$oni_output/$ontology_name.supertypes
     : > $types_file
+    : > $supertypes_file
 
     echo creating ontology $ontology_name from resource definitions...
 
@@ -90,6 +95,10 @@ function install_ontology()
         "$ONI_ROOT/bin/mime" relate "$sen_onto_path" "$mime_type" provides || \
             echo "  could not relate $ontology_name to $mime_type, is the SEN server running?"
     done < $types_file
+    # not to supertypes: they are folders with the types of all ontologies. Relations that an older installer made are removed.
+    while read -r mime_type; do
+        "$ONI_ROOT/bin/mime" unrelate "$sen_onto_path" "$mime_type" 2>/dev/null || true
+    done < $supertypes_file
 
     echo "Done: $ontology_name."
 }
