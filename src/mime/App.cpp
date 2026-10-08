@@ -384,6 +384,11 @@ status_t RelateToMimeType(const char* file, const char* mimeType, const char* la
             properties.AddString(sen::attr::kRelationLabel, label);
             properties.AddBool(sen::attr::kRelationReadOnly, true);
             message.AddMessage(sen::key::kRelationProperties, &properties);
+
+            // seen from the type, the ontology provides it: the opposite direction is "provided by"
+            BMessage inverse;
+            inverse.AddString(sen::attr::kRelationLabel, "provided by");
+            message.AddMessage(sen::key::kInverseProperties, &inverse);
         }
 
         BMessage reply;
