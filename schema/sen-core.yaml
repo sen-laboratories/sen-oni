@@ -81,6 +81,15 @@ slots:
     title: Target missing
     range: boolean
     annotations: {attribute: "SEN:REL:missing", viewable: false, editable: false}
+  rel_type:
+    description: The type of the relation where it is not the one of the folder (e.g. the type of what a type contains).
+    title: Relation Type
+    annotations: {attribute: "SEN:relationType", viewable: false, editable: false}
+  rel_readonly:
+    description: The relation cannot be changed or removed by users (e.g. the relations of an ontology to its types).
+    title: Read-only
+    range: boolean
+    annotations: {attribute: "SEN:REL:readonly", editable: false, width: 30}
   rel_label:
     description: Label of the relation.
     title: Label
@@ -94,6 +103,36 @@ slots:
   rel_role:
     title: Role
     annotations: {attribute: "SEN:REL:Role"}
+
+  # ---- the attributes of a MIME type (the attribute info of the MIME database, as the contents of a type)
+  attr_name:
+    description: Name of the attribute, e.g. dc:title.
+    title: Name
+    annotations: {attribute: "SEN:attr:name", editable: false, width: 120}
+  attr_type:
+    description: Type of the value of the attribute (string, int32, bool, time, ...).
+    title: Type
+    annotations: {attribute: "SEN:attr:type", editable: false, width: 60}
+  attr_viewable:
+    description: The attribute is displayed by default, e.g. as a column in views.
+    title: Displayable?
+    range: boolean
+    annotations: {attribute: "SEN:attr:viewable", editable: false, width: 30}
+  attr_editable:
+    description: The value of the attribute can be edited in views.
+    title: Editable?
+    range: boolean
+    annotations: {attribute: "SEN:attr:editable", editable: false, width: 30}
+  attr_searchable:
+    description: The attribute is indexed (on every volume) so that it can be queried. A SEN extension of the attribute info.
+    title: Searchable?
+    range: boolean
+    annotations: {attribute: "SEN:attr:searchable", editable: false, width: 30}
+  attr_width:
+    description: Default width of the column of the attribute.
+    title: Width
+    range: integer
+    annotations: {attribute: "SEN:attr:width", editable: false, width: 30}
 
   # ---- places in documents and texts (used by several relation types; Web Annotation selectors translate to these)
   page_start:
@@ -218,12 +257,20 @@ classes:
     description: a semantic relationship between files and entities in SEN.
     title: SEN Relation
     abstract: true
-    slots: [rel_source, rel_target, rel_source_ref, rel_target_ref, rel_id, rel_label, rel_kind, rel_desc, rel_role, rel_missing]
+    slots: [rel_source, rel_target, rel_source_ref, rel_target_ref, rel_id, rel_label, rel_kind, rel_desc, rel_role, rel_type, rel_readonly, rel_missing]
     annotations:
       mime: relation
       supertype: true
       icon: relation
       bidir: true
+
+  Meta:
+    description: Describes what other types consist of, e.g. the attributes of a MIME type.
+    title: SEN Meta
+    abstract: true
+    annotations:
+      mime: meta
+      supertype: true
 
   # ---- entities
   Object:
@@ -237,6 +284,14 @@ classes:
     title: Document Outline
     is_a: Entity
     annotations: {mime: entity/x-vnd.sen-labs.entity.document.outline-item}
+
+  # ---- meta
+  MimeAttribute:
+    description: an attribute of a MIME type (its attribute info), contained in the type.
+    title: Attribute
+    is_a: Meta
+    slots: [attr_name, attr_type, attr_viewable, attr_editable, attr_searchable, attr_width]
+    annotations: {mime: meta/x-vnd.sen-labs.meta-mime-attribute}
 
   # ---- classification
   Label:
@@ -284,7 +339,7 @@ classes:
     is_a: Relation
     annotations:
       mime: relation/x-vnd.sen-labs.relation.reference
-      app: application/x-vnd.Be-TRAK
+      app: application/x-vnd.sen-labs.ReferenceNavigator
       label: references
       inverse_label: referenced by
 

@@ -38,11 +38,27 @@ inline constexpr char kRelTargetRef[] = "SEN:REL:TRG";
 inline constexpr char kRelId[] = "SEN:REL:relationId";
 /** The target of the relation does not exist (any more). */
 inline constexpr char kRelMissing[] = "SEN:REL:missing";
+/** The type of the relation where it is not the one of the folder (e.g. the type of what a type contains). */
+inline constexpr char kRelType[] = "SEN:relationType";
+/** The relation cannot be changed or removed by users (e.g. the relations of an ontology to its types). */
+inline constexpr char kRelReadonly[] = "SEN:REL:readonly";
 /** Label of the relation. */
 inline constexpr char kRelLabel[] = "SEN:REL:Label";
 inline constexpr char kRelKind[] = "SEN:REL:Kind";
 inline constexpr char kRelDesc[] = "SEN:REL:Desc";
 inline constexpr char kRelRole[] = "SEN:REL:Role";
+/** Name of the attribute, e.g. dc:title. */
+inline constexpr char kAttrName[] = "SEN:attr:name";
+/** Type of the value of the attribute (string, int32, bool, time, ...). */
+inline constexpr char kAttrType[] = "SEN:attr:type";
+/** The attribute is displayed by default, e.g. as a column in views. */
+inline constexpr char kAttrViewable[] = "SEN:attr:viewable";
+/** The value of the attribute can be edited in views. */
+inline constexpr char kAttrEditable[] = "SEN:attr:editable";
+/** The attribute is indexed (on every volume) so that it can be queried. A SEN extension of the attribute info. */
+inline constexpr char kAttrSearchable[] = "SEN:attr:searchable";
+/** Default width of the column of the attribute. */
+inline constexpr char kAttrWidth[] = "SEN:attr:width";
 /** First page of the place (the number of the physical page; roman page numbers are mapped). */
 inline constexpr char kPageStart[] = "schema:pageStart";
 /** Last page of the place. */
@@ -112,10 +128,14 @@ inline constexpr char kEntity[] = "entity";
 inline constexpr char kClassification[] = "classification";
 /** SEN Relation: a semantic relationship between files and entities in SEN. */
 inline constexpr char kRelation[] = "relation";
+/** SEN Meta: Describes what other types consist of, e.g. the attributes of a MIME type. */
+inline constexpr char kMeta[] = "meta";
 /** Object: a general object or Thing in SEN */
 inline constexpr char kObject[] = "entity/x-vnd.sen-labs.entity.object";
 /** Document Outline: a structural component in a document, e.g. bookmark or label. */
 inline constexpr char kDocumentOutlineItem[] = "entity/x-vnd.sen-labs.entity.document.outline-item";
+/** Attribute: an attribute of a MIME type (its attribute info), contained in the type. */
+inline constexpr char kMimeAttribute[] = "meta/x-vnd.sen-labs.meta-mime-attribute";
 /** Label: a more generic label or tag used for simple classification */
 inline constexpr char kLabel[] = "classification/x-vnd.sen-labs.entity.label";
 /** Topic: a subject or theme associated with an entity */

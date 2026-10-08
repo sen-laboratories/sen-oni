@@ -1,0 +1,8 @@
+// Generated from schema/sen-core.yaml by oni_gen.py: do not edit.
+// SPDX-License-Identifier: MIT
+// SPDX-FileCopyrightText: 2024-2026 SEN Labs e.U.
+
+resource(0, "BEOS:TYPE") #'MIMS' "application/x-vnd.Be-meta-mime";
+resource(1, "META:TYPE") "meta";
+resource(2, "META:L:DESC") #'MLDC' "Describes what other types consist of, e.g. the attributes of a MIME type.";
+resource(3, "META:S:DESC") #'MSDC' "SEN Meta";
