@@ -38,8 +38,9 @@ function create_mime_type()
 
     install_out=$("$ONI_ROOT/bin/mime" install $rsrc_path) || { echo "$install_out"; return 1; }
     echo "$install_out"
-    # remember the type for the relations of the ontology
-    echo "$install_out" | sed -n 's/^successfully installed MIME type \(.*\)\.$/\1/p' >> $types_file
+    # remember the type for the relations of the ontology: not a supertype (entity, relation,...), which is a folder in the
+    # MIME database that holds the types of all ontologies, so a relation to it would show them all
+    echo "$install_out" | sed -n 's/^successfully installed MIME type \(.*\/.*\)\.$/\1/p' >> $types_file
     rm $rsrc_path
 }
 
