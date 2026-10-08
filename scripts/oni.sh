@@ -24,10 +24,7 @@ mkdir -p $SEN_CONFIG_ONTO
 
 oni_output=/tmp/.oni-out
 ontology_name=$(basename $1)
-ontology_path=$oni_output/ontologies/$ontology_name
 
-# clean up from previous run, separate dir per ontology given as arg
-rm -fR $ontology_path
 
 function create_mime_type()
 {
@@ -40,13 +37,6 @@ function create_mime_type()
     "$ONI_ROOT/bin/mime" install $rsrc_path &&
     rm $rsrc_path || false
 }
-
-# setup execution context (init all supertypes used by ontologies as paths)
-mkdir -p $ontology_path/classification
-mkdir $ontology_path/meta
-mkdir $ontology_path/entity
-mkdir $ontology_path/relation
-mkdir $ontology_path/application
 
 echo creating ontology $ontology_name from resource definitions...
 
@@ -70,15 +60,15 @@ done
 
 echo registering ontology in SEN configuration...
 
+# the ontology is a placeholder file with the attributes of the ontology (also replaces what older installers made: a folder)
 sen_onto_path=$SEN_CONFIG_ONTO/$ontology_name
-mkdir -p $sen_onto_path
+rm -rf "$sen_onto_path"
+touch "$sen_onto_path"
 # the type and the metadata of the ontology (from its schema) are resources of ontology.rdef: they become its attributes
 mkdir -p $oni_output
 rc -o $oni_output/$ontology_name.rsrc "$1/ontology.rdef" && \
 resattr -o $sen_onto_path $oni_output/$ontology_name.rsrc && \
 rm $oni_output/$ontology_name.rsrc
-
-cp -a $ontology_path/* $SEN_CONFIG_ONTO/$ontology_name/
 
 echo Done.
 exit 0
