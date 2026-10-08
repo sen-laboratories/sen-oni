@@ -6,18 +6,24 @@
 #include <errno.h>
 #include <kernel/fs_index.h>
 #include <Directory.h>
+#include <Entry.h>
 #include <FindDirectory.h>
+#include <Messenger.h>
 #include <MimeType.h>
 #include <Node.h>
 #include <Path.h>
 #include <Resources.h>
 #include <stdio.h>
+#include <string.h>
+#include <String.h>
 #include <Volume.h>
 #include <VolumeRoster.h>
 
 #include <sen/Sen.h>
+#include <sen/SenOntoCore.h>
 
-status_t InstallMimeTypeFromResource(const char* path);
+status_t InstallMimeTypeFromResource(const char* path, BString* installedType);
+status_t RelateToMimeType(const char* file, const char* mimeType, const char* label);
 status_t DeleteMimeType(const char* mimeType);
 status_t GetInstalledMimeTypes(const char* supertype, BMessage* types);
 void PrintUsage(const char* name);
@@ -34,11 +40,25 @@ main(int argc, char** argv)
     status_t result;
     const char* command = argv[1];
     if (strncmp(command, "install", strlen("install")) == 0) {
-        result = InstallMimeTypeFromResource(argv[2]);
+        BString installedType;
+        result = InstallMimeTypeFromResource(argv[2], &installedType);
         if (result != B_OK) {
-            fprintf(stderr, "failed to install MIME type %s: %s\n", argv[2], strerror(result));
+            fprintf(stderr, "failed to install MIME type from %s: %s\n", argv[2], strerror(result));
         } else {
-            printf("successfully installed MIME type %s.\n", argv[2]);
+            // the installer script reads the type from this line
+            printf("successfully installed MIME type %s.\n", installedType.String());
+        }
+    }
+    else if (strcmp(command, "relate") == 0) {
+        if (argc < 4) {
+            PrintUsage(argv[0]);
+            return EXIT_FAILURE;
+        }
+        result = RelateToMimeType(argv[2], argv[3], argc > 4 ? argv[4] : "provides");
+        if (result != B_OK) {
+            fprintf(stderr, "failed to relate %s to MIME type %s: %s\n", argv[2], argv[3], strerror(result));
+        } else {
+            printf("%s %s %s.\n", argv[2], argc > 4 ? argv[4] : "provides", argv[3]);
         }
     }
     else if (strncmp(command, "uninstall", strlen("uninstall")) == 0) {
@@ -81,13 +101,14 @@ void PrintUsage(const char* progname) {
     printf("where operation is one of:\n\n");
 
     printf("install     installs MIME type in MIME db\n");
+    printf("relate      <file> <mime-type> [label]: relates the file to the installed MIME type (label: provides), see SEN server\n");
     printf("uninstall   uninstalls MIME type from MIME db\n");
     printf("list        lists entities and relations in MIME db\n");
 
     return;
 }
 
-status_t InstallMimeTypeFromResource(const char* path) {
+status_t InstallMimeTypeFromResource(const char* path, BString* installedType) {
     BResources resources(path);
     if (! BFile(path, B_READ_ONLY).IsReadable()) {
         fprintf(stderr, "cannot read resources from path %s: check path is valid!\n", path);
@@ -112,6 +133,7 @@ status_t InstallMimeTypeFromResource(const char* path) {
     }
 
     const char* mime = reinterpret_cast<const char*>(type);
+    *installedType = mime;
     mimeType.SetTo(mime);
     if (!mimeType.IsValid()) {
         fprintf(stderr, "invalid MIME type '%s' in resource %s: %s\n", mime, path, strerror(result));
@@ -301,4 +323,59 @@ CreateIndexOnAllVolumes(const char* attrName, uint32 attrType)
             fprintf(stderr, "failed to create index for '%s' on volume %s: %s\n", attrName, volumeName, strerror(errno));
         }
     }
+}
+
+
+/** Relate a file (e.g. the placeholder of an ontology) to the file of an installed MIME type in the MIME database, with a generic
+ *  reference of the SEN server. Relating again is not an error: the server tells that the relation exists (409). */
+status_t RelateToMimeType(const char* file, const char* mimeType, const char* label) {
+    BMimeType type(mimeType);
+    if (!type.IsValid() || !type.IsInstalled()) {
+        fprintf(stderr, "MIME type %s is not installed.\n", mimeType);
+        return B_ENTRY_NOT_FOUND;
+    }
+
+    // the MIME database keeps every type as a file
+    BPath path;
+    status_t result = find_directory(B_USER_SETTINGS_DIRECTORY, &path);
+    if (result == B_OK)
+        result = path.Append("mime_db");
+    if (result == B_OK)
+        result = path.Append(mimeType);
+
+    entry_ref source, target;
+    if (result == B_OK)
+        result = get_ref_for_path(file, &source);
+    if (result == B_OK)
+        result = get_ref_for_path(path.Path(), &target);
+    if (result != B_OK)
+        return result;
+
+    BMessage properties;
+    properties.AddString(sen::attr::kRelationLabel, label);
+
+    BMessage message(sen::cmd::kRelationAdd);
+    message.AddRef(sen::key::kSourceRef, &source);
+    message.AddString(sen::key::kRelationType, sen::onto::core::mime::kReference);
+    message.AddRef(sen::key::kTargetRef, &target);
+    message.AddMessage(sen::key::kRelationProperties, &properties);
+
+    BMessenger server(sen::kServerSignature);
+    BMessage reply;
+    if (!server.IsValid()) {
+        fprintf(stderr, "the SEN server is not running, run this again when it is.\n");
+        return B_ERROR;
+    }
+    result = server.SendMessage(&message, &reply, 10000000, 10000000);
+    if (result != B_OK)
+        return result;
+
+    int32 status = reply.GetInt32(sen::key::kStatus, -1);
+    if (status == sen::status::kErrConflict)
+        return B_OK;    // exists already
+    if (status < 200 || status >= 300) {
+        fprintf(stderr, "the SEN server answered %d: %s\n", (int) status, reply.GetString(sen::key::kDetail, ""));
+        return B_ERROR;
+    }
+    return B_OK;
 }
