@@ -2,11 +2,17 @@
 #
 # SPDX-License-Identifier: MIT
 # SPDX-FileCopyrightText: 2024-2026 SEN Labs e.U.
+#
+# Installs ontologies: their MIME types (the .rdef files of an ontology folder) and the placeholder file of each ontology in the
+# SEN configuration, which is related to the MIME types that it provides (by the SEN server).
+#
+#   scripts/oni.sh ontologies/core ontologies/books     one or more ontology folders
+#   scripts/oni.sh ontologies/*                         all of them
 
 set -e
 
-if [ ! -d "$1" ] || [ ! -f "$1/ontology.rdef" ]; then
-    echo "usage: $(basename "$0") <ontology folder, e.g. ontologies/core>" >&2
+if [ $# -eq 0 ]; then
+    echo "usage: $(basename "$0") <ontology folder>..., e.g. $(basename "$0") ontologies/core, or ontologies/* for all" >&2
     exit 1
 fi
 
@@ -16,19 +22,11 @@ ONI_ROOT=$(cd "$(dirname "$0")/.." && pwd)
 # SEN config
 SEN_CONFIG_ONTO=$HOME/config/settings/sen/ontologies
 
-# Haiku MIME config
-MIME_DB_PATH=$HOME/config/settings/mime_db
-META_MIME_TYPE=application/x-vnd.Be-meta-mime
-
-mkdir -p $SEN_CONFIG_ONTO
-
 oni_output=/tmp/.oni-out
-ontology_name=$(basename $1)
-# the MIME types of this ontology, one per line
-mkdir -p $oni_output
-types_file=$oni_output/$ontology_name.types
-: > $types_file
+mkdir -p $SEN_CONFIG_ONTO $oni_output
 
+# the MIME types of the ontology that is installed, one per line
+types_file=
 
 function create_mime_type()
 {
@@ -45,45 +43,68 @@ function create_mime_type()
     rm $rsrc_path
 }
 
-echo creating ontology $ontology_name from resource definitions...
+function install_ontology()
+{
+    local folder=${1%/}
+    local ontology_name=$(basename $folder)
+    types_file=$oni_output/$ontology_name.types
+    : > $types_file
 
-# First, process .rdef files in the top-level directory to create any super types first
-# (ontology.rdef is the description of the ontology itself, not a MIME type)
-for file in "$1"/*.rdef; do
-    # Check if any .rdef files exist in the top-level directory
-    [ -e "$file" ] || continue
-    [ "$(basename "$file")" = ontology.rdef ] && continue
-    
-    echo "  $file ..."
-    create_mime_type "$file" || (echo "Aborting."; exit 1)
+    echo creating ontology $ontology_name from resource definitions...
+
+    # First, process .rdef files in the top-level directory to create any super types first
+    # (ontology.rdef is the description of the ontology itself, not a MIME type)
+    local file
+    for file in "$folder"/*.rdef; do
+        [ -e "$file" ] || continue
+        [ "$(basename "$file")" = ontology.rdef ] && continue
+
+        echo "  $file ..."
+        create_mime_type "$file" || { echo "Aborting."; exit 1; }
+    done
+
+    # Then, process .rdef files in subdirectories only
+    while IFS= read -r -d '' file; do
+        echo "  $file ..."
+        create_mime_type "$file" || { echo "Aborting."; exit 1; }
+    done < <(find "$folder" -mindepth 2 -iname "*.rdef" -print0)
+
+    echo registering ontology in SEN configuration...
+
+    # the ontology is a placeholder file with the attributes of the ontology (also replaces what older installers made: a folder)
+    # (an existing file stays, so that its relations stay valid)
+    local sen_onto_path=$SEN_CONFIG_ONTO/$ontology_name
+    [ -d "$sen_onto_path" ] && rm -rf "$sen_onto_path"
+    [ -e "$sen_onto_path" ] || touch "$sen_onto_path"
+    # the type and the metadata of the ontology (from its schema) are resources of ontology.rdef: they become its attributes
+    rc -o $oni_output/$ontology_name.rsrc "$folder/ontology.rdef" && \
+    resattr -o $sen_onto_path $oni_output/$ontology_name.rsrc && \
+    rm $oni_output/$ontology_name.rsrc
+
+    # the ontology provides its MIME types: navigate from the ontology to a type (and open it in FileTypes). This needs the SEN
+    # server (it stores the relations): without it run this again later, relating twice does no harm.
+    echo relating the ontology to its MIME types...
+    local mime_type
+    while read -r mime_type; do
+        "$ONI_ROOT/bin/mime" relate "$sen_onto_path" "$mime_type" provides || \
+            echo "  could not relate $ontology_name to $mime_type, is the SEN server running?"
+    done < $types_file
+
+    echo "Done: $ontology_name."
+}
+
+installed=0
+for ontology in "$@"; do
+    if [ ! -d "$ontology" ] || [ ! -f "$ontology/ontology.rdef" ]; then
+        echo "skipping $ontology: not an ontology folder (there is no ontology.rdef in it)." >&2
+        continue
+    fi
+    install_ontology "$ontology"
+    installed=$((installed + 1))
 done
 
-# Then, use find to process .rdef files in subdirectories only
-find "$1" -mindepth 2 -iname "*.rdef" -print0 | while IFS= read -r -d '' file
-do
-    echo "  $file ..."
-    create_mime_type "$file" || (echo "Aborting."; exit 1)
-done
-
-echo registering ontology in SEN configuration...
-
-# the ontology is a placeholder file with the attributes of the ontology (also replaces what older installers made: a folder)
-# (an existing file stays, so that its relations stay valid)
-sen_onto_path=$SEN_CONFIG_ONTO/$ontology_name
-[ -d "$sen_onto_path" ] && rm -rf "$sen_onto_path"
-[ -e "$sen_onto_path" ] || touch "$sen_onto_path"
-# the type and the metadata of the ontology (from its schema) are resources of ontology.rdef: they become its attributes
-rc -o $oni_output/$ontology_name.rsrc "$1/ontology.rdef" && \
-resattr -o $sen_onto_path $oni_output/$ontology_name.rsrc && \
-rm $oni_output/$ontology_name.rsrc
-
-# the ontology provides its MIME types: navigate from the ontology to a type (and open it in FileTypes). This needs the SEN
-# server (it stores the relations): without it run this again later, relating twice does no harm.
-echo relating the ontology to its MIME types...
-while read -r mime_type; do
-    "$ONI_ROOT/bin/mime" relate "$sen_onto_path" "$mime_type" provides || \
-        echo "  could not relate $ontology_name to $mime_type, is the SEN server running?"
-done < $types_file
-
-echo Done.
+if [ $installed -eq 0 ]; then
+    echo "nothing installed." >&2
+    exit 1
+fi
 exit 0
