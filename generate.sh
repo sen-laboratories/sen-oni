@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: MIT
 # SPDX-FileCopyrightText: 2026 SEN Labs e.U.
 #
-# Generates the resource definitions (ontologies/), manifests and the C++ headers (include/) from the LinkML schemas in
+# Generates the resource definitions (ontologies/, with the metadata of each ontology) and the C++ headers (include/) from the LinkML schemas in
 # schema/. Needs Python 3 with linkml-runtime (pip install linkml-runtime). With --check nothing is written and the exit
 # code says whether the committed files are up to date (used by CI).
 set -e

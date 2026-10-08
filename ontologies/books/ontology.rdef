@@ -1,0 +1,9 @@
+// Generated from the schema of the ontology by oni_gen.py: do not edit.
+// SPDX-License-Identifier: MIT
+// SPDX-FileCopyrightText: 2024-2026 SEN Labs e.U.
+
+resource(0, "BEOS:TYPE") #'MIMS' "application/x-vnd.sen-labs.ontology";
+resource(1, "SEN:onto:schema_url") "https://github.com/sen-laboratories/sen-oni/tree/main/schema/sen-books.yaml";
+resource(2, "SEN:onto:version") "0.1.0";
+resource(3, "SEN:onto:author") "Gregor B. Rosenauer <gregor.rosenauer@gmail.com>";
+resource(4, "SEN:onto:description") "This ontology defines entities and relations for working with books.";

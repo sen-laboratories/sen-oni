@@ -29,7 +29,7 @@ that the others import). The Haiku resource definitions in `ontologies/` and the
 [generator/README.md](generator/README.md):
 
 ```sh
-./generate.sh                      # schema -> ontologies/*.rdef, manifests, include/SenOnto*.h
+./generate.sh                      # schema -> ontologies/*.rdef, ontology.rdef, include/SenOnto*.h
 ./install-headers.sh               # on Haiku: installs the headers next to the SEN API (sento)
 make                               # on Haiku: builds bin/mime, the MIME type installer
 ./scripts/oni.sh ontologies/core   # on Haiku: compiles and installs an ontology (MIME types, attribute info, indices)

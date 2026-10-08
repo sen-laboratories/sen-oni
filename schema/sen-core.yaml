@@ -80,7 +80,7 @@ slots:
     description: The target of the relation does not exist (any more).
     title: Target missing
     range: boolean
-    annotations: {attribute: "SEN:REL:missing", editable: false, width: 30}
+    annotations: {attribute: "SEN:REL:missing", viewable: false, editable: false}
   rel_label:
     description: Label of the relation.
     title: Label

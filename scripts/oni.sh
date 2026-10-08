@@ -3,26 +3,18 @@
 # SPDX-License-Identifier: MIT
 # SPDX-FileCopyrightText: 2024-2026 SEN Labs e.U.
 
-# todo: params check and usage info
-
 set -e
+
+if [ ! -d "$1" ] || [ ! -f "$1/ontology.rdef" ]; then
+    echo "usage: $(basename "$0") <ontology folder, e.g. ontologies/core>" >&2
+    exit 1
+fi
 
 # the MIME type installer is built into bin/ of the repository
 ONI_ROOT=$(cd "$(dirname "$0")/.." && pwd)
 
-# read manifest
-. $1/manifest.properties
-
 # SEN config
 SEN_CONFIG_ONTO=$HOME/config/settings/sen/ontologies
-
-# SEN Ontology config
-SEN_ONTO_TYPE=application/x-vnd.sen-labs.ontology
-SEN_ONTO_AUTHOR_ATTR="SEN:onto:author"
-SEN_ONTO_SCHEMA_ATTR="SEN:onto:schema_url"
-SEN_ONTO_VERSION_ATTR="SEN:onto:version"
-SEN_ONTO_DESCRIPTION_ATTR="SEN:onto:description"
-SEN_ONTO_STABLE_ATTR="SEN:onto:stable"
 
 # Haiku MIME config
 MIME_DB_PATH=$HOME/config/settings/mime_db
@@ -59,16 +51,18 @@ mkdir $ontology_path/application
 echo creating ontology $ontology_name from resource definitions...
 
 # First, process .rdef files in the top-level directory to create any super types first
+# (ontology.rdef is the description of the ontology itself, not a MIME type)
 for file in "$1"/*.rdef; do
     # Check if any .rdef files exist in the top-level directory
     [ -e "$file" ] || continue
+    [ "$(basename "$file")" = ontology.rdef ] && continue
     
     echo "  $file ..."
     create_mime_type "$file" || (echo "Aborting."; exit 1)
 done
 
 # Then, use find to process .rdef files in subdirectories only
-find "$1" -mindepth 1 -iname "*.rdef" -print0 | while IFS= read -r -d '' file
+find "$1" -mindepth 2 -iname "*.rdef" -print0 | while IFS= read -r -d '' file
 do
     echo "  $file ..."
     create_mime_type "$file" || (echo "Aborting."; exit 1)
@@ -78,16 +72,11 @@ echo registering ontology in SEN configuration...
 
 sen_onto_path=$SEN_CONFIG_ONTO/$ontology_name
 mkdir -p $sen_onto_path
-addattr "BEOS:TYPE" -t mime $SEN_ONTO_TYPE $sen_onto_path
-
-# write onto manifest attributes
-addattr "$SEN_ONTO_SCHEMA_ATTR" "$SCHEMA" $sen_onto_path
-addattr "$SEN_ONTO_VERSION_ATTR" "$VERSION" $sen_onto_path
-addattr "$SEN_ONTO_AUTHOR_ATTR" "$AUTHOR" $sen_onto_path
-addattr "$SEN_ONTO_DESCRIPTION_ATTR" "$DESCRIPTION" $sen_onto_path
-if [ "$STABLE" = "true" ] || [ "$STABLE" = "1" ]; then
-    addattr -t bool "$SEN_ONTO_STABLE_ATTR" true $sen_onto_path
-fi
+# the type and the metadata of the ontology (from its schema) are resources of ontology.rdef: they become its attributes
+mkdir -p $oni_output
+rc -o $oni_output/$ontology_name.rsrc "$1/ontology.rdef" && \
+resattr -o $sen_onto_path $oni_output/$ontology_name.rsrc && \
+rm $oni_output/$ontology_name.rsrc
 
 cp -a $ontology_path/* $SEN_CONFIG_ONTO/$ontology_name/
 

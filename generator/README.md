@@ -6,7 +6,7 @@ SPDX-FileCopyrightText: 2026 SEN Labs e.U.
 
 The ontologies of SEN are described as [LinkML](https://linkml.io) schemas in `../schema/`. `oni_gen.py` generates from them
 
-- the Haiku resource definitions in `../ontologies/<ontology>/` (the `.rdef` files that `scripts/oni.sh` compiles and installs, and a `manifest.properties`),
+- the Haiku resource definitions in `../ontologies/<ontology>/` (the `.rdef` files that `scripts/oni.sh` compiles and installs, and an `ontology.rdef` with the metadata of the ontology from its schema),
 - a C++ header per ontology in `../include/` (`SenOnto<Name>.h`) with the names of the attributes and MIME types, so that no code needs string literals of them.
 
 ```sh
@@ -24,7 +24,7 @@ A **class** is a MIME type, a **slot** is a file attribute. Standard LinkML elem
 
 | Where | Annotation | Meaning |
 |-------|-----------|---------|
-| schema | `oni_author`, `oni_stable`, `oni_schema_url` | the manifest of the ontology (the `version` and `description` of the schema are used, too) |
+| schema | `oni_author`, `oni_stable`, `oni_schema_url` | the metadata of the ontology (`ontology.rdef`; the `version` and `description` of the schema are used, too) |
 | class | `mime` | the MIME type, required: a supertype (`entity`) or `supertype/name` |
 | class | `supertype: true` | the class is a supertype (the resource gets the meta MIME type) |
 | class | `app`, `extensions`, `icon`, `folder_icon` | preferred application (a signature; never set for file types of other programs), file extensions, the vector icon (`schema/icons/<name>.hex`), the icon of the relation folder |

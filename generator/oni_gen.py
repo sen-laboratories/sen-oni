@@ -8,7 +8,8 @@ oni_gen: generates the artifacts of an ONI ontology from its LinkML schema.
 
 For every schema it writes
   * the Haiku resource definitions (.rdef) of the MIME types of the classes defined in the schema,
-  * manifest.properties (read by the ontology installer),
+  * ontology.rdef: the description of the ontology (schema URL, version, author, ...), which the installer writes as the
+    attributes of the ontology in the SEN configuration (resources become attributes, see resattr),
   * a C++ header with the constants of the attribute names and MIME types (SenOnto<Name>.h).
 
 The vocabulary of annotations that it understands is described in README.md. Generation is deterministic: the same schema
@@ -255,15 +256,22 @@ def render_rdef(mc, schema_file, schema_dir):
     return '\n'.join(out) + '\n'
 
 
-def render_manifest(sv):
+def render_ontology(sv):
+    """The ontology itself: its metadata from the schema, as resources that the installer writes as attributes."""
     schema = sv.schema
-    stable = boolean(annotation(schema, 'oni_stable', False))
-    return '\n'.join([
-        f'SCHEMA="{annotation(schema, "oni_schema_url", "")}"',
-        f'AUTHOR="{annotation(schema, "oni_author", "")}"',
-        f'VERSION="{schema.version}"',
-        f'DESCRIPTION="{one_line(schema.description)}"',
-        f'STABLE={stable}', ''])
+    out = ['// Generated from the schema of the ontology by oni_gen.py: do not edit.',
+           '// SPDX-License-Identifier: MIT',
+           '// SPDX-FileCopyrightText: 2024-2026 SEN Labs e.U.', '']
+    resources = [('BEOS:TYPE', '#\'MIMS\' "application/x-vnd.sen-labs.ontology"'),
+                 ('SEN:onto:schema_url', rdef_string(annotation(schema, 'oni_schema_url', ''))),
+                 ('SEN:onto:version', rdef_string(schema.version)),
+                 ('SEN:onto:author', rdef_string(annotation(schema, 'oni_author', ''))),
+                 ('SEN:onto:description', rdef_string(one_line(schema.description)))]
+    if boolean(annotation(schema, 'oni_stable', False)) == 'true':
+        resources.append(('SEN:onto:stable', 'true'))
+    for n, (name, value) in enumerate(resources):
+        out.append(f'resource({n}, "{name}") {value};')
+    return '\n'.join(out) + '\n'
 
 
 def namespace_of(schema):
@@ -322,7 +330,7 @@ def generate(schema_path, rdef_dir, header_dir):
     written = {}
     for mc in classes:
         written[rdef_path(rdef_dir, ontology, mc)] = render_rdef(mc, schema_file, schema_dir)
-    written[os.path.join(rdef_dir, ontology, 'manifest.properties')] = render_manifest(sv)
+    written[os.path.join(rdef_dir, ontology, 'ontology.rdef')] = render_ontology(sv)
     if header_dir:
         written[os.path.join(header_dir, f'SenOnto{camel(ontology)}.h')] = render_header(sv, classes, schema_file)
     return written
