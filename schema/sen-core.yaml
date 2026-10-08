@@ -218,7 +218,7 @@ classes:
     description: a semantic relationship between files and entities in SEN.
     title: SEN Relation
     abstract: true
-    slots: [rel_source, rel_target, rel_source_ref, rel_target_ref, rel_id, rel_missing, rel_label, rel_kind, rel_desc, rel_role]
+    slots: [rel_source, rel_target, rel_source_ref, rel_target_ref, rel_id, rel_label, rel_kind, rel_desc, rel_role, rel_missing]
     annotations:
       mime: relation
       supertype: true
