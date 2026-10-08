@@ -56,9 +56,9 @@ classes:
     description: suitable as a transition from this song.
     title: Music transition to
     is_a: Relation
-    annotations: {mime: relation/x-vnd.sen-labs.relation.music.transition.to}
+    annotations: {mime: relation/x-vnd.sen-labs.relation.music.transition.to, source_types: audio}
   TransitionFrom:
     description: suitable as a transition to this song
     title: Music transition from
     is_a: Relation
-    annotations: {mime: relation/x-vnd.sen-labs.relation.music.transition.from}
+    annotations: {mime: relation/x-vnd.sen-labs.relation.music.transition.from, source_types: audio}

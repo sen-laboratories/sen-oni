@@ -5,3 +5,6 @@
 resource(0, "META:TYPE") "relation/x-vnd.sen-labs.relation.music.transition.from";
 resource(1, "META:L:DESC") #'MLDC' "suitable as a transition to this song";
 resource(2, "META:S:DESC") #'MSDC' "Music transition from";
+resource(3, "SEN:REL:CONFIG") message(233) {
+	"SEN:sourceTypes" = "audio"
+};

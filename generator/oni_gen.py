@@ -172,7 +172,8 @@ def read_classes(sv, schema_dir):
             if icon and not os.path.exists(os.path.join(schema_dir, 'icons', icon + '.hex')):
                 raise SchemaError(f'class {cls_name}: icon file icons/{icon}.hex does not exist')
         mc.attributes = [each for slot in (cls.slots or []) for each in expand(read_attribute(sv, slot))]
-        flags = {key: annotation(cls, key) for key in ('bidir', 'dynamic', 'contained', 'label', 'inverse_label')}
+        flags = {key: annotation(cls, key) for key in ('bidir', 'dynamic', 'contained', 'label', 'inverse_label',
+                                                         'source_types', 'exclude_types')}
         if any(value is not None for value in flags.values()):
             if not (mime.startswith('relation/') or mime == 'relation'):
                 raise SchemaError(f'class {cls_name}: relation flavors on a type that is not a relation')
@@ -241,6 +242,9 @@ def render_rdef(mc, schema_file, schema_dir):
             entries.append('\t"SEN:self" = true')
         if c['label']:
             entries.append("\t\"SEN:relation\" = message('SCrd') {\n\t\t\"SEN:REL:Label\" = " + rdef_string(c['label']) + '\n\t}')
+        for key, field in (('source_types', 'SEN:sourceTypes'), ('exclude_types', 'SEN:excludeSourceTypes')):
+            for type_name in [t.strip() for t in (c[key] or '').split(',') if t.strip()]:
+                entries.append(f'\t"{field}" = {rdef_string(type_name)}')
         if c['inverse_label']:
             entries.append("\t\"SEN:inverse\" = message('SCrd') {\n\t\t\"SEN:REL:Label\" = " + rdef_string(c['inverse_label']) + '\n\t}')
         out.append(',\n'.join(entries))

@@ -250,7 +250,7 @@ class SentoConsistencyTest(unittest.TestCase):
         keys = self.constants('SenMessages.h')
         with tempfile.TemporaryDirectory() as out:
             rdefs = '\n'.join(t for p, t in generate_all(out, None).items() if p.endswith('.rdef'))
-        for name in ('kRelation', 'kInverse', 'kBidirectional', 'kDynamic', 'kSelf'):
+        for name in ('kRelation', 'kInverse', 'kBidirectional', 'kDynamic', 'kSelf', 'kSourceTypes'):
             self.assertIn(f'"{keys[name]}"', rdefs, f'{name} = {keys[name]} is never produced by the ontologies')
 
     def test_every_attribute_constant_has_the_sen_prefix_or_a_standard_one(self):
