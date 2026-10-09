@@ -23,7 +23,7 @@
 #include <sen/SenOntoCore.h>
 
 status_t InstallMimeTypeFromResource(const char* path, BString* installedType);
-status_t RelateToMimeType(const char* file, const char* mimeType, const char* label, bool remove = false);
+status_t RelateToMimeType(const char* file, const char* mimeType, const char* label, const char* inverseLabel, bool remove = false);
 status_t DeleteMimeType(const char* mimeType);
 status_t GetInstalledMimeTypes(const char* supertype, BMessage* types);
 void PrintUsage(const char* name);
@@ -54,7 +54,7 @@ main(int argc, char** argv)
             PrintUsage(argv[0]);
             return EXIT_FAILURE;
         }
-        result = RelateToMimeType(argv[2], argv[3], "provides", true);
+        result = RelateToMimeType(argv[2], argv[3], "provides", "provided by", true);
         if (result != B_OK)
             fprintf(stderr, "failed to remove the relation of %s to MIME type %s: %s\n", argv[2], argv[3], strerror(result));
     }
@@ -63,11 +63,14 @@ main(int argc, char** argv)
             PrintUsage(argv[0]);
             return EXIT_FAILURE;
         }
-        result = RelateToMimeType(argv[2], argv[3], argc > 4 ? argv[4] : "provides");
+        const char* label = argc > 4 ? argv[4] : "provides";
+        // the opposite direction: given, else "provided by" for the default label (a label is the one of the relation, no guess)
+        const char* inverseLabel = argc > 5 ? argv[5] : (argc > 4 ? argv[4] : "provided by");
+        result = RelateToMimeType(argv[2], argv[3], label, inverseLabel);
         if (result != B_OK) {
             fprintf(stderr, "failed to relate %s to MIME type %s: %s\n", argv[2], argv[3], strerror(result));
         } else {
-            printf("%s %s %s.\n", argv[2], argc > 4 ? argv[4] : "provides", argv[3]);
+            printf("%s %s %s.\n", argv[2], label, argv[3]);
         }
     }
     else if (strncmp(command, "uninstall", strlen("uninstall")) == 0) {
@@ -110,7 +113,8 @@ void PrintUsage(const char* progname) {
     printf("where operation is one of:\n\n");
 
     printf("install     installs MIME type in MIME db\n");
-    printf("relate      <file> <mime-type> [label]: relates the file to the installed MIME type (label: provides), see SEN server\n");
+    printf("relate      <file> <mime-type> [label [opposite label]]: the file provides the installed MIME type (a dependency of the kind\n"
+           "            provides; label: provides, opposite: provided by), see SEN server\n");
     printf("unrelate    <file> <mime-type>: removes that relation again\n");
     printf("uninstall   uninstalls MIME type from MIME db\n");
     printf("list        lists entities and relations in MIME db\n");
@@ -338,7 +342,7 @@ CreateIndexOnAllVolumes(const char* attrName, uint32 attrType)
 
 /** Relate a file (e.g. the placeholder of an ontology) to the file of an installed MIME type in the MIME database, with a generic
  *  reference of the SEN server. Relating again is not an error: the server tells that the relation exists (409). */
-status_t RelateToMimeType(const char* file, const char* mimeType, const char* label, bool remove) {
+status_t RelateToMimeType(const char* file, const char* mimeType, const char* label, const char* inverseLabel, bool remove) {
     BMimeType type(mimeType);
     if (!type.IsValid() || !type.IsInstalled()) {
         fprintf(stderr, "MIME type %s is not installed.\n", mimeType);
@@ -384,17 +388,31 @@ status_t RelateToMimeType(const char* file, const char* mimeType, const char* la
         if (result != B_OK)
             return result;
     }
+
+    // What an older installer made at the type is not found from here when the ontology file is another one now (it was a folder once:
+    // its ID is gone, and the type still has a relation to it): the references of the type that are read-only (the installer's) or point to
+    // a file that is gone go.
+    {
+        BMessage removeStale(sen::cmd::kRelationsRemoveAll);
+        removeStale.AddRef(sen::key::kSourceRef, &target);
+        removeStale.AddString(sen::key::kRelationType, sen::onto::core::mime::kReference);
+        removeStale.AddBool(sen::key::kStaleOnly, true);
+        BMessage reply;
+        result = server.SendMessage(&removeStale, &reply, 10000000, 10000000);
+        if (result != B_OK)
+            return result;
+    }
     if (remove)
         return B_OK;
 
-    // the ontology provides the type: a dependency of the kind provides (the kinds are those of the packages of Haiku), seen from the
-    // type it is provided by the ontology
+    // the ontology provides the type: a dependency of the kind provides (the kinds are those of the packages of Haiku); the label says it
+    // the way that the installer chooses ("defines"), and seen from the type it is the opposite ("defined by")
     BMessage properties;
     properties.AddString(sen::attr::kRelationLabel, label);
-    properties.AddString(sen::attr::kRelationKind, label);
+    properties.AddString(sen::attr::kRelationKind, "provides");
     properties.AddBool(sen::attr::kRelationReadOnly, true);
     BMessage inverse;
-    inverse.AddString(sen::attr::kRelationLabel, "provided by");
+    inverse.AddString(sen::attr::kRelationLabel, inverseLabel);
 
     BMessage message(sen::cmd::kRelationAdd);
     message.AddRef(sen::key::kSourceRef, &source);

@@ -92,7 +92,7 @@ function install_ontology()
     echo relating the ontology to its MIME types...
     local mime_type
     while read -r mime_type; do
-        "$ONI_ROOT/bin/mime" relate "$sen_onto_path" "$mime_type" provides || \
+        "$ONI_ROOT/bin/mime" relate "$sen_onto_path" "$mime_type" defines "defined by" || \
             echo "  could not relate $ontology_name to $mime_type, is the SEN server running?"
     done < $types_file
     # not to supertypes: they are folders with the types of all ontologies. Relations that an older installer made are removed.
