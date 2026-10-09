@@ -291,7 +291,7 @@ classes:
     title: Attribute
     is_a: Meta
     slots: [attr_name, attr_type, attr_viewable, attr_editable, attr_searchable, attr_width]
-    annotations: {mime: meta/x-vnd.sen-labs.meta-mime-attribute, app: application/x-vnd.sen-labs.MimeTypeNavigator}
+    annotations: {mime: meta/x-vnd.sen-labs.meta-mime-attribute, app: application/x-vnd.sen-labs.ReferenceNavigator}
 
   # ---- classification
   Label:
@@ -339,7 +339,7 @@ classes:
     is_a: Relation
     annotations:
       mime: relation/x-vnd.sen-labs.relation.reference
-      app: application/x-vnd.sen-labs.MimeTypeNavigator
+      app: application/x-vnd.sen-labs.ReferenceNavigator
       label: references
       inverse_label: referenced by
 
@@ -349,7 +349,7 @@ classes:
     is_a: Relation
     annotations:
       mime: relation/x-vnd.sen-labs.relation.contains
-      app: application/x-vnd.sen-labs.MimeTypeNavigator
+      app: application/x-vnd.sen-labs.ReferenceNavigator
       icon: x-vnd.sen-labs.relation.contains
       # only meta info for SEN: the attributes come from the extracted types
       dynamic: true

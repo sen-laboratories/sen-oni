@@ -5,7 +5,7 @@
 resource(0, "META:TYPE") "meta/x-vnd.sen-labs.meta-mime-attribute";
 resource(1, "META:L:DESC") #'MLDC' "an attribute of a MIME type (its attribute info), contained in the type.";
 resource(2, "META:S:DESC") #'MSDC' "Attribute";
-resource(3, "META:PREF_APP") #'MSIG' "application/x-vnd.sen-labs.MimeTypeNavigator";
+resource(3, "META:PREF_APP") #'MSIG' "application/x-vnd.sen-labs.ReferenceNavigator";
 resource(4, "META:ATTR_INFO") message(233) {
 	"attr:name" = "SEN:attr:name",
 	"attr:name" = "SEN:attr:type",
@@ -37,12 +37,12 @@ resource(4, "META:ATTR_INFO") message(233) {
 	"attr:editable" = false,
 	"attr:editable" = false,
 	"attr:editable" = false,
-	"attr:searchable" = false,
-	"attr:searchable" = false,
-	"attr:searchable" = false,
-	"attr:searchable" = false,
-	"attr:searchable" = false,
-	"attr:searchable" = false,
+	"SEN:searchable" = false,
+	"SEN:searchable" = false,
+	"SEN:searchable" = false,
+	"SEN:searchable" = false,
+	"SEN:searchable" = false,
+	"SEN:searchable" = false,
 	"attr:width" = 120,
 	"attr:width" = 60,
 	"attr:width" = 30,

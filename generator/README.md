@@ -32,7 +32,7 @@ A **class** is a MIME type, a **slot** is a file attribute. Standard LinkML elem
 | class (relation) | `source_types`, `exclude_types` | comma separated MIME types, or the start of one (a supertype such as `audio`), of the files that the relation can start at (without: any file) and cannot start at (this wins): `SEN:sourceTypes`, `SEN:excludeSourceTypes`. The server offers a relation for a new relation only for files that fit. |
 | slot | `attribute` | the name of the file attribute, `<prefix>:<name>`, required (an established vocabulary first, see the developer guide) |
 | slot | `bfs_type` | overrides the type of the `range` (`CSTR`, `LONG`, `SHRT`, `LLNG`, `BOOL`, `TIME`, `FLOT`, `DBLE`, `RREF`) |
-| slot | `viewable`, `editable`, `searchable`, `width`, `alignment`, `display_as` | the attribute info that Tracker shows; `searchable` creates an index on every mounted volume |
+| slot | `viewable`, `editable`, `searchable`, `width`, `alignment`, `display_as` | the attribute info that Tracker shows; `searchable` (written to the attribute info as `SEN:searchable`, the namespace `attr:` is Haiku's) creates an index on every mounted volume |
 
 The `title` of a slot is its public name (the column title), the `title` of a class its short description.
 

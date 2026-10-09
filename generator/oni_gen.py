@@ -225,8 +225,11 @@ def render_rdef(mc, schema_file, schema_dir):
                          ('editable', lambda a: boolean(a.editable)), ('searchable', lambda a: boolean(a.searchable)),
                          ('width', lambda a: str(a.width)), ('alignment', lambda a: str(a.alignment)),
                          ('display_as', lambda a: rdef_string(a.display_as))):
+            # "attr:" is the namespace of Haiku; what SEN adds to the attribute info has the prefix of SEN (Haiku may define
+            # an attribute:searchable itself one day, with what meaning ever)
+            field = 'SEN:searchable' if key == 'searchable' else f'attr:{key}'
             for attribute in mc.attributes:
-                body.append(f'\t"attr:{key}" = {fmt(attribute)}')
+                body.append(f'\t"{field}" = {fmt(attribute)}')
         body.append(f'\t"type" = {rdef_string(mc.mime)}')
         out.append(',\n'.join(body))
         out.append('};')

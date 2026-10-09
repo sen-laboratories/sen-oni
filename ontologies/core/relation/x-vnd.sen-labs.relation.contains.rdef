@@ -5,7 +5,7 @@
 resource(0, "META:TYPE") "relation/x-vnd.sen-labs.relation.contains";
 resource(1, "META:L:DESC") #'MLDC' "relates to self contained components or parts.";
 resource(2, "META:S:DESC") #'MSDC' "Contains";
-resource(3, "META:PREF_APP") #'MSIG' "application/x-vnd.sen-labs.MimeTypeNavigator";
+resource(3, "META:PREF_APP") #'MSIG' "application/x-vnd.sen-labs.ReferenceNavigator";
 resource(4, "SEN:REL:CONFIG") message(233) {
 	"SEN:dynamic" = true,
 	"SEN:self" = true,

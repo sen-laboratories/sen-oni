@@ -74,11 +74,11 @@ class GeneratorTest(unittest.TestCase):
                     continue
                 block = text.split('META:ATTR_INFO')[1].split('};')[0]
                 counts = {}
-                for key in re.findall(r'"attr:(\w+)" =', block):
+                for key in re.findall(r'"(attr:\w+|SEN:searchable)" =', block):
                     counts[key] = counts.get(key, 0) + 1
                 self.assertEqual(len(set(counts.values())), 1, f'{path}: {counts}')
-                self.assertEqual(set(counts), {'name', 'public_name', 'type', 'viewable', 'editable', 'searchable',
-                                               'width', 'alignment', 'display_as'}, path)
+                self.assertEqual(set(counts), {'attr:name', 'attr:public_name', 'attr:type', 'attr:viewable', 'attr:editable',
+                                               'SEN:searchable', 'attr:width', 'attr:alignment', 'attr:display_as'}, path)
 
     def test_mime_types_are_unique_and_well_formed(self):
         seen = {}
