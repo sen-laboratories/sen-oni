@@ -29,6 +29,27 @@ annotations:
   oni_stable: false
   oni_schema_url: https://github.com/sen-laboratories/sen-oni/tree/main/schema/sen-core.yaml
 
+enums:
+  DependencyKind:
+    description: >-
+      The kinds of a dependency (the property Kind of the relation). They are those of the relations between Haiku packages
+      (.PackageInfo: provides, requires, supplements, conflicts, freshens, replaces), and uses, which they do not have.
+    permissible_values:
+      provides:
+        description: "the source offers the target (a capability, a type, a resource); seen from the target it is provided by the source."
+      requires:
+        description: "the source needs the target to work; the target is required by the source (SPDX and Debian say depends on)."
+      uses:
+        description: "a loose dependency: the source makes use of the target without needing it (it works without, with less); the target is used by the source."
+      supplements:
+        description: "the source extends the target, it is of use where the target is (Debian says enhances); the target is supplemented by it."
+      conflicts:
+        description: "the source cannot be there together with the target (symmetric)."
+      freshens:
+        description: "the source brings the target up to date, it is meant for what is there already."
+      replaces:
+        description: "the source takes the place of the target (Debian and RPM: obsoletes); the target is replaced by the source."
+
 slots:
   # ---- identity of every linked object (the only attributes that must be indexed)
   sen_id:
@@ -371,6 +392,19 @@ classes:
       contained: true
       label: references
       inverse_label: referenced by
+
+  Dependency:
+    description: >-
+      a dependency between two things, like those between Haiku packages. The property Kind says what it is: provides, requires,
+      uses, supplements, conflicts, freshens or replaces (see DependencyKind). The label is the one of the kind ("provides"), and the
+      opposite direction says it the other way ("provided by").
+    title: Dependency
+    is_a: Relation
+    annotations:
+      mime: relation/x-vnd.sen-labs.relation.dependency
+      app: application/x-vnd.sen-labs.ReferenceNavigator
+      label: depends on
+      inverse_label: dependency of
 
   TextReference:
     description: reference to a plaintext document.

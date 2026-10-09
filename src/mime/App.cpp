@@ -368,44 +368,52 @@ status_t RelateToMimeType(const char* file, const char* mimeType, const char* la
     }
 
     // The relations of an ontology to its types are read-only: users cannot change the configuration by mistake. The installer
-    // does, with the override, so a relation that an older installer made (not read-only) is replaced, not added to.
-    for (int step = 0; step < (remove ? 1 : 2); step++) {
-        bool removing = remove || step == 0;
-
-        BMessage message(removing ? sen::cmd::kRelationRemove : sen::cmd::kRelationAdd);
+    // does, with the override. What an older installer made (a generic reference, or one that was not read-only) is removed first, so
+    // that it is replaced, not added to.
+    static const char* const kTypes[] = {sen::onto::core::mime::kReference, sen::onto::core::mime::kDependency};
+    for (const char* relationType : kTypes) {
+        BMessage message(sen::cmd::kRelationRemove);
         message.AddRef(sen::key::kSourceRef, &source);
-        message.AddString(sen::key::kRelationType, sen::onto::core::mime::kReference);
+        message.AddString(sen::key::kRelationType, relationType);
         message.AddRef(sen::key::kTargetRef, &target);
-        if (removing) {
-            message.AddBool(sen::key::kOverride, true);
-            message.AddBool(sen::key::kAllRelations, true);
-        } else {
-            BMessage properties;
-            properties.AddString(sen::attr::kRelationLabel, label);
-            properties.AddBool(sen::attr::kRelationReadOnly, true);
-            message.AddMessage(sen::key::kRelationProperties, &properties);
-
-            // seen from the type, the ontology provides it: the opposite direction is "provided by"
-            BMessage inverse;
-            inverse.AddString(sen::attr::kRelationLabel, "provided by");
-            message.AddMessage(sen::key::kInverseProperties, &inverse);
-        }
+        message.AddBool(sen::key::kOverride, true);
+        message.AddBool(sen::key::kAllRelations, true);
 
         BMessage reply;
         result = server.SendMessage(&message, &reply, 10000000, 10000000);
         if (result != B_OK)
             return result;
+    }
+    if (remove)
+        return B_OK;
 
-        int32 status = reply.GetInt32(sen::key::kStatus, -1);
-        if (removing && !remove)
-            continue;   // the old one is gone, or there was none
-        if (status == sen::status::kErrConflict || (remove && status == sen::status::kErrRelationNotFound)
-                || (remove && status == sen::status::kErrNotFound))
-            return B_OK;    // exists already, or is not there (any more)
-        if (status < 200 || status >= 300) {
-            fprintf(stderr, "the SEN server answered %d: %s\n", (int) status, reply.GetString(sen::key::kDetail, ""));
-            return B_ERROR;
-        }
+    // the ontology provides the type: a dependency of the kind provides (the kinds are those of the packages of Haiku), seen from the
+    // type it is provided by the ontology
+    BMessage properties;
+    properties.AddString(sen::attr::kRelationLabel, label);
+    properties.AddString(sen::attr::kRelationKind, label);
+    properties.AddBool(sen::attr::kRelationReadOnly, true);
+    BMessage inverse;
+    inverse.AddString(sen::attr::kRelationLabel, "provided by");
+
+    BMessage message(sen::cmd::kRelationAdd);
+    message.AddRef(sen::key::kSourceRef, &source);
+    message.AddString(sen::key::kRelationType, sen::onto::core::mime::kDependency);
+    message.AddRef(sen::key::kTargetRef, &target);
+    message.AddMessage(sen::key::kRelationProperties, &properties);
+    message.AddMessage(sen::key::kInverseProperties, &inverse);
+
+    BMessage reply;
+    result = server.SendMessage(&message, &reply, 10000000, 10000000);
+    if (result != B_OK)
+        return result;
+
+    int32 status = reply.GetInt32(sen::key::kStatus, -1);
+    if (status == sen::status::kErrConflict)
+        return B_OK;    // exists already
+    if (status < 200 || status >= 300) {
+        fprintf(stderr, "the SEN server answered %d: %s\n", (int) status, reply.GetString(sen::key::kDetail, ""));
+        return B_ERROR;
     }
     return B_OK;
 }

@@ -1,0 +1,16 @@
+// Generated from schema/sen-core.yaml by oni_gen.py: do not edit.
+// SPDX-License-Identifier: MIT
+// SPDX-FileCopyrightText: 2024-2026 SEN Labs e.U.
+
+resource(0, "META:TYPE") "relation/x-vnd.sen-labs.relation.dependency";
+resource(1, "META:L:DESC") #'MLDC' "a dependency between two things, like those between Haiku packages. The property Kind says what it is: provides, requires, uses, supplements, conflicts, freshens or replaces (see DependencyKind). The label is the one of the kind (\"provides\"), and the opposite direction says it the other way (\"provided by\").";
+resource(2, "META:S:DESC") #'MSDC' "Dependency";
+resource(3, "META:PREF_APP") #'MSIG' "application/x-vnd.sen-labs.ReferenceNavigator";
+resource(4, "SEN:REL:CONFIG") message(233) {
+	"SEN:relation" = message('SCrd') {
+		"SEN:REL:Label" = "depends on"
+	},
+	"SEN:inverse" = message('SCrd') {
+		"SEN:REL:Label" = "dependency of"
+	}
+};

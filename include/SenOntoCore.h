@@ -154,6 +154,8 @@ inline constexpr char kReference[] = "relation/x-vnd.sen-labs.relation.reference
 inline constexpr char kContains[] = "relation/x-vnd.sen-labs.relation.contains";
 /** Document Reference: structural reference to a document outline element. */
 inline constexpr char kDocumentReference[] = "relation/x-vnd.sen-labs.relation.docref";
+/** Dependency: a dependency between two things, like those between Haiku packages. The property Kind says what it is: provides, requires, uses, supplements, conflicts, freshens or replaces (see DependencyKind). The label is the one of the kind ("provides"), and the opposite direction says it the other way ("provided by"). */
+inline constexpr char kDependency[] = "relation/x-vnd.sen-labs.relation.dependency";
 /** Textual Reference: reference to a plaintext document. */
 inline constexpr char kTextReference[] = "relation/x-vnd.sen-labs.relation.textref";
 /** SEN Plugin: a SEN plugin for handling various semantic tasks on entities or relations. */
