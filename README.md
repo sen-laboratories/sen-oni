@@ -37,3 +37,32 @@ make                               # on Haiku: builds bin/mime, the MIME type in
 
 Indices for attributes marked searchable are created on every mounted volume; an index is never removed.
 
+
+# Packages
+
+Each ontology is a native Haiku package `sen_ontology_<name>` (`core`, `books`, `movies`, `music`, `sourcecode`), the installer is the
+package `sen_oni`. They are in the [SEN Labs Kiri repository](https://github.com/sen-laboratories/kiri):
+
+```sh
+pkgman add-repo https://kiri.sen-labs.org/x86_64      # once
+pkgman install sen_ontology_books                     # brings sen_oni and sen_ontology_core with it
+```
+
+An ontology package contains the MIME types of the ontology as compiled resources in `data/sen/ontologies/<name>/`. The MIME
+database of the user is changed by the installer `sen_oni`, which the SEN server runs when it starts and when a package is added or
+removed (the output is in `~/config/settings/sen/ontologies-update.log`). You can run it yourself, too:
+
+```sh
+sen_oni --update            # installs new and changed ontologies, removes those whose package is gone
+sen_oni --list              # what is installed
+sen_oni --remove books      # removes an ontology and the MIME types that no other ontology provides
+sen_oni ontologies/core     # installs an ontology folder from a source tree (rdef files), for development
+```
+
+A MIME type that several ontologies provide stays installed until the last of them is removed.
+
+To build the packages on Haiku (`make` first, the packages are written to the repository root):
+
+```sh
+./package.sh                # sen_oni and one package for each ontology; REVISION=2 ./package.sh for a new revision
+```

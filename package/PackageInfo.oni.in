@@ -1,0 +1,30 @@
+name			sen_oni
+version			@VERSION@
+architecture	@ARCH@
+summary			"Installs the ontologies of SEN (their MIME types)"
+description		"The ontology installer of SEN: the command sen_oni puts the ontologies that
+packages bring (sen_ontology_*) into the MIME database - the types of entities,
+relations and classifications with their attributes and indices - and removes
+them again when their package is gone. The SEN server runs it when it starts
+and when packages change; sen_oni --update does the same by hand."
+packager		"Gregor B. Rosenauer <semantic.extensions@gmail.com>"
+vendor			"SEN Labs e.U."
+copyrights		{
+	"2024-2026 SEN Labs e.U."
+}
+licenses		{
+	"MIT"
+}
+urls			{
+	"https://sen-labs.org"
+	"https://github.com/sen-laboratories/sen-oni"
+}
+provides		{
+	sen_oni = @VERSION@
+	cmd:sen_oni = @VERSION@
+	cmd:sen_mime = @VERSION@
+}
+requires		{
+	haiku
+	cmd:bash
+}

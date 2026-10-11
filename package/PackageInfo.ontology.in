@@ -1,0 +1,26 @@
+name			sen_ontology_@NAME@
+version			@VERSION@
+architecture	any
+summary			"@SUMMARY@"
+description		"@DESCRIPTION@
+The MIME types of the ontology are installed by sen_oni when the SEN server
+starts, or by sen_oni --update."
+packager		"Gregor B. Rosenauer <semantic.extensions@gmail.com>"
+vendor			"SEN Labs e.U."
+copyrights		{
+	"2024-2026 SEN Labs e.U."
+}
+licenses		{
+	"MIT"
+}
+urls			{
+	"https://sen-labs.org"
+	"https://github.com/sen-laboratories/sen-oni"
+}
+provides		{
+	sen_ontology_@NAME@ = @VERSION@
+}
+requires		{
+	sen_oni
+@REQUIRES@
+}
