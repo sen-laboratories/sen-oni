@@ -21,10 +21,14 @@
 
 #include <sen/Sen.h>
 #include <sen/SenOntoCore.h>
+#include <sen/SenLookup.h>
+
+#include <vector>
 
 status_t InstallMimeTypeFromResource(const char* path, BString* installedType);
 status_t RelateToMimeType(const char* file, const char* mimeType, const char* label, const char* inverseLabel, bool remove = false);
 status_t DeleteMimeType(const char* mimeType);
+status_t PrintProvidedMimeTypes(const char* file);
 status_t GetInstalledMimeTypes(const char* supertype, BMessage* types);
 void PrintUsage(const char* name);
 void CreateIndexOnAllVolumes(const char* attrName, uint32 attrType);
@@ -73,6 +77,15 @@ main(int argc, char** argv)
             printf("%s %s %s.\n", argv[2], label, argv[3]);
         }
     }
+    else if (strcmp(command, "provides") == 0) {
+        if (argc < 3) {
+            PrintUsage(argv[0]);
+            return EXIT_FAILURE;
+        }
+        result = PrintProvidedMimeTypes(argv[2]);
+        if (result != B_OK)
+            fprintf(stderr, "failed to read the relations of %s: %s\n", argv[2], strerror(result));
+    }
     else if (strncmp(command, "uninstall", strlen("uninstall")) == 0) {
         result = DeleteMimeType(argv[2]);
         if (result != B_OK) {
@@ -116,6 +129,7 @@ void PrintUsage(const char* progname) {
     printf("relate      <file> <mime-type> [label [opposite label]]: the file provides the installed MIME type (a dependency of the kind\n"
            "            provides; label: provides, opposite: provided by), see SEN server\n");
     printf("unrelate    <file> <mime-type>: removes that relation again\n");
+    printf("provides    <file>: lists the MIME types that the file provides (the targets of its relations, the SEN server is not needed)\n");
     printf("uninstall   uninstalls MIME type from MIME db\n");
     printf("list        lists entities and relations in MIME db\n");
 
@@ -339,6 +353,35 @@ CreateIndexOnAllVolumes(const char* attrName, uint32 attrType)
     }
 }
 
+
+/** Prints the MIME types that a file (the placeholder of an ontology) provides: the targets of its relations that are types of the MIME
+ *  database. The relations are read from the attributes, so this works without the SEN server. */
+status_t PrintProvidedMimeTypes(const char* file) {
+    entry_ref source;
+    status_t result = get_ref_for_path(file, &source);
+    if (result != B_OK)
+        return result;
+
+    BPath mimeDb;
+    result = find_directory(B_USER_SETTINGS_DIRECTORY, &mimeDb);
+    if (result == B_OK)
+        result = mimeDb.Append("mime_db");
+    if (result != B_OK)
+        return result;
+    const size_t prefix = strlen(mimeDb.Path()) + 1;
+
+    std::vector<entry_ref> targets;
+    result = sen::lookup::Targets(source, &targets);
+    if (result != B_OK)
+        return result;
+
+    for (const entry_ref& target : targets) {
+        BPath path(&target);
+        if (path.InitCheck() == B_OK && strncmp(path.Path(), mimeDb.Path(), prefix - 1) == 0 && strlen(path.Path()) > prefix)
+            printf("%s\n", path.Path() + prefix);
+    }
+    return B_OK;
+}
 
 /** Relate a file (e.g. the placeholder of an ontology) to the file of an installed MIME type in the MIME database, with a generic
  *  reference of the SEN server. Relating again is not an error: the server tells that the relation exists (409). */

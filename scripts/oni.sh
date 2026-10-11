@@ -29,12 +29,15 @@ fi
 # SEN config (the home folder is not always set when packages run scripts: ask the system)
 SETTINGS=$(finddir B_USER_SETTINGS_DIRECTORY)
 SEN_CONFIG_ONTO=$SETTINGS/sen/ontologies
-# what is installed from where: <ontology>.types (one MIME type per line), .source (the folder), .sum (to see changes)
-STATE=$SETTINGS/sen/oni
+# What is installed from where is in the placeholder of the ontology (with the attributes of the ontology): SEN:onto:source is the folder,
+# SEN:onto:sum tells when it changed (and is only there when the installation was complete), the MIME types that the ontology provides
+# are the targets of its relations (sen_mime provides).
+ATTR_SOURCE=SEN:onto:source
+ATTR_SUM=SEN:onto:sum
 
 oni_output=$(mktemp -d "${TMPDIR:-/tmp}/oni.XXXXXX")
 trap 'rm -rf "$oni_output"' EXIT
-mkdir -p "$SEN_CONFIG_ONTO" "$STATE"
+mkdir -p "$SEN_CONFIG_ONTO"
 
 # folders with ontologies from packages (installed for the system or for the user), and the same non-packaged
 function provided_folders()
@@ -80,6 +83,17 @@ function type_files()
             find "$folder" -mindepth 2 -type f -name "*.$ext" | sort
         fi
     done
+}
+
+function get_attr()
+{
+    # $1: attribute, $2: placeholder
+    catattr -d "$1" "$2" 2>/dev/null || true
+}
+
+function set_attr()
+{
+    addattr -t string "$1" "$3" "$2"
 }
 
 function folder_sum()
@@ -134,24 +148,31 @@ function install_ontology()
         rc -o "$descriptor_rsrc" "$descriptor"
     fi
     resattr -o $sen_onto_path "$descriptor_rsrc"
+    # (complete again when everything below has worked)
+    rmattr $ATTR_SUM "$sen_onto_path" 2>/dev/null || true
+    set_attr $ATTR_SOURCE "$sen_onto_path" "$folder"
 
     # the ontology provides its MIME types: navigate from the ontology to a type (and open it in FileTypes). This needs the SEN
     # server (it stores the relations): without it run this again later, relating twice does no harm.
     echo relating the ontology to its MIME types...
-    local mime_type
+    local mime_type related=1
     while read -r mime_type; do
-        "$SEN_MIME" relate "$sen_onto_path" "$mime_type" defines "defined by" || \
+        "$SEN_MIME" relate "$sen_onto_path" "$mime_type" defines "defined by" || {
             echo "  could not relate $ontology_name to $mime_type, is the SEN server running?"
+            related=0
+        }
     done < $types_file
     # not to supertypes: they are folders with the types of all ontologies. Relations that an older installer made are removed.
     while read -r mime_type; do
         "$SEN_MIME" unrelate "$sen_onto_path" "$mime_type" 2>/dev/null || true
     done < $supertypes_file
 
-    # what was installed from where, for the next update and for removal
-    cp $types_file "$STATE/$ontology_name.types"
-    echo "$folder" > "$STATE/$ontology_name.source"
-    echo "$sum" > "$STATE/$ontology_name.sum"
+    # complete: without the sum (no server, so no relations) the next update installs the ontology again
+    if [ $related = 1 ]; then
+        set_attr $ATTR_SUM "$sen_onto_path" "$sum"
+    else
+        echo "  $ontology_name is not complete, it is installed again by the next update."
+    fi
 
     echo "Done: $ontology_name."
 }
@@ -160,28 +181,31 @@ function install_ontology()
 function remove_ontology()
 {
     local ontology_name=$1
-    if [ ! -f "$STATE/$ontology_name.types" ] && [ ! -e "$SEN_CONFIG_ONTO/$ontology_name" ]; then
+    local placeholder=$SEN_CONFIG_ONTO/$ontology_name
+    if [ ! -e "$placeholder" ]; then
         echo "ontology $ontology_name is not installed." >&2
         return 1
     fi
     echo removing ontology $ontology_name...
 
-    local mime_type other kept
-    if [ -f "$STATE/$ontology_name.types" ]; then
-        while read -r mime_type; do
-            kept=
-            for other in "$STATE"/*.types; do
-                [ "$other" = "$STATE/$ontology_name.types" ] && continue
-                if [ -f "$other" ] && grep -qxF "$mime_type" "$other"; then kept=1; break; fi
-            done
-            if [ -z "$kept" ]; then
-                "$SEN_MIME" uninstall "$mime_type" || true
-            else
-                echo "  $mime_type stays: another ontology provides it, too."
-            fi
-        done < "$STATE/$ontology_name.types"
-    fi
-    rm -f "$SEN_CONFIG_ONTO/$ontology_name" "$STATE/$ontology_name".{types,source,sum}
+    local mime_type other kept types
+    types=$("$SEN_MIME" provides "$placeholder" 2>/dev/null || true)
+    while read -r mime_type; do
+        [ -n "$mime_type" ] || continue
+        # the relation of the ontology to the type goes in any case
+        "$SEN_MIME" unrelate "$placeholder" "$mime_type" 2>/dev/null || true
+        kept=
+        for other in "$SEN_CONFIG_ONTO"/*; do
+            [ -f "$other" ] && [ "$other" != "$placeholder" ] || continue
+            if "$SEN_MIME" provides "$other" 2>/dev/null | grep -qxF "$mime_type"; then kept=1; break; fi
+        done
+        if [ -z "$kept" ]; then
+            "$SEN_MIME" uninstall "$mime_type" || true
+        else
+            echo "  $mime_type stays: another ontology provides it, too."
+        fi
+    done <<< "$types"
+    rm -f "$placeholder"
     echo "Removed: $ontology_name."
 }
 
@@ -196,8 +220,7 @@ function update_ontologies()
             [ -f "$folder/ontology.rsrc" ] || [ -f "$folder/ontology.rdef" ] || continue
             name=$(basename "$folder")
             present="$present$name "
-            if [ -f "$STATE/$name.sum" ] && [ "$(cat "$STATE/$name.sum")" = "$(folder_sum "$folder")" ] \
-                    && [ -e "$SEN_CONFIG_ONTO/$name" ]; then
+            if [ -e "$SEN_CONFIG_ONTO/$name" ] && [ "$(get_attr $ATTR_SUM "$SEN_CONFIG_ONTO/$name")" = "$(folder_sum "$folder")" ]; then
                 continue
             fi
             install_ontology "$folder"
@@ -205,12 +228,13 @@ function update_ontologies()
     done < <(provided_folders)
 
     # ontologies whose package is gone (those installed from a source tree stay)
-    local state_source
-    for state_source in "$STATE"/*.source; do
-        [ -f "$state_source" ] || continue
-        name=$(basename --suffix=.source "$state_source")
+    local placeholder source
+    for placeholder in "$SEN_CONFIG_ONTO"/*; do
+        [ -f "$placeholder" ] || continue
+        name=$(basename "$placeholder")
         case "$present" in *" $name "*) continue;; esac
-        case "$(cat "$state_source")" in
+        source=$(get_attr $ATTR_SOURCE "$placeholder")
+        case "$source" in
             */sen/ontologies/*) remove_ontology "$name";;
         esac
     done
@@ -218,11 +242,11 @@ function update_ontologies()
 
 function list_ontologies()
 {
-    local state_source name
-    for state_source in "$STATE"/*.source; do
-        [ -f "$state_source" ] || continue
-        name=$(basename --suffix=.source "$state_source")
-        echo "$name  ($(wc -l < "$STATE/$name.types" | tr -d ' ') types, from $(cat "$state_source"))"
+    local placeholder name
+    for placeholder in "$SEN_CONFIG_ONTO"/*; do
+        [ -f "$placeholder" ] || continue
+        name=$(basename "$placeholder")
+        echo "$name  ($("$SEN_MIME" provides "$placeholder" 2>/dev/null | wc -l | tr -d ' ') types, from $(get_attr $ATTR_SOURCE "$placeholder"))"
     done
 }
 
