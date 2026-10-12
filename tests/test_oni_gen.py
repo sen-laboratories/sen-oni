@@ -258,12 +258,12 @@ class SentoConsistencyTest(unittest.TestCase):
             self.assertRegex(value, r'^(SEN|META|schema|dc|dcterms|oa|be):')
 
 
-@unittest.skipUnless(os.path.isdir(os.path.join(SENSEI, 'src')), 'sensei is not next to this repository')
+@unittest.skipUnless(os.path.isdir(os.path.join(SENSEI, 'plugins')), 'sensei is not next to this repository')
 class SenseiConsistencyTest(unittest.TestCase):
     """What the plugins declare must exist in the ontologies."""
 
     def rdefs(self):
-        return glob.glob(os.path.join(SENSEI, 'src', '**', 'Resources.rdef'), recursive=True)
+        return glob.glob(os.path.join(SENSEI, 'plugins', '*', 'Resources.rdef'), recursive=True)
 
     def mime_types(self):
         types = set()

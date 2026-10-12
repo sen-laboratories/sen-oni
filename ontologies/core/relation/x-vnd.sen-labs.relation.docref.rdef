@@ -5,7 +5,7 @@
 resource(0, "META:TYPE") "relation/x-vnd.sen-labs.relation.docref";
 resource(1, "META:L:DESC") #'MLDC' "structural reference to a document outline element.";
 resource(2, "META:S:DESC") #'MSDC' "Document Reference";
-resource(3, "META:PREF_APP") #'MSIG' "application/x-vnd.sen-labs.PdfNavigator";
+resource(3, "META:PREF_APP") #'MSIG' "application/x-vnd.sen-plugin.sen-labs.pdf-navigator";
 resource(4, "META:ATTR_INFO") message(233) {
 	"attr:name" = "schema:pageStart",
 	"attr:name" = "SEN:REL:section",

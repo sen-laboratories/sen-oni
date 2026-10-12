@@ -312,7 +312,7 @@ classes:
     title: Attribute
     is_a: Meta
     slots: [attr_name, attr_type, attr_viewable, attr_editable, attr_searchable, attr_width]
-    annotations: {mime: meta/x-vnd.sen-labs.meta-mime-attribute, app: application/x-vnd.sen-labs.ReferenceNavigator}
+    annotations: {mime: meta/x-vnd.sen-labs.meta-mime-attribute, app: application/x-vnd.sen-plugin.sen-labs.reference-navigator}
 
   # ---- classification
   Label:
@@ -360,7 +360,7 @@ classes:
     is_a: Relation
     annotations:
       mime: relation/x-vnd.sen-labs.relation.reference
-      app: application/x-vnd.sen-labs.ReferenceNavigator
+      app: application/x-vnd.sen-plugin.sen-labs.reference-navigator
       label: references
       inverse_label: referenced by
 
@@ -370,7 +370,7 @@ classes:
     is_a: Relation
     annotations:
       mime: relation/x-vnd.sen-labs.relation.contains
-      app: application/x-vnd.sen-labs.ReferenceNavigator
+      app: application/x-vnd.sen-plugin.sen-labs.reference-navigator
       icon: x-vnd.sen-labs.relation.contains
       # only meta info for SEN: the attributes come from the extracted types
       dynamic: true
@@ -385,7 +385,7 @@ classes:
     slots: [page_start, section, paragraph, anchor, heading]
     annotations:
       mime: relation/x-vnd.sen-labs.relation.docref
-      app: application/x-vnd.sen-labs.PdfNavigator
+      app: application/x-vnd.sen-plugin.sen-labs.pdf-navigator
       icon: x-vnd.sen-labs.relation.docref
       folder_icon: x-vnd.sen-labs.relation.docref.folder
       dynamic: true
@@ -402,7 +402,7 @@ classes:
     is_a: Relation
     annotations:
       mime: relation/x-vnd.sen-labs.relation.dependency
-      app: application/x-vnd.sen-labs.ReferenceNavigator
+      app: application/x-vnd.sen-plugin.sen-labs.reference-navigator
       label: depends on
       inverse_label: dependency of
 
@@ -413,7 +413,7 @@ classes:
     slots: [text_start, text_end, line_start, line_end, line, column]
     annotations:
       mime: relation/x-vnd.sen-labs.relation.textref
-      app: application/x-vnd.sen-labs.SenTextNavigator
+      app: application/x-vnd.sen-plugin.sen-labs.text-navigator
       icon: x-vnd.sen-labs.relation.textref
 
   # ---- applications
