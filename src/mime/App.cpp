@@ -28,6 +28,7 @@
 status_t InstallMimeTypeFromResource(const char* path, BString* installedType);
 status_t RelateToMimeType(const char* file, const char* mimeType, const char* label, const char* inverseLabel, bool remove = false);
 status_t DeleteMimeType(const char* mimeType);
+status_t RepairMimeEntry(const char* mimeType);
 status_t PrintProvidedMimeTypes(const char* file);
 status_t GetInstalledMimeTypes(const char* supertype, BMessage* types);
 void PrintUsage(const char* name);
@@ -172,6 +173,12 @@ status_t InstallMimeTypeFromResource(const char* path, BString* installedType) {
     } else {
         // we need to install as first step, since all other MimeType operations act on the MIME DB directly:(
         result = mimeType.Install();
+        if (result == B_FILE_EXISTS) {
+            // the entry of the type is there, but without its attributes (what is left of a type that was removed, or of a half finished
+            // installation): it gets its type back, then it is used like an installed type
+            printf("MIME type %s has an empty entry, repairing...\n", mime);
+            result = RepairMimeEntry(mime);
+        }
         if (result != B_OK) {
             fprintf(stderr, "error installing MIME type %s from resource %s: %s\n", mime, path, strerror(result));
             return result;
@@ -301,6 +308,27 @@ status_t InstallMimeTypeFromResource(const char* path, BString* installedType) {
     }
 
     return B_OK;
+}
+
+/** The entry of a type in the MIME database of the user without its attributes cannot be installed again ("File or Directory already exists"), and
+ *  it is not installed for the MIME API either: writing the attribute META:TYPE, by which the database knows a type, makes it a type again. */
+status_t RepairMimeEntry(const char* type) {
+    BPath path;
+    status_t result = find_directory(B_USER_SETTINGS_DIRECTORY, &path);
+    if (result == B_OK)
+        result = path.Append("mime_db");
+    if (result == B_OK)
+        result = path.Append(type);
+    if (result != B_OK)
+        return result;
+
+    BNode node(path.Path());
+    result = node.InitCheck();
+    if (result != B_OK)
+        return result;
+
+    ssize_t written = node.WriteAttr("META:TYPE", B_STRING_TYPE, 0, type, strlen(type) + 1);
+    return written < 0 ? (status_t) written : B_OK;
 }
 
 status_t DeleteMimeType(const char* type) {

@@ -119,20 +119,31 @@ function install_ontology()
     # The descriptor of the ontology itself is ontology.rdef/.rsrc, not a MIME type
     local descriptor=
     local file
+    # (the lists are read first: nothing in the loops may take from them, and a list that is empty is noticed below)
+    local top_files sub_files
+    mapfile -t top_files < <(type_files "$folder" top)
+    mapfile -t sub_files < <(type_files "$folder" sub)
+    local expected=0 processed=0
+
     # First, process the files in the top-level directory to create any super types first
-    while IFS= read -r file; do
+    for file in "${top_files[@]}"; do
         case "$(basename "$file")" in
             ontology.rdef|ontology.rsrc) descriptor=$file; continue;;
         esac
+        expected=$((expected + 1))
         echo "  $file ..."
-        create_mime_type "$file" || { echo "Aborting."; exit 1; }
-    done < <(type_files "$folder" top)
+        create_mime_type "$file" </dev/null || { echo "Aborting $ontology_name."; return 1; }
+        processed=$((processed + 1))
+    done
 
     # Then, process the files in subdirectories only
-    while IFS= read -r file; do
+    for file in "${sub_files[@]}"; do
+        [ -n "$file" ] || continue
+        expected=$((expected + 1))
         echo "  $file ..."
-        create_mime_type "$file" || { echo "Aborting."; exit 1; }
-    done < <(type_files "$folder" sub)
+        create_mime_type "$file" </dev/null || { echo "Aborting $ontology_name."; return 1; }
+        processed=$((processed + 1))
+    done
 
     echo registering ontology in SEN configuration...
 
@@ -145,9 +156,9 @@ function install_ontology()
     local descriptor_rsrc=$descriptor
     if [ "${descriptor##*.}" = rdef ]; then
         descriptor_rsrc=$oni_output/$ontology_name.rsrc
-        rc -o "$descriptor_rsrc" "$descriptor"
+        rc -o "$descriptor_rsrc" "$descriptor" || return 1
     fi
-    resattr -o $sen_onto_path "$descriptor_rsrc"
+    resattr -o $sen_onto_path "$descriptor_rsrc" || return 1
     # (complete again when everything below has worked)
     rmattr $ATTR_SUM "$sen_onto_path" 2>/dev/null || true
     set_attr $ATTR_SOURCE "$sen_onto_path" "$folder"
@@ -156,6 +167,11 @@ function install_ontology()
     # server (it stores the relations): without it run this again later, relating twice does no harm.
     echo relating the ontology to its MIME types...
     local mime_type related=1
+    # (a type that was not processed, whatever the reason: the ontology is not complete, the next update does it again)
+    if [ $processed -ne $expected ] || [ $processed -eq 0 ]; then
+        echo "  only $processed of $expected types were processed."
+        related=0
+    fi
     while read -r mime_type; do
         "$SEN_MIME" relate "$sen_onto_path" "$mime_type" defines "defined by" || {
             echo "  could not relate $ontology_name to $mime_type, is the SEN server running?"
@@ -223,7 +239,8 @@ function update_ontologies()
             if [ -e "$SEN_CONFIG_ONTO/$name" ] && [ "$(get_attr $ATTR_SUM "$SEN_CONFIG_ONTO/$name")" = "$(folder_sum "$folder")" ]; then
                 continue
             fi
-            install_ontology "$folder"
+            # (one that cannot be installed does not keep the others from it: it has no sum, so the next update tries it again)
+            install_ontology "$folder" || echo "$name could not be installed, it is tried again by the next update."
         done
     done < <(provided_folders)
 
@@ -279,7 +296,7 @@ for ontology in "$@"; do
         echo "skipping $ontology: not an ontology folder (there is no ontology.rdef in it)." >&2
         continue
     fi
-    install_ontology "$ontology"
+    install_ontology "$ontology" || exit 1
     installed=$((installed + 1))
 done
 
