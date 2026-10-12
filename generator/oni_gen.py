@@ -214,8 +214,10 @@ def render_rdef(mc, schema_file, schema_dir):
     if mc.app:
         resource(f'"META:PREF_APP") #\'MSIG\' {rdef_string(mc.app)};')
     if mc.extensions:
+        # a comma separated list becomes one entry for each extension (as the MIME database keeps them)
+        extensions = [e.strip() for e in mc.extensions.replace('\n', ',').split(',') if e.strip()]
         resource('"META:EXTENS") message {')
-        out.append(f'\t"extensions" = {rdef_string(mc.extensions)}')
+        out.append(',\n'.join(f'\t"extensions" = {rdef_string(e)}' for e in extensions))
         out.append('};')
     if mc.attributes:
         resource('"META:ATTR_INFO") message(233) {')

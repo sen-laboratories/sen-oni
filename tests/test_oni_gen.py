@@ -291,6 +291,27 @@ class SenseiConsistencyTest(unittest.TestCase):
                     if '/' in t and not t.startswith(('text/', 'application/pdf', 'application/x-vnd.Be')):
                         self.assertIn(t, types, f'{path}: {t}')
 
+    # the extensions of text/x-source-code in the MIME database of Haiku (hrev60228, dumped from /boot/system/data/mime_db/text/x-source-code):
+    # the type of the ontology must keep all of them, because it replaces the list
+    SYSTEM_SOURCE_EXTENSIONS = {
+        'asm', 'bas', 'c', 'cc', 'cpp', 'cs', 'cxx', 'e', 'go', 'h', 'h++', 'hpp', 'inc', 'java', 'js', 'json', 'jsp', 'lua', 'pas', 'm', 'php',
+        'pl', 'pp', 'py', 'rb', 'recipe', 'rexx', 'rs', 'S', 'swift', 'sql', 'tcl', 'toml', 'yaml'}
+
+    def source_code_extensions(self):
+        text = read(os.path.join(ROOT, 'ontologies', 'sourcecode', 'text', 'x-source-code.rdef'))
+        return set(re.findall(r'"extensions"\s*=\s*"([^"]+)"', text))
+
+    def test_source_code_type_keeps_the_extensions_of_the_system(self):
+        self.assertEqual(self.SYSTEM_SOURCE_EXTENSIONS - self.source_code_extensions(), set())
+
+    def test_source_code_type_has_the_extensions_of_the_scanners(self):
+        folder = os.path.join(SENSEI, 'plugins', 'sourcecode-extractor')
+        wanted = set()
+        for path in glob.glob(os.path.join(folder, '*Scanner.cpp')):
+            wanted |= set(re.findall(r'\{"([^"]+)",\s*"text/[^"]+"\}', read(path)))
+        self.assertTrue(wanted, 'no file kinds found in the scanners')
+        self.assertEqual(wanted - self.source_code_extensions(), set())
+
     def test_plugins_declare_the_current_resource_names(self):
         for path in self.rdefs():
             text = read(path)

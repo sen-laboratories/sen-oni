@@ -27,7 +27,7 @@ A **class** is a MIME type, a **slot** is a file attribute. Standard LinkML elem
 | schema | `oni_author`, `oni_stable`, `oni_schema_url` | the metadata of the ontology (`ontology.rdef`; the `version` and `description` of the schema are used, too) |
 | class | `mime` | the MIME type, required: a supertype (`entity`) or `supertype/name` |
 | class | `supertype: true` | the class is a supertype (the resource gets the meta MIME type) |
-| class | `app`, `extensions`, `icon`, `folder_icon` | preferred application (a signature; never set for file types of other programs), file extensions, the vector icon (`schema/icons/<name>.hex`), the icon of the relation folder |
+| class | `app`, `extensions`, `icon`, `folder_icon` | preferred application (a signature; never set for file types of other programs), file extensions (comma separated: one entry for each), the vector icon (`schema/icons/<name>.hex`), the icon of the relation folder |
 | class (relation) | `bidir`, `dynamic`, `contained`, `label`, `inverse_label` | the flavor of the relation (`SEN:bidir`, `SEN:dynamic`, `SEN:self`) and the labels of both directions, written to `SEN:REL:CONFIG` |
 | class (relation) | `source_types`, `exclude_types` | comma separated MIME types, or the start of one (a supertype such as `audio`), of the files that the relation can start at (without: any file) and cannot start at (this wins): `SEN:sourceTypes`, `SEN:excludeSourceTypes`. The server offers a relation for a new relation only for files that fit. |
 | slot | `attribute` | the name of the file attribute, `<prefix>:<name>`, required (an established vocabulary first, see the developer guide) |

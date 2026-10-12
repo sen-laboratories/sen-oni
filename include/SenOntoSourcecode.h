@@ -25,6 +25,8 @@ inline constexpr char kIncludeGlobal[] = "SEN:REL:includeGlobal";
 namespace mime {
 /** Source Include: include dependency to another sourcecode */
 inline constexpr char kSourceInclude[] = "relation/x-vnd.sen-labs.relation.sourcecode.include";
+/** Source Code: Source code, the type that Haiku gives to the files of all programming languages. The list of extensions is the one of the system (as dumped from the MIME database) plus those of the languages that the source code plugin of SENSEI understands, so that Tracker types such files as source code and SEN can examine them. The language itself is the semantic type, the attribute META:TYPE. */
+inline constexpr char kSourceCodeFile[] = "text/x-source-code";
 }	// namespace mime
 
 }	// namespace sourcecode

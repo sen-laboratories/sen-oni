@@ -46,3 +46,16 @@ classes:
       app: application/x-vnd.sen-plugin.sen-labs.text-navigator
       dynamic: true
       contained: true     # MAY be represented as a contained relation
+
+  SourceCodeFile:
+    description: >-
+      Source code, the type that Haiku gives to the files of all programming languages. The list of extensions is the one of the system
+      (as dumped from the MIME database) plus those of the languages that the source code plugin of SENSEI understands, so that Tracker
+      types such files as source code and SEN can examine them. The language itself is the semantic type, the attribute META:TYPE.
+    title: Source Code
+    annotations:
+      mime: text/x-source-code
+      extensions: >-
+        asm, bas, c, c++, cc, cjs, cpp, cs, cts, cxx, e, go, h, h++, hh, hpp, hxx, icc, inc, inl, ipp, java, js, json, jsp, jsx, lua, m, mjs, mm,
+        mts, pas, php, pl, pp, py, pyi, pyw, rb, recipe, rexx, rs, S, sql, swift, tcc, tcl, toml, tpp, ts, tsx, txx, yaml
+
