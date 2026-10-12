@@ -225,8 +225,26 @@ function remove_ontology()
     echo "Removed: $ontology_name."
 }
 
+# The file manager saves the columns of a folder when it has shown it and does not use the defaults after that: the folder of the ontologies would keep
+# the columns of an older version (without the attributes of the type of an ontology). The columns are removed once for each version of the layout.
+ONTOLOGY_VIEW_VERSION=2
+
+function reset_folder_view()
+{
+    local current
+    current=$(catattr -d SEN:view:version "$SEN_CONFIG_ONTO" 2>/dev/null || true)
+    [ "$current" = "$ONTOLOGY_VIEW_VERSION" ] && return 0
+    local attribute
+    for attribute in _trk/columns_le _trk/columns; do
+        rmattr "$attribute" "$SEN_CONFIG_ONTO" 2>/dev/null || true
+    done
+    addattr -t string SEN:view:version "$ONTOLOGY_VIEW_VERSION" "$SEN_CONFIG_ONTO" 2>/dev/null || true
+}
+
 function update_ontologies()
 {
+    reset_folder_view
+
     local present=" " dir folder name
 
     # new and changed ontologies from packages
