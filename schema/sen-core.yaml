@@ -236,16 +236,16 @@ slots:
   # ---- ontologies
   onto_schema_url:
     title: Schema URL
-    annotations: {attribute: "SEN:onto:schema_url", editable: false}
+    annotations: {attribute: "SEN:onto:schema_url", editable: false, width: 260}
   onto_author:
     title: Author
-    annotations: {attribute: "SEN:onto:author", editable: false}
+    annotations: {attribute: "SEN:onto:author", editable: false, width: 170}
   onto_version:
     title: Version
-    annotations: {attribute: "SEN:onto:version", editable: false}
+    annotations: {attribute: "SEN:onto:version", editable: false, width: 60}
   onto_description:
     title: Description
-    annotations: {attribute: "SEN:onto:description", editable: false}
+    annotations: {attribute: "SEN:onto:description", editable: false, width: 280}
   onto_stable:
     title: Stable?
     range: boolean
@@ -427,7 +427,7 @@ classes:
   Ontology:
     description: defines a set of file types for Entities and Relations in SEN.
     title: Ontology
-    slots: [onto_schema_url, onto_author, onto_version, onto_description, onto_stable]
+    slots: [onto_version, onto_description, onto_author, onto_schema_url, onto_stable]    # the order of the columns of the folder of the ontologies
     annotations:
       mime: application/x-vnd.sen-labs.ontology
       icon: x-vnd.sen-labs.ontology
