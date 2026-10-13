@@ -96,6 +96,68 @@ function set_attr()
     addattr -t string "$1" "$3" "$2"
 }
 
+# The entities of an ontology are templates of the New menu of the file manager (a submenu with the name of the ontology), so that people can make
+# objects of the new types at once. A template is an empty file of the type; ours have SEN:onto:template, which is how they are found when the
+# ontology is removed (templates that people made or changed themselves are left alone).
+ATTR_TEMPLATE=SEN:onto:template
+TEMPLATES="$SETTINGS/Tracker/Tracker New Templates"
+
+function template_folder()
+{
+    local name=$1
+    echo "$TEMPLATES/$(echo "${name:0:1}" | tr '[:lower:]' '[:upper:]')${name:1}"
+}
+
+function add_templates()
+{
+    local ontology_name=$1 types=$2
+    local folder mime_type description
+    folder=$(template_folder "$ontology_name")
+    while read -r mime_type; do
+        case "$mime_type" in entity/*) ;; *) continue;; esac
+        # (the name that people read: the short description of the type)
+        description=$(catattr -d META:S:DESC "$SETTINGS/mime_db/$mime_type" 2>/dev/null || true)
+        [ -n "$description" ] || description=${mime_type#*/x-vnd.sen-labs.entity.}
+        if [ ! -d "$folder" ]; then
+            mkdir -p "$folder"
+            addattr -t bool _trk/_template_submenu 1 "$folder" 2>/dev/null || true
+            addattr -t string $ATTR_TEMPLATE "$ontology_name" "$folder" 2>/dev/null || true
+        fi
+        [ -e "$folder/$description" ] && continue
+        touch "$folder/$description"
+        addattr -t mime BEOS:TYPE "$mime_type" "$folder/$description"
+        addattr -t string $ATTR_TEMPLATE "$ontology_name" "$folder/$description"
+        echo "  template: $description"
+    done < "$types"
+}
+
+function remove_templates()
+{
+    local ontology_name=$1
+    local folder file
+    folder=$(template_folder "$ontology_name")
+    [ -d "$folder" ] || return 0
+    for file in "$folder"/*; do
+        if [ -f "$file" ] && [ "$(get_attr $ATTR_TEMPLATE "$file")" = "$ontology_name" ]; then rm -f "$file"; fi
+    done
+    # (the folder goes when it is empty and is ours)
+    if [ "$(get_attr $ATTR_TEMPLATE "$folder")" = "$ontology_name" ]; then
+        rmdir "$folder" 2>/dev/null || true
+    fi
+}
+
+# Ontologies that were installed before there were templates get them once (a template that people delete is not made again at every update).
+ATTR_TEMPLATES_DONE=SEN:onto:templates
+
+function ensure_templates()
+{
+    local ontology_name=$1 placeholder=$SEN_CONFIG_ONTO/$1
+    [ -n "$(get_attr $ATTR_TEMPLATES_DONE "$placeholder")" ] && return 0
+    local list=$oni_output/$ontology_name.provided
+    "$SEN_MIME" provides "$placeholder" > "$list" 2>/dev/null || return 0
+    add_templates "$ontology_name" "$list" && set_attr $ATTR_TEMPLATES_DONE "$placeholder" 1
+}
+
 function folder_sum()
 {
     (cd "$1" && find . -type f | sort | while read -r f; do md5sum "$f"; done | md5sum | cut -d' ' -f1)
@@ -165,6 +227,13 @@ function install_ontology()
 
     # the ontology provides its MIME types: navigate from the ontology to a type (and open it in FileTypes). This needs the SEN
     # server (it stores the relations): without it run this again later, relating twice does no harm.
+    echo adding the entities to the templates...
+    if add_templates "$ontology_name" "$types_file"; then
+        set_attr $ATTR_TEMPLATES_DONE "$sen_onto_path" 1
+    else
+        echo "  could not add all templates."
+    fi
+
     echo relating the ontology to its MIME types...
     local mime_type related=1
     # (a type that was not processed, whatever the reason: the ontology is not complete, the next update does it again)
@@ -221,6 +290,7 @@ function remove_ontology()
             echo "  $mime_type stays: another ontology provides it, too."
         fi
     done <<< "$types"
+    remove_templates "$ontology_name"
     rm -f "$placeholder"
     echo "Removed: $ontology_name."
 }
@@ -255,6 +325,7 @@ function update_ontologies()
             name=$(basename "$folder")
             present="$present$name "
             if [ -e "$SEN_CONFIG_ONTO/$name" ] && [ "$(get_attr $ATTR_SUM "$SEN_CONFIG_ONTO/$name")" = "$(folder_sum "$folder")" ]; then
+                ensure_templates "$name" || true
                 continue
             fi
             # (one that cannot be installed does not keep the others from it: it has no sum, so the next update tries it again)

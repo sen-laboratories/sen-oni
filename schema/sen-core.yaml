@@ -76,6 +76,14 @@ slots:
     range: boolean
     annotations: {attribute: "SEN:fictional"}
 
+  sticky:
+    description: >-
+      New objects (and the relations that are made for them) are put into this classification automatically: the label, topic, project... is
+      sticky. Of the contexts only the current one counts.
+    title: Sticky
+    range: boolean
+    annotations: {attribute: "SEN:sticky"}
+
   # ---- common attributes of relations (the files that materialize a relation)
   rel_source:
     description: ID of the source of the relation.
@@ -268,6 +276,7 @@ classes:
     description: Used for labelling and grouping entities in SEN.
     title: native types used for classification
     abstract: true
+    slots: [sticky]
     annotations:
       mime: classification
       supertype: true
@@ -430,4 +439,5 @@ classes:
     slots: [onto_version, onto_description, onto_author, onto_schema_url, onto_stable]    # the order of the columns of the folder of the ontologies
     annotations:
       mime: application/x-vnd.sen-labs.ontology
+      app: application/x-vnd.sen-labs.FileTypes
       icon: x-vnd.sen-labs.ontology

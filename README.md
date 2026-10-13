@@ -61,6 +61,10 @@ sen_oni ontologies/core     # installs an ontology folder from a source tree (rd
 
 A MIME type that several ontologies provide stays installed until the last of them is removed.
 
+The **entities** of an ontology (its types below `entity/`) become templates of the *New* menu of the file manager: a submenu with the name of the ontology in
+`~/config/settings/Tracker/Tracker New Templates`, one empty file of the type for each entity, so that people can make objects of the new types at once. The templates are
+marked (`SEN:onto:template`); removing the ontology removes those, and templates that people made or changed are left alone. Ontologies that were installed before get them once.
+
 To build the packages on Haiku (`make` first, the packages are written to the repository root):
 
 ```sh

@@ -26,6 +26,8 @@ inline constexpr char kSenMeta[] = "SEN:META";
 inline constexpr char kSemanticType[] = "META:TYPE";
 /** The entity is fictional. */
 inline constexpr char kFictional[] = "SEN:fictional";
+/** New objects (and the relations that are made for them) are put into this classification automatically: the label, topic, project... is sticky. Of the contexts only the current one counts. */
+inline constexpr char kSticky[] = "SEN:sticky";
 /** ID of the source of the relation. */
 inline constexpr char kRelSource[] = "SEN:REL:ID";
 /** ID of the target of the relation. */
