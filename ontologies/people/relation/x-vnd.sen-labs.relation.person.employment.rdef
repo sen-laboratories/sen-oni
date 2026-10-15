@@ -1,0 +1,37 @@
+// Generated from schema/sen-people.yaml by oni_gen.py: do not edit.
+// SPDX-License-Identifier: MIT
+// SPDX-FileCopyrightText: 2024-2026 SEN Labs e.U.
+
+resource(0, "META:TYPE") "relation/x-vnd.sen-labs.relation.person.employment";
+resource(1, "META:L:DESC") #'MLDC' "a person works for an organization";
+resource(2, "META:S:DESC") #'MSDC' "Employment";
+resource(3, "META:ATTR_INFO") message(233) {
+	"attr:name" = "SEN:REL:since",
+	"attr:name" = "SEN:REL:note",
+	"attr:public_name" = "Since",
+	"attr:public_name" = "Note",
+	"attr:type" = 'TIME',
+	"attr:type" = 'CSTR',
+	"attr:viewable" = true,
+	"attr:viewable" = true,
+	"attr:editable" = true,
+	"attr:editable" = true,
+	"SEN:searchable" = false,
+	"SEN:searchable" = false,
+	"attr:width" = 90,
+	"attr:width" = 160,
+	"attr:alignment" = 0,
+	"attr:alignment" = 0,
+	"attr:display_as" = "",
+	"attr:display_as" = "",
+	"type" = "relation/x-vnd.sen-labs.relation.person.employment"
+};
+resource(4, "SEN:REL:CONFIG") message(233) {
+	"SEN:relation" = message('SCrd') {
+		"SEN:REL:Label" = "works for"
+	},
+	"SEN:sourceTypes" = "entity/x-vnd.sen-labs.entity.person",
+	"SEN:inverse" = message('SCrd') {
+		"SEN:REL:Label" = "employs"
+	}
+};

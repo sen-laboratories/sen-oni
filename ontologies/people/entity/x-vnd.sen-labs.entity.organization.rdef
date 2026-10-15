@@ -1,0 +1,76 @@
+// Generated from schema/sen-people.yaml by oni_gen.py: do not edit.
+// SPDX-License-Identifier: MIT
+// SPDX-FileCopyrightText: 2024-2026 SEN Labs e.U.
+
+resource(0, "META:TYPE") "entity/x-vnd.sen-labs.entity.organization";
+resource(1, "META:L:DESC") #'MLDC' "a company, institution, club or any other group of people with a name";
+resource(2, "META:S:DESC") #'MSDC' "Organization";
+resource(3, "META:ATTR_INFO") message(233) {
+	"attr:name" = "foaf:name",
+	"attr:name" = "foaf:mbox",
+	"attr:name" = "foaf:phone",
+	"attr:name" = "foaf:homepage",
+	"attr:name" = "dc:description",
+	"attr:public_name" = "Name",
+	"attr:public_name" = "E-mail",
+	"attr:public_name" = "Phone",
+	"attr:public_name" = "Homepage",
+	"attr:public_name" = "Description",
+	"attr:type" = 'CSTR',
+	"attr:type" = 'CSTR',
+	"attr:type" = 'CSTR',
+	"attr:type" = 'CSTR',
+	"attr:type" = 'CSTR',
+	"attr:viewable" = true,
+	"attr:viewable" = true,
+	"attr:viewable" = true,
+	"attr:viewable" = false,
+	"attr:viewable" = false,
+	"attr:editable" = true,
+	"attr:editable" = true,
+	"attr:editable" = true,
+	"attr:editable" = true,
+	"attr:editable" = true,
+	"SEN:searchable" = false,
+	"SEN:searchable" = false,
+	"SEN:searchable" = false,
+	"SEN:searchable" = false,
+	"SEN:searchable" = false,
+	"attr:width" = 150,
+	"attr:width" = 150,
+	"attr:width" = 100,
+	"attr:width" = 150,
+	"attr:width" = 60,
+	"attr:alignment" = 0,
+	"attr:alignment" = 0,
+	"attr:alignment" = 0,
+	"attr:alignment" = 0,
+	"attr:alignment" = 0,
+	"attr:display_as" = "",
+	"attr:display_as" = "",
+	"attr:display_as" = "",
+	"attr:display_as" = "",
+	"attr:display_as" = "",
+	"type" = "entity/x-vnd.sen-labs.entity.organization"
+};
+resource(4, "META:ICON") #'VICN' array {
+	$"6E63696604015A6F8CFF017D93B0FF01F2E6A0FF013B4A5FFF0A0204B4C1CBB4"
+	$"B4C1CBB4B4C1CBB4B4C1B6AAB4C1B6AAB4C1B6AAC224B3CCC224B3CCC224B3CC"
+	$"C224CBB4C224CBB4C224CBB40204C224CBB4C224CBB4C224CBB4C224BC67C224"
+	$"BC67C224BC67CABFBE51CABFBE51CABFBE51CABFCBB4CABFCBB4CABFCBB40204"
+	$"B79FB989B79FB989B79FB989BA7EB90EBA7EB90EBA7EB90EBA7EBBEDBA7EBBED"
+	$"BA7EBBEDB79FBC67B79FBC67B79FBC670204BC67B894BC67B894BC67B894BF46"
+	$"B81ABF46B81ABF46B81ABF46BAF8BF46BAF8BF46BAF8BC67BB72BC67BB72BC67"
+	$"BB720204B79FBF46B79FBF46B79FBF46BA7EBF46BA7EBF46BA7EBF46BA7EC224"
+	$"BA7EC224BA7EC224B79FC224B79FC224B79FC2240204BC67BF46BC67BF46BC67"
+	$"BF46BF46BF46BF46BF46BF46BF46BF46C224BF46C224BF46C224BC67C224BC67"
+	$"C224BC67C2240204B79FC502B79FC502B79FC502BA7EC502BA7EC502BA7EC502"
+	$"BA7EC7E1BA7EC7E1BA7EC7E1B79FC7E1B79FC7E1B79FC7E10204BC67C502BC67"
+	$"C502BC67C502BF46C502BF46C502BF46C502BF46CBB4BF46CBB4BF46CBB4BC67"
+	$"CBB4BC67CBB4BC67CBB40204C40EC12FC40EC12FC40EC12FC672C1AAC672C1AA"
+	$"C672C1AAC672C40EC672C40EC672C40EC40EC393C40EC393C40EC3930204C40E"
+	$"C5F7C40EC5F7C40EC5F7C672C672C672C672C672C672C672C8D6C672C8D6C672"
+	$"C8D6C40EC85BC40EC85BC40EC85B0A0A000100000A010101000A020102000A02"
+	$"0103000A020104000A020105000A020106000A030107000A020108000A020109"
+	$"00"
+};

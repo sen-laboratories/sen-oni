@@ -40,7 +40,7 @@ Indices for attributes marked searchable are created on every mounted volume; an
 
 # Packages
 
-Each ontology is a native Haiku package `sen_ontology_<name>` (`core`, `books`, `movies`, `music`, `papers`, `sourcecode`), the installer is the
+Each ontology is a native Haiku package `sen_ontology_<name>` (`core`, `books`, `movies`, `music`, `papers`, `people`, `sourcecode`), the installer is the
 package `sen_oni`. They are in the [SEN Labs Kiri repository](https://github.com/sen-laboratories/kiri):
 
 ```sh
@@ -70,3 +70,18 @@ To build the packages on Haiku (`make` first, the packages are written to the re
 ```sh
 ./package.sh                # sen_oni and one package for each ontology; REVISION=2 ./package.sh for a new revision
 ```
+
+## The people ontology
+
+`people` (`schema/sen-people.yaml`) has the entities **Person** and **Organization** (attributes of FOAF and schema.org: name, given and family name, nickname, e-mail,
+phone, homepage, birthday, job title) and the relationships between them, one relation type for each kind, after the Relationship vocabulary (REL, an extension of FOAF):
+
+| | Relation | Labels (and the opposite direction) |
+|---|---|---|
+| personal | Knows (FOAF), Acquaintance, Friend, Close Friend, Partner | knows / known by, acquainted with, friend of, close friend of, partner of |
+| family | Parent, Sibling, Relative | parent of / child of, sibling of, relative of |
+| professional | Colleague, Superior, Mentor, Collaborator, Client | colleague of, superior of / subordinate of, mentor of / mentee of, collaborates with, client of / provider of |
+| organizations | Employment, Membership (person to organization) | works for / employs, member of / has member |
+
+What is the same in both directions has one label; the relations have the properties *Since* and *Note*. A new kind is a class in the schema (`is_a: Relation`,
+`class_uri` names the term of the vocabulary), so the list can be extended without code.

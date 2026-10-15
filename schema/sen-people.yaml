@@ -1,0 +1,286 @@
+# SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: 2026 SEN Labs e.U.
+#
+# People and organizations, and how they relate to each other: from professional relationships (colleague, superior, mentor, client...) to personal ones
+# (acquaintance, friend, close friend, partner, family). The attributes of a person are those of FOAF (Friend of a Friend) and schema.org; the kinds of
+# relationships follow the Relationship vocabulary (REL, an extension of FOAF: acquaintanceOf, friendOf, closeFriendOf, colleagueOf, mentorOf, parentOf,
+# ...), each one is a relation of its own so that it can be chosen, shown and queried by what it is. What is the same in both directions (friend of) has
+# the same label on both sides; what is not has both (superior of / subordinate of).
+#
+# A relation has the properties Since (when it began) and Note, which are attributes of the file that stands for it in a relation folder.
+id: https://sen-labs.org/ns/oni/people
+name: sen_people
+title: SEN People
+description: This ontology defines people and organizations, and personal and professional relationships between them.
+version: 0.1.0
+license: MIT
+prefixes:
+  linkml: https://w3id.org/linkml/
+  sen: https://sen-labs.org/ns/sen#
+  dc: http://purl.org/dc/elements/1.1/
+  schema: https://schema.org/
+  foaf: http://xmlns.com/foaf/0.1/
+  rel: http://purl.org/vocab/relationship/
+  be: https://www.haiku-os.org/ns/be#
+default_prefix: sen
+default_range: string
+imports:
+  - linkml:types
+  - sen-core
+annotations:
+  oni_author: Gregor B. Rosenauer <gregor.rosenauer@gmail.com>
+  oni_stable: false
+  oni_schema_url: https://github.com/sen-laboratories/sen-oni/tree/main/schema/sen-people.yaml
+
+slots:
+  name:
+    description: The full name (of a person or an organization).
+    title: Name
+    slot_uri: foaf:name
+    annotations: {attribute: "foaf:name", width: 150}
+  given_name:
+    title: Given Name
+    slot_uri: foaf:givenName
+    annotations: {attribute: "foaf:givenName", width: 90}
+  family_name:
+    title: Family Name
+    slot_uri: foaf:familyName
+    annotations: {attribute: "foaf:familyName", width: 100}
+  nickname:
+    title: Nickname
+    slot_uri: foaf:nick
+    annotations: {attribute: "foaf:nick", viewable: false, width: 80}
+  mbox:
+    description: The e-mail address.
+    title: E-mail
+    slot_uri: foaf:mbox
+    annotations: {attribute: "foaf:mbox", width: 150}
+  phone:
+    title: Phone
+    slot_uri: foaf:phone
+    annotations: {attribute: "foaf:phone", width: 100}
+  homepage:
+    title: Homepage
+    slot_uri: foaf:homepage
+    annotations: {attribute: "foaf:homepage", viewable: false, width: 150}
+  birth_date:
+    title: Birthday
+    slot_uri: schema:birthDate
+    range: datetime
+    annotations: {attribute: "schema:birthDate", width: 90}
+  job_title:
+    title: Job Title
+    slot_uri: schema:jobTitle
+    annotations: {attribute: "schema:jobTitle", width: 110}
+  description:
+    title: Description
+    slot_uri: dc:description
+    annotations: {attribute: "dc:description", viewable: false}
+  rel_since:
+    description: When the relationship began.
+    title: Since
+    range: datetime
+    annotations: {attribute: "SEN:REL:since", width: 90}
+  rel_note:
+    description: What there is to say about the relationship.
+    title: Note
+    annotations: {attribute: "SEN:REL:note", width: 160}
+
+classes:
+  Person:
+    description: a person
+    title: Person
+    is_a: Entity
+    class_uri: foaf:Person
+    slots: [name, given_name, family_name, nickname, mbox, phone, homepage, birth_date, job_title, description]
+    annotations: {mime: entity/x-vnd.sen-labs.entity.person, icon: x-vnd.sen-labs.entity.person}
+
+  Organization:
+    description: a company, institution, club or any other group of people with a name
+    title: Organization
+    is_a: Entity
+    class_uri: foaf:Organization
+    slots: [name, mbox, phone, homepage, description]
+    annotations: {mime: entity/x-vnd.sen-labs.entity.organization, icon: x-vnd.sen-labs.entity.organization}
+
+  # ---- what two people know of each other, from least to most close
+  Knows:
+    description: a person knows another one, in no particular way (the relationship that all the other kinds of relationships between people are special cases of)
+    title: Knows
+    is_a: Relation
+    class_uri: foaf:knows
+    slots: [rel_since, rel_note]
+    annotations:
+      mime: relation/x-vnd.sen-labs.relation.person.knows
+      label: knows
+      inverse_label: known by
+      source_types: entity/x-vnd.sen-labs.entity.person
+
+  Acquaintance:
+    description: people who have met and know each other a little
+    title: Acquaintance
+    is_a: Relation
+    class_uri: rel:acquaintanceOf
+    slots: [rel_since, rel_note]
+    annotations:
+      mime: relation/x-vnd.sen-labs.relation.person.acquaintance
+      label: acquainted with
+      inverse_label: acquainted with
+      source_types: entity/x-vnd.sen-labs.entity.person
+
+  Friend:
+    description: people who like and trust each other
+    title: Friend
+    is_a: Relation
+    class_uri: rel:friendOf
+    slots: [rel_since, rel_note]
+    annotations:
+      mime: relation/x-vnd.sen-labs.relation.person.friend
+      label: friend of
+      inverse_label: friend of
+      source_types: entity/x-vnd.sen-labs.entity.person
+
+  CloseFriend:
+    description: people who are very close, who share what matters to them
+    title: Close Friend
+    is_a: Relation
+    class_uri: rel:closeFriendOf
+    slots: [rel_since, rel_note]
+    annotations:
+      mime: relation/x-vnd.sen-labs.relation.person.close-friend
+      label: close friend of
+      inverse_label: close friend of
+      source_types: entity/x-vnd.sen-labs.entity.person
+
+  Partner:
+    description: people who live their lives together (life partners, spouses)
+    title: Partner
+    is_a: Relation
+    class_uri: rel:lifePartnerOf
+    slots: [rel_since, rel_note]
+    annotations:
+      mime: relation/x-vnd.sen-labs.relation.person.partner
+      label: partner of
+      inverse_label: partner of
+      source_types: entity/x-vnd.sen-labs.entity.person
+
+  # ---- family
+  Parent:
+    description: a person is the parent of another one
+    title: Parent
+    is_a: Relation
+    class_uri: rel:parentOf
+    slots: [rel_since, rel_note]
+    annotations:
+      mime: relation/x-vnd.sen-labs.relation.person.parent
+      label: parent of
+      inverse_label: child of
+      source_types: entity/x-vnd.sen-labs.entity.person
+
+  Sibling:
+    description: people who have a parent in common
+    title: Sibling
+    is_a: Relation
+    class_uri: rel:siblingOf
+    slots: [rel_since, rel_note]
+    annotations:
+      mime: relation/x-vnd.sen-labs.relation.person.sibling
+      label: sibling of
+      inverse_label: sibling of
+      source_types: entity/x-vnd.sen-labs.entity.person
+
+  Relative:
+    description: people who are related by blood or marriage, in another way than parent, child or sibling
+    title: Relative
+    is_a: Relation
+    class_uri: rel:relatedTo
+    slots: [rel_since, rel_note]
+    annotations:
+      mime: relation/x-vnd.sen-labs.relation.person.relative
+      label: relative of
+      inverse_label: relative of
+      source_types: entity/x-vnd.sen-labs.entity.person
+
+  # ---- professional
+  Colleague:
+    description: people who work in the same organization, or in the same field, and none is the superior of the other
+    title: Colleague
+    is_a: Relation
+    class_uri: rel:colleagueOf
+    slots: [rel_since, rel_note]
+    annotations:
+      mime: relation/x-vnd.sen-labs.relation.person.colleague
+      label: colleague of
+      inverse_label: colleague of
+      source_types: entity/x-vnd.sen-labs.entity.person
+
+  Superior:
+    description: a person is the superior (manager, supervisor, lead) of another one
+    title: Superior
+    is_a: Relation
+    class_uri: rel:employerOf
+    slots: [rel_since, rel_note]
+    annotations:
+      mime: relation/x-vnd.sen-labs.relation.person.superior
+      label: superior of
+      inverse_label: subordinate of
+      source_types: entity/x-vnd.sen-labs.entity.person
+
+  Mentor:
+    description: a person guides the professional or personal growth of another one
+    title: Mentor
+    is_a: Relation
+    class_uri: rel:mentorOf
+    slots: [rel_since, rel_note]
+    annotations:
+      mime: relation/x-vnd.sen-labs.relation.person.mentor
+      label: mentor of
+      inverse_label: mentee of
+      source_types: entity/x-vnd.sen-labs.entity.person
+
+  Collaborator:
+    description: people who work together on something, without one of them being the superior of the other
+    title: Collaborator
+    is_a: Relation
+    class_uri: rel:collaboratesWith
+    slots: [rel_since, rel_note]
+    annotations:
+      mime: relation/x-vnd.sen-labs.relation.person.collaborator
+      label: collaborates with
+      inverse_label: collaborates with
+      source_types: entity/x-vnd.sen-labs.entity.person
+
+  Client:
+    description: a person is the client (customer, patient, student) of another one
+    title: Client
+    is_a: Relation
+    slots: [rel_since, rel_note]
+    annotations:
+      mime: relation/x-vnd.sen-labs.relation.person.client
+      label: client of
+      inverse_label: provider of
+      source_types: entity/x-vnd.sen-labs.entity.person
+
+  Employment:
+    description: a person works for an organization
+    title: Employment
+    is_a: Relation
+    class_uri: schema:worksFor
+    slots: [rel_since, rel_note]
+    annotations:
+      mime: relation/x-vnd.sen-labs.relation.person.employment
+      label: works for
+      inverse_label: employs
+      source_types: entity/x-vnd.sen-labs.entity.person
+
+  Membership:
+    description: a person is a member of an organization or group
+    title: Membership
+    is_a: Relation
+    class_uri: schema:memberOf
+    slots: [rel_since, rel_note]
+    annotations:
+      mime: relation/x-vnd.sen-labs.relation.person.membership
+      label: member of
+      inverse_label: has member
+      source_types: entity/x-vnd.sen-labs.entity.person

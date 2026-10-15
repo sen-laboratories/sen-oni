@@ -11,5 +11,5 @@ PYTHON=${PYTHON:-python3}
 [ -x ../.venv-linkml/bin/python ] && PYTHON=../.venv-linkml/bin/python
 exec $PYTHON generator/oni_gen.py \
 	schema/sen-core.yaml schema/sen-books.yaml schema/sen-movies.yaml schema/sen-music.yaml schema/sen-papers.yaml \
-	schema/sen-sourcecode.yaml schema/sen-test.yaml \
+	schema/sen-people.yaml schema/sen-sourcecode.yaml schema/sen-test.yaml \
 	--rdef-dir ontologies --header-dir include "$@"
