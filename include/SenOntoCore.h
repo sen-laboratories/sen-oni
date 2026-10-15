@@ -126,7 +126,7 @@ inline constexpr unsigned kIndexCount = sizeof(kIndices) / sizeof(kIndices[0]);
 namespace mime {
 /** Abstract Entity: A semantic entity representing anything. */
 inline constexpr char kEntity[] = "entity";
-/** native types used for classification: Used for labelling and grouping entities in SEN. */
+/** Classification: Used for labelling and grouping entities in SEN. */
 inline constexpr char kClassification[] = "classification";
 /** SEN Relation: a semantic relationship between files and entities in SEN. */
 inline constexpr char kRelation[] = "relation";

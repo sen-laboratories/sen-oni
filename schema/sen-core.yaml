@@ -274,7 +274,7 @@ classes:
 
   Classification:
     description: Used for labelling and grouping entities in SEN.
-    title: native types used for classification
+    title: Classification
     abstract: true
     slots: [sticky]
     annotations:
