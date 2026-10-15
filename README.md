@@ -40,7 +40,7 @@ Indices for attributes marked searchable are created on every mounted volume; an
 
 # Packages
 
-Each ontology is a native Haiku package `sen_ontology_<name>` (`core`, `books`, `movies`, `music`, `sourcecode`), the installer is the
+Each ontology is a native Haiku package `sen_ontology_<name>` (`core`, `books`, `movies`, `music`, `papers`, `sourcecode`), the installer is the
 package `sen_oni`. They are in the [SEN Labs Kiri repository](https://github.com/sen-laboratories/kiri):
 
 ```sh

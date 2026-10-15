@@ -1,0 +1,113 @@
+# SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: 2024-2026 SEN Labs e.U.
+#
+# Scientific papers: the semantic type document/scientific-paper that the Paperboy plugin of SENSEI gives to PDF and EPUB files whose DOI it
+# found, and the attributes it writes. Attributes use the established vocabularies (Dublin Core, schema.org), the same names that the books
+# ontology and Toji use. The attributes that hold a BMessage (schema:author, schema:encoding, paperboy:state) are not defined here: Tracker
+# cannot show a message in a column, and BFS cannot index it.
+id: https://sen-labs.org/ns/oni/papers
+name: sen_papers
+title: SEN Papers
+description: This ontology defines the type of scientific papers and the attributes that describe them.
+version: 0.1.0
+license: MIT
+prefixes:
+  linkml: https://w3id.org/linkml/
+  sen: https://sen-labs.org/ns/sen#
+  dc: http://purl.org/dc/elements/1.1/
+  dcterms: http://purl.org/dc/terms/
+  schema: https://schema.org/
+  oa: http://www.w3.org/ns/oa#
+  be: https://www.haiku-os.org/ns/be#
+default_prefix: sen
+default_range: string
+imports:
+  - linkml:types
+  - sen-core
+annotations:
+  oni_author: Gregor B. Rosenauer <gregor.rosenauer@gmail.com>
+  oni_stable: false
+  oni_schema_url: https://github.com/sen-laboratories/sen-oni/tree/main/schema/sen-papers.yaml
+
+slots:
+  identifier:
+    description: The DOI of the paper, bare and lower case (10.1038/nature14539). It is indexed, so that the papers that a paper cites can be found on the computer.
+    title: DOI
+    slot_uri: dc:identifier
+    annotations: {attribute: "dc:identifier", searchable: true, width: 110}
+  title:
+    title: Title
+    slot_uri: dc:title
+    annotations: {attribute: "dc:title", width: 200}
+  creator:
+    description: The names of the authors, separated by semicolons.
+    title: Authors
+    slot_uri: dc:creator
+    annotations: {attribute: "dc:creator", width: 140}
+  subject:
+    description: Keywords, separated by semicolons.
+    title: Keywords
+    slot_uri: dc:subject
+    annotations: {attribute: "dc:subject", viewable: false}
+  abstract_text:
+    description: The abstract.
+    title: Abstract
+    slot_uri: dc:description
+    annotations: {attribute: "dc:description", viewable: false}
+  publisher:
+    title: Publisher
+    slot_uri: dc:publisher
+    annotations: {attribute: "dc:publisher", viewable: false}
+  language:
+    title: Language
+    slot_uri: dc:language
+    annotations: {attribute: "dc:language", viewable: false, width: 40}
+  date:
+    description: Day of publication.
+    title: Date
+    slot_uri: dc:date
+    range: datetime
+    annotations: {attribute: "dc:date", width: 100}
+  kind:
+    description: The kind of work (article, preprint, book-chapter, ...).
+    title: Kind
+    slot_uri: dc:type
+    annotations: {attribute: "dc:type", viewable: false, width: 70}
+  venue:
+    description: The journal, conference or repository that the paper was published in.
+    title: Published In
+    slot_uri: dcterms:isPartOf
+    annotations: {attribute: "dcterms:isPartOf", width: 140}
+  url:
+    description: Landing page of the best open access copy, else the page of the DOI.
+    title: URL
+    slot_uri: schema:url
+    annotations: {attribute: "schema:url", viewable: false, width: 160}
+  content_url:
+    description: Direct link to the PDF of the best open access copy.
+    title: PDF URL
+    slot_uri: schema:contentUrl
+    annotations: {attribute: "schema:contentUrl", viewable: false, width: 160}
+  oa_status:
+    description: How freely the paper can be read (gold, green, hybrid, bronze, diamond or closed).
+    title: Open Access
+    annotations: {attribute: "SEN:oaStatus", editable: false, width: 60}
+  citation_count:
+    description: How often the paper is cited.
+    title: Citations
+    range: integer
+    annotations: {attribute: "SEN:citationCount", editable: false, width: 50, alignment: 1}
+
+classes:
+  Document:
+    description: Documents that SEN knows more about than their file format tells.
+    title: Document
+    abstract: true
+    annotations: {mime: document, supertype: true}
+
+  ScientificPaper:
+    description: A scientific paper (an article, a preprint, a chapter) that has a DOI. It is the semantic type of the file (META:TYPE), the file keeps its own type (PDF, EPUB).
+    title: Scientific Paper
+    is_a: Document
+    slots: [identifier, title, creator, date, venue, citation_count, oa_status, subject, abstract_text, publisher, language, kind, url, content_url]
+    annotations: {mime: document/scientific-paper}
