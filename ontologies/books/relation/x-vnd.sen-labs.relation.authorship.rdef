@@ -10,6 +10,9 @@ resource(4, "SEN:REL:CONFIG") message(233) {
 	"SEN:relation" = message('SCrd') {
 		"SEN:REL:Label" = "author of"
 	},
+	"SEN:sourceTypes" = "entity/x-vnd.sen-labs.entity.person",
+	"SEN:sourceTypes" = "application/x-person",
+	"SEN:targetTypes" = "entity/x-vnd.sen-labs.entity.book",
 	"SEN:inverse" = message('SCrd') {
 		"SEN:REL:Label" = "authored by"
 	}

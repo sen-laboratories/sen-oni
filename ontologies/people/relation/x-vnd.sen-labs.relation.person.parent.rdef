@@ -31,6 +31,7 @@ resource(4, "SEN:REL:CONFIG") message(233) {
 		"SEN:REL:Label" = "parent of"
 	},
 	"SEN:sourceTypes" = "entity/x-vnd.sen-labs.entity.person",
+	"SEN:sourceTypes" = "application/x-person",
 	"SEN:inverse" = message('SCrd') {
 		"SEN:REL:Label" = "child of"
 	}

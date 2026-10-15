@@ -102,6 +102,8 @@ classes:
       app: application/x-vnd.Be-TRAK
       label: author of
       inverse_label: authored by
+      source_types: entity/x-vnd.sen-labs.entity.person,application/x-person
+      target_types: entity/x-vnd.sen-labs.entity.book
 
   BookQuote:
     description: quotes some text in a book

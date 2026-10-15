@@ -27,10 +27,13 @@ resource(3, "META:ATTR_INFO") message(233) {
 	"type" = "relation/x-vnd.sen-labs.relation.person.membership"
 };
 resource(4, "SEN:REL:CONFIG") message(233) {
+	"SEN:bidir" = false,
 	"SEN:relation" = message('SCrd') {
 		"SEN:REL:Label" = "member of"
 	},
 	"SEN:sourceTypes" = "entity/x-vnd.sen-labs.entity.person",
+	"SEN:sourceTypes" = "application/x-person",
+	"SEN:targetTypes" = "entity/x-vnd.sen-labs.entity.organization",
 	"SEN:inverse" = message('SCrd') {
 		"SEN:REL:Label" = "has member"
 	}

@@ -7,6 +7,9 @@
 # ...), each one is a relation of its own so that it can be chosen, shown and queried by what it is. What is the same in both directions (friend of) has
 # the same label on both sides; what is not has both (superior of / subordinate of).
 #
+# The relations start at a person (and at a person of the People application of Haiku, application/x-person, until the files are migrated); they end at
+# the kinds of files that they can start at, those between a person and an organization at an organization.
+#
 # A relation has the properties Since (when it began) and Note, which are attributes of the file that stands for it in a relation folder.
 id: https://sen-labs.org/ns/oni/people
 name: sen_people
@@ -114,7 +117,7 @@ classes:
       mime: relation/x-vnd.sen-labs.relation.person.knows
       label: knows
       inverse_label: known by
-      source_types: entity/x-vnd.sen-labs.entity.person
+      source_types: entity/x-vnd.sen-labs.entity.person,application/x-person
 
   Acquaintance:
     description: people who have met and know each other a little
@@ -126,7 +129,7 @@ classes:
       mime: relation/x-vnd.sen-labs.relation.person.acquaintance
       label: acquainted with
       inverse_label: acquainted with
-      source_types: entity/x-vnd.sen-labs.entity.person
+      source_types: entity/x-vnd.sen-labs.entity.person,application/x-person
 
   Friend:
     description: people who like and trust each other
@@ -138,7 +141,7 @@ classes:
       mime: relation/x-vnd.sen-labs.relation.person.friend
       label: friend of
       inverse_label: friend of
-      source_types: entity/x-vnd.sen-labs.entity.person
+      source_types: entity/x-vnd.sen-labs.entity.person,application/x-person
 
   CloseFriend:
     description: people who are very close, who share what matters to them
@@ -150,7 +153,7 @@ classes:
       mime: relation/x-vnd.sen-labs.relation.person.close-friend
       label: close friend of
       inverse_label: close friend of
-      source_types: entity/x-vnd.sen-labs.entity.person
+      source_types: entity/x-vnd.sen-labs.entity.person,application/x-person
 
   Partner:
     description: people who live their lives together (life partners, spouses)
@@ -162,7 +165,7 @@ classes:
       mime: relation/x-vnd.sen-labs.relation.person.partner
       label: partner of
       inverse_label: partner of
-      source_types: entity/x-vnd.sen-labs.entity.person
+      source_types: entity/x-vnd.sen-labs.entity.person,application/x-person
 
   # ---- family
   Parent:
@@ -175,7 +178,7 @@ classes:
       mime: relation/x-vnd.sen-labs.relation.person.parent
       label: parent of
       inverse_label: child of
-      source_types: entity/x-vnd.sen-labs.entity.person
+      source_types: entity/x-vnd.sen-labs.entity.person,application/x-person
 
   Sibling:
     description: people who have a parent in common
@@ -187,7 +190,7 @@ classes:
       mime: relation/x-vnd.sen-labs.relation.person.sibling
       label: sibling of
       inverse_label: sibling of
-      source_types: entity/x-vnd.sen-labs.entity.person
+      source_types: entity/x-vnd.sen-labs.entity.person,application/x-person
 
   Relative:
     description: people who are related by blood or marriage, in another way than parent, child or sibling
@@ -199,7 +202,7 @@ classes:
       mime: relation/x-vnd.sen-labs.relation.person.relative
       label: relative of
       inverse_label: relative of
-      source_types: entity/x-vnd.sen-labs.entity.person
+      source_types: entity/x-vnd.sen-labs.entity.person,application/x-person
 
   # ---- professional
   Colleague:
@@ -212,7 +215,7 @@ classes:
       mime: relation/x-vnd.sen-labs.relation.person.colleague
       label: colleague of
       inverse_label: colleague of
-      source_types: entity/x-vnd.sen-labs.entity.person
+      source_types: entity/x-vnd.sen-labs.entity.person,application/x-person
 
   Superior:
     description: a person is the superior (manager, supervisor, lead) of another one
@@ -224,7 +227,7 @@ classes:
       mime: relation/x-vnd.sen-labs.relation.person.superior
       label: superior of
       inverse_label: subordinate of
-      source_types: entity/x-vnd.sen-labs.entity.person
+      source_types: entity/x-vnd.sen-labs.entity.person,application/x-person
 
   Mentor:
     description: a person guides the professional or personal growth of another one
@@ -236,7 +239,7 @@ classes:
       mime: relation/x-vnd.sen-labs.relation.person.mentor
       label: mentor of
       inverse_label: mentee of
-      source_types: entity/x-vnd.sen-labs.entity.person
+      source_types: entity/x-vnd.sen-labs.entity.person,application/x-person
 
   Collaborator:
     description: people who work together on something, without one of them being the superior of the other
@@ -248,7 +251,7 @@ classes:
       mime: relation/x-vnd.sen-labs.relation.person.collaborator
       label: collaborates with
       inverse_label: collaborates with
-      source_types: entity/x-vnd.sen-labs.entity.person
+      source_types: entity/x-vnd.sen-labs.entity.person,application/x-person
 
   Client:
     description: a person is the client (customer, patient, student) of another one
@@ -259,7 +262,7 @@ classes:
       mime: relation/x-vnd.sen-labs.relation.person.client
       label: client of
       inverse_label: provider of
-      source_types: entity/x-vnd.sen-labs.entity.person
+      source_types: entity/x-vnd.sen-labs.entity.person,application/x-person
 
   Employment:
     description: a person works for an organization
@@ -269,9 +272,12 @@ classes:
     slots: [rel_since, rel_note]
     annotations:
       mime: relation/x-vnd.sen-labs.relation.person.employment
+      # stored at the person only: what points to an organization is found by query (the person is not the kind of file that an organization can be)
+      bidir: false
+      target_types: entity/x-vnd.sen-labs.entity.organization
       label: works for
       inverse_label: employs
-      source_types: entity/x-vnd.sen-labs.entity.person
+      source_types: entity/x-vnd.sen-labs.entity.person,application/x-person
 
   Membership:
     description: a person is a member of an organization or group
@@ -281,6 +287,9 @@ classes:
     slots: [rel_since, rel_note]
     annotations:
       mime: relation/x-vnd.sen-labs.relation.person.membership
+      # stored at the person only: what points to an organization is found by query (the person is not the kind of file that an organization can be)
+      bidir: false
+      target_types: entity/x-vnd.sen-labs.entity.organization
       label: member of
       inverse_label: has member
-      source_types: entity/x-vnd.sen-labs.entity.person
+      source_types: entity/x-vnd.sen-labs.entity.person,application/x-person
