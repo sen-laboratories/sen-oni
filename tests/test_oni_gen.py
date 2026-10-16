@@ -273,6 +273,8 @@ class SenseiConsistencyTest(unittest.TestCase):
 
     def test_attribute_mappings_name_defined_attributes(self):
         attributes = set(all_schema_attributes())
+        # (attributes that belong to the API itself, not to a type: the target of a relation given as a path)
+        attributes |= {'SEN:TO:PATH'}
         for path in self.rdefs():
             text = read(path)
             match = re.search(r'"SEN:attrMapping"\) message \{(.*?)\};', text, re.S)
@@ -288,7 +290,8 @@ class SenseiConsistencyTest(unittest.TestCase):
             for value in re.findall(r'"(?:types|SEN:default)"\s*=\s*"([^"]+)"', text):
                 for t in value.split(','):
                     t = t.strip()
-                    if '/' in t and not t.startswith(('text/', 'application/pdf', 'application/x-vnd.Be')):
+                    # (formats are MIME types of the system, not defined by an ontology)
+                    if '/' in t and not t.startswith(('text/', 'application/pdf', 'application/epub+zip', 'application/x-vnd.Be')):
                         self.assertIn(t, types, f'{path}: {t}')
 
     # the extensions of text/x-source-code in the MIME database of Haiku (hrev60228, dumped from /boot/system/data/mime_db/text/x-source-code):
