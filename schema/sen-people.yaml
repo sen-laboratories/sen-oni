@@ -7,6 +7,8 @@
 # ...), each one is a relation of its own so that it can be chosen, shown and queried by what it is. What is the same in both directions (friend of) has
 # the same label on both sides; what is not has both (superior of / subordinate of).
 #
+# In the menus the relations are in groups (Personal, Family, Professional, Organizations: the annotation group), so that the list of the kinds is short.
+#
 # The relations start at a person (and at a person of the People application of Haiku, application/x-person, until the files are migrated); they end at
 # the kinds of files that they can start at, those between a person and an organization at an organization.
 #
@@ -115,6 +117,7 @@ classes:
     slots: [rel_since, rel_note]
     annotations:
       mime: relation/x-vnd.sen-labs.relation.person.knows
+      group: Personal
       label: knows
       inverse_label: known by
       source_types: entity/x-vnd.sen-labs.entity.person,application/x-person
@@ -127,6 +130,7 @@ classes:
     slots: [rel_since, rel_note]
     annotations:
       mime: relation/x-vnd.sen-labs.relation.person.acquaintance
+      group: Personal
       label: acquainted with
       inverse_label: acquainted with
       source_types: entity/x-vnd.sen-labs.entity.person,application/x-person
@@ -139,6 +143,7 @@ classes:
     slots: [rel_since, rel_note]
     annotations:
       mime: relation/x-vnd.sen-labs.relation.person.friend
+      group: Personal
       label: friend of
       inverse_label: friend of
       source_types: entity/x-vnd.sen-labs.entity.person,application/x-person
@@ -151,6 +156,7 @@ classes:
     slots: [rel_since, rel_note]
     annotations:
       mime: relation/x-vnd.sen-labs.relation.person.close-friend
+      group: Personal
       label: close friend of
       inverse_label: close friend of
       source_types: entity/x-vnd.sen-labs.entity.person,application/x-person
@@ -163,6 +169,7 @@ classes:
     slots: [rel_since, rel_note]
     annotations:
       mime: relation/x-vnd.sen-labs.relation.person.partner
+      group: Personal
       label: partner of
       inverse_label: partner of
       source_types: entity/x-vnd.sen-labs.entity.person,application/x-person
@@ -176,6 +183,7 @@ classes:
     slots: [rel_since, rel_note]
     annotations:
       mime: relation/x-vnd.sen-labs.relation.person.parent
+      group: Family
       label: parent of
       inverse_label: child of
       source_types: entity/x-vnd.sen-labs.entity.person,application/x-person
@@ -188,6 +196,7 @@ classes:
     slots: [rel_since, rel_note]
     annotations:
       mime: relation/x-vnd.sen-labs.relation.person.sibling
+      group: Family
       label: sibling of
       inverse_label: sibling of
       source_types: entity/x-vnd.sen-labs.entity.person,application/x-person
@@ -200,6 +209,7 @@ classes:
     slots: [rel_since, rel_note]
     annotations:
       mime: relation/x-vnd.sen-labs.relation.person.relative
+      group: Family
       label: relative of
       inverse_label: relative of
       source_types: entity/x-vnd.sen-labs.entity.person,application/x-person
@@ -213,6 +223,7 @@ classes:
     slots: [rel_since, rel_note]
     annotations:
       mime: relation/x-vnd.sen-labs.relation.person.colleague
+      group: Professional
       label: colleague of
       inverse_label: colleague of
       source_types: entity/x-vnd.sen-labs.entity.person,application/x-person
@@ -225,6 +236,7 @@ classes:
     slots: [rel_since, rel_note]
     annotations:
       mime: relation/x-vnd.sen-labs.relation.person.superior
+      group: Professional
       label: superior of
       inverse_label: subordinate of
       source_types: entity/x-vnd.sen-labs.entity.person,application/x-person
@@ -237,6 +249,7 @@ classes:
     slots: [rel_since, rel_note]
     annotations:
       mime: relation/x-vnd.sen-labs.relation.person.mentor
+      group: Professional
       label: mentor of
       inverse_label: mentee of
       source_types: entity/x-vnd.sen-labs.entity.person,application/x-person
@@ -249,6 +262,7 @@ classes:
     slots: [rel_since, rel_note]
     annotations:
       mime: relation/x-vnd.sen-labs.relation.person.collaborator
+      group: Professional
       label: collaborates with
       inverse_label: collaborates with
       source_types: entity/x-vnd.sen-labs.entity.person,application/x-person
@@ -260,6 +274,7 @@ classes:
     slots: [rel_since, rel_note]
     annotations:
       mime: relation/x-vnd.sen-labs.relation.person.client
+      group: Professional
       label: client of
       inverse_label: provider of
       source_types: entity/x-vnd.sen-labs.entity.person,application/x-person
@@ -272,6 +287,7 @@ classes:
     slots: [rel_since, rel_note]
     annotations:
       mime: relation/x-vnd.sen-labs.relation.person.employment
+      group: Organizations
       # stored at the person only: what points to an organization is found by query (the person is not the kind of file that an organization can be)
       bidir: false
       target_types: entity/x-vnd.sen-labs.entity.organization
@@ -287,6 +303,7 @@ classes:
     slots: [rel_since, rel_note]
     annotations:
       mime: relation/x-vnd.sen-labs.relation.person.membership
+      group: Organizations
       # stored at the person only: what points to an organization is found by query (the person is not the kind of file that an organization can be)
       bidir: false
       target_types: entity/x-vnd.sen-labs.entity.organization
