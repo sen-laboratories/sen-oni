@@ -80,7 +80,8 @@ function type_files()
         if [ "$depth" = top ]; then
             find "$folder" -maxdepth 1 -type f -name "*.$ext" | sort
         else
-            find "$folder" -mindepth 2 -type f -name "*.$ext" | sort
+            # (the folder types/ holds the semantic types, which are no MIME types)
+            find "$folder" -mindepth 2 -type f -name "*.$ext" -not -path "$folder/types/*" | sort
         fi
     done
 }
@@ -158,6 +159,34 @@ function ensure_templates()
     add_templates "$ontology_name" "$list" && set_attr $ATTR_TEMPLATES_DONE "$placeholder" 1
 }
 
+# The semantic types of an ontology (types/*.rdef: what a file means, org.sen-labs.paper) are not in the MIME database: the registry of SEN reads them from
+# the folder types/ of the ontologies in the data folders (see docs/semantic-types.md). A package brings them compiled, in its own ontology folder. From
+# a source tree they are compiled into the folder of the non-packaged data, which is also what is removed again with the ontology.
+function nonpackaged_types_folder()
+{
+    echo "$(finddir B_USER_NONPACKAGED_DATA_DIRECTORY)/sen/ontologies/$1/types"
+}
+
+function install_semantic_types()
+{
+    local folder=${1%/} ontology_name=$2
+    [ -d "$folder/types" ] || return 0
+    case "$folder" in */sen/ontologies/*) return 0;; esac   # (from a package: the registry reads them there)
+    local target file
+    target=$(nonpackaged_types_folder "$ontology_name")
+    rm -rf "$target"
+    mkdir -p "$target"
+    for file in "$folder"/types/*.rdef; do
+        [ -f "$file" ] || continue
+        rc -o "$target/$(basename --suffix=.rdef "$file").rsrc" "$file" || return 1
+        echo "  semantic type: $(basename --suffix=.rdef "$file")"
+    done
+    for file in "$folder"/types/*.rsrc; do
+        [ -f "$file" ] && cp "$file" "$target/"
+    done
+    return 0
+}
+
 function folder_sum()
 {
     (cd "$1" && find . -type f | sort | while read -r f; do md5sum "$f"; done | md5sum | cut -d' ' -f1)
@@ -177,6 +206,10 @@ function install_ontology()
     sum=$(folder_sum "$folder")
 
     echo creating ontology $ontology_name from $folder...
+
+    # (the types that an earlier version of the ontology provided, to remove those that it does not provide any more)
+    local previous=$oni_output/$ontology_name.previous
+    "$SEN_MIME" provides "$SEN_CONFIG_ONTO/$ontology_name" > "$previous" 2>/dev/null || : > "$previous"
 
     # The descriptor of the ontology itself is ontology.rdef/.rsrc, not a MIME type
     local descriptor=
@@ -206,6 +239,8 @@ function install_ontology()
         create_mime_type "$file" </dev/null || { echo "Aborting $ontology_name."; return 1; }
         processed=$((processed + 1))
     done
+
+    install_semantic_types "$folder" "$ontology_name" || { echo "Aborting $ontology_name."; return 1; }
 
     echo registering ontology in SEN configuration...
 
@@ -237,7 +272,8 @@ function install_ontology()
     echo relating the ontology to its MIME types...
     local mime_type related=1
     # (a type that was not processed, whatever the reason: the ontology is not complete, the next update does it again)
-    if [ $processed -ne $expected ] || [ $processed -eq 0 ]; then
+    # (an ontology that has semantic types only has no MIME types)
+    if [ $processed -ne $expected ] || { [ $processed -eq 0 ] && ! compgen -G "$folder/types/*" >/dev/null; }; then
         echo "  only $processed of $expected types were processed."
         related=0
     fi
@@ -247,6 +283,24 @@ function install_ontology()
             related=0
         }
     done < $types_file
+    # the types of an earlier version that are gone (renamed, or now semantic types): only when the ontology is complete, and not if another provides them
+    if [ $related = 1 ]; then
+        local other kept
+        while read -r mime_type; do
+            [ -n "$mime_type" ] || continue
+            grep -qxF "$mime_type" "$types_file" && continue
+            kept=
+            for other in "$SEN_CONFIG_ONTO"/*; do
+                [ -f "$other" ] && [ "$other" != "$sen_onto_path" ] || continue
+                if "$SEN_MIME" provides "$other" 2>/dev/null | grep -qxF "$mime_type"; then kept=1; break; fi
+            done
+            "$SEN_MIME" unrelate "$sen_onto_path" "$mime_type" 2>/dev/null || true
+            if [ -z "$kept" ]; then
+                echo "  $mime_type is not provided any more, removing it."
+                "$SEN_MIME" uninstall "$mime_type" || true
+            fi
+        done < "$previous"
+    fi
     # not to supertypes: they are folders with the types of all ontologies. Relations that an older installer made are removed.
     while read -r mime_type; do
         "$SEN_MIME" unrelate "$sen_onto_path" "$mime_type" 2>/dev/null || true
@@ -291,6 +345,11 @@ function remove_ontology()
         fi
     done <<< "$types"
     remove_templates "$ontology_name"
+    # (the semantic types that were compiled from a source tree)
+    case "$(get_attr $ATTR_SOURCE "$placeholder")" in
+        */sen/ontologies/*) ;;
+        *) rm -rf "$(nonpackaged_types_folder "$ontology_name")"; rmdir "$(dirname "$(nonpackaged_types_folder "$ontology_name")")" 2>/dev/null || true;;
+    esac
     rm -f "$placeholder"
     echo "Removed: $ontology_name."
 }
