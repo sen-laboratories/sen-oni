@@ -209,6 +209,62 @@ class ValidationTest(unittest.TestCase):
         self.assertIn('"attr:name" = "dc:s"', rdef)
         self.assertIn('"attr:public_name" = "S"', rdef)
 
+    def test_semantic_type_is_a_registry_entry_without_mime_type(self):
+        files = self.generate('''
+            slots:
+              s: {title: S, annotations: {attribute: "dc:s"}}
+            classes:
+              A: {title: A, description: "An A", slots: [s], annotations: {type_id: org.sen-labs.a, conforms_to: "public.document, org.sen-labs.b", formats: "application/pdf"}}
+            ''')
+        self.assertEqual([k for k in files if k.endswith('.rdef') and 'types' in k], [k for k in files if k.endswith('org.sen-labs.a.rdef')])
+        rdef = next(v for k, v in files.items() if k.endswith('org.sen-labs.a.rdef'))
+        self.assertIn('"SEN:TYPE:ID") "org.sen-labs.a"', rdef)
+        self.assertIn('"conformsTo" = "public.document"', rdef)
+        self.assertIn('"conformsTo" = "org.sen-labs.b"', rdef)
+        self.assertIn('"format" = "application/pdf"', rdef)
+        self.assertIn('"attr:name" = "dc:s"', rdef)
+        self.assertNotIn('META:TYPE', rdef)         # (not a MIME type)
+
+    def test_semantic_type_identifier_must_be_an_identifier(self):
+        with self.assertRaisesRegex(oni_gen.SchemaError, 'not an identifier'):
+            self.generate('''
+                classes:
+                  A: {title: A, annotations: {type_id: "document/a"}}
+                ''')
+
+    def test_class_is_a_mime_type_or_a_semantic_type(self):
+        with self.assertRaisesRegex(oni_gen.SchemaError, 'MIME type or a semantic type'):
+            self.generate('''
+                classes:
+                  A: {title: A, annotations: {mime: entity/x-a, type_id: org.sen-labs.a}}
+                ''')
+
+    def test_sssom_mappings_of_the_schema_are_in_the_entry(self):
+        with tempfile.TemporaryDirectory() as folder:
+            schema = os.path.join(folder, 'x.yaml')
+            with open(schema, 'w') as f:
+                f.write(textwrap.dedent('''
+                    id: https://example.org/x
+                    name: sen_x
+                    title: X
+                    description: x
+                    version: 0.1.0
+                    prefixes: {linkml: "https://w3id.org/linkml/", sen: "https://sen-labs.org/ns/sen#"}
+                    default_prefix: sen
+                    imports: [linkml:types]
+                    classes:
+                      A: {title: A, description: "An A", annotations: {type_id: org.sen-labs.a}}
+                    '''))
+            with open(os.path.join(folder, 'x.sssom.tsv'), 'w') as f:
+                f.write('#mapping_set_id: x\nsubject_id\tpredicate_id\tobject_id\tmapping_justification\tconfidence\n'
+                        'org.sen-labs.a\tskos:exactMatch\tschema:A\tsemapv:ManualMappingCuration\t0.9\n')
+            with tempfile.TemporaryDirectory() as out:
+                files = oni_gen.generate(schema, out, None)
+        rdef = next(v for k, v in files.items() if k.endswith('org.sen-labs.a.rdef'))
+        self.assertIn('"predicate" = "skos:exactMatch"', rdef)
+        self.assertIn('"object" = "schema:A"', rdef)
+        self.assertIn('"confidence" = "0.9"', rdef)
+
 
 @unittest.skipUnless(os.path.isdir(os.path.join(SENTO, 'src')), 'sento is not next to this repository')
 class SentoConsistencyTest(unittest.TestCase):

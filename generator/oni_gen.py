@@ -8,6 +8,7 @@ oni_gen: generates the artifacts of an ONI ontology from its LinkML schema.
 
 For every schema it writes
   * the Haiku resource definitions (.rdef) of the MIME types of the classes defined in the schema,
+  * the registry entries (types/<id>.rdef) of the semantic types (classes with a type_id annotation: layer 2 of sento/docs/semantic-types.md),
   * ontology.rdef: the description of the ontology (schema URL, version, author, ...), which the installer writes as the
     attributes of the ontology in the SEN configuration (resources become attributes, see resattr),
   * a C++ header with the constants of the attribute names and MIME types (SenOnto<Name>.h).
@@ -136,6 +137,21 @@ def all_attributes(sv):
 
 
 @dataclass
+class SemanticType:
+    """A semantic type (layer 2, see sento/docs/semantic-types.md): what a file means, an identifier of the registry, not a MIME type."""
+    cls_name: str
+    id: str
+    title: str
+    description: str
+    conforms_to: list = field(default_factory=list)
+    formats: list = field(default_factory=list)
+    abstract: bool = False
+    icon: str = None
+    attributes: list = field(default_factory=list)
+    mappings: list = field(default_factory=list)    # (predicate, object, justification, confidence) of the SSSOM file of the schema
+
+
+@dataclass
 class MimeClass:
     cls_name: str
     mime: str
@@ -154,9 +170,11 @@ def read_classes(sv, schema_dir):
     classes = []
     seen = {}
     for cls_name, cls in sv.schema.classes.items():
+        if annotation(cls, 'type_id'):
+            continue        # (a semantic type, see read_types)
         mime = annotation(cls, 'mime')
         if not mime:
-            raise SchemaError(f'class {cls_name} has no "mime" annotation (its MIME type)')
+            raise SchemaError(f'class {cls_name} has no "mime" annotation (its MIME type) and no "type_id" (its semantic type)')
         if mime in seen:
             raise SchemaError(f'MIME type {mime} is used by {seen[mime]} and {cls_name}')
         seen[mime] = cls_name
@@ -180,6 +198,120 @@ def read_classes(sv, schema_dir):
             mc.config = flags
         classes.append(mc)
     return classes
+
+
+TYPE_ID_PATTERN = re.compile(r'^[a-z][a-z0-9-]*(\.[A-Za-z0-9][A-Za-z0-9-]*)+$')
+
+
+def read_sssom(schema_path):
+    """The mappings of the SSSOM file next to the schema (<schema>.sssom.tsv): subject_id -> list of
+    (predicate_id, object_id, mapping_justification, confidence). A plain TSV with the columns of SSSOM, '#' lines are the metadata."""
+    path = os.path.splitext(schema_path)[0] + '.sssom.tsv'
+    mappings = {}
+    if not os.path.exists(path):
+        return mappings
+    header = None
+    with open(path) as f:
+        for line in f:
+            line = line.rstrip('\n')
+            if not line or line.startswith('#'):
+                continue
+            cells = line.split('\t')
+            if header is None:
+                header = cells
+                for required in ('subject_id', 'predicate_id', 'object_id', 'mapping_justification'):
+                    if required not in header:
+                        raise SchemaError(f'{path}: the column {required} of SSSOM is missing')
+                continue
+            row = dict(zip(header, cells))
+            mappings.setdefault(row['subject_id'], []).append(
+                (row['predicate_id'], row['object_id'], row['mapping_justification'], row.get('confidence', '')))
+    return mappings
+
+
+def read_types(sv, schema_dir, schema_path=None):
+    """The semantic types of the schema: the classes with the annotation type_id (an identifier of the registry, UTI style)."""
+    mappings = read_sssom(schema_path) if schema_path else {}
+    types = []
+    seen = {}
+    for cls_name, cls in sv.schema.classes.items():
+        type_id = annotation(cls, 'type_id')
+        if not type_id:
+            continue
+        if annotation(cls, 'mime'):
+            raise SchemaError(f'class {cls_name} has a "mime" and a "type_id": it is a MIME type or a semantic type')
+        if not TYPE_ID_PATTERN.match(type_id):
+            raise SchemaError(f'class {cls_name}: {type_id} is not an identifier (lower case words separated by dots, e.g. org.sen-labs.paper)')
+        if type_id in seen:
+            raise SchemaError(f'the type {type_id} is used by {seen[type_id]} and {cls_name}')
+        seen[type_id] = cls_name
+        if not cls.title:
+            raise SchemaError(f'class {cls_name} has no title (the short name of the type)')
+        icon = annotation(cls, 'icon')
+        if icon and not os.path.exists(os.path.join(schema_dir, 'icons', icon + '.hex')):
+            raise SchemaError(f'class {cls_name}: icon file icons/{icon}.hex does not exist')
+        split = lambda text: [t.strip() for t in (text or '').split(',') if t.strip()]
+        st = SemanticType(cls_name, type_id, one_line(cls.title), one_line(cls.description),
+                          conforms_to=split(annotation(cls, 'conforms_to')), formats=split(annotation(cls, 'formats')),
+                          abstract=bool(cls.abstract), icon=icon, mappings=mappings.get(type_id, []))
+        st.attributes = [each for slot in (cls.slots or []) for each in expand(read_attribute(sv, slot))]
+        types.append(st)
+    return types
+
+
+def render_type_rdef(st, schema_file, schema_dir):
+    """The entry of a type in the registry (one resource file for each type, compiled into the package of the ontology: data/sen/ontologies/<name>/types)."""
+    out = [f'// Generated from {schema_file} by oni_gen.py: do not edit.',
+           '// SPDX-License-Identifier: MIT',
+           '// SPDX-FileCopyrightText: 2026 SEN Labs e.U.', '']
+    n = 0
+
+    def resource(text):
+        nonlocal n
+        out.append(f'resource({n}, {text}')
+        n += 1
+
+    resource(f'"SEN:TYPE:ID") {rdef_string(st.id)};')
+    resource(f'"META:S:DESC") #\'MSDC\' {rdef_string(st.title)};')
+    resource(f'"META:L:DESC") #\'MLDC\' {rdef_string(st.description)};')
+    if st.abstract:
+        resource('"SEN:TYPE:ABSTRACT") true;')
+    if st.conforms_to:
+        resource('"SEN:TYPE:CONFORMS") message {')
+        out.append(',\n'.join(f'\t"conformsTo" = {rdef_string(c)}' for c in st.conforms_to))
+        out.append('};')
+    if st.formats:
+        resource('"SEN:TYPE:FORMATS") message {')
+        out.append(',\n'.join(f'\t"format" = {rdef_string(f)}' for f in st.formats))
+        out.append('};')
+    if st.mappings:
+        # parallel arrays, one entry for each mapping, in the order of the SSSOM file
+        resource('"SEN:TYPE:MAPPINGS") message {')
+        body = []
+        for key, index in (('predicate', 0), ('object', 1), ('justification', 2), ('confidence', 3)):
+            for mapping in st.mappings:
+                body.append(f'\t"{key}" = {rdef_string(mapping[index])}')
+        out.append(',\n'.join(body))
+        out.append('};')
+    if st.attributes:
+        resource('"META:ATTR_INFO") message(233) {')
+        body = []
+        for key, fmt in (('name', lambda a: rdef_string(a.name)), ('public_name', lambda a: rdef_string(a.public)),
+                         ('type', lambda a: f"'{a.type}'"), ('viewable', lambda a: boolean(a.viewable)),
+                         ('editable', lambda a: boolean(a.editable)), ('searchable', lambda a: boolean(a.searchable)),
+                         ('width', lambda a: str(a.width)), ('alignment', lambda a: str(a.alignment)),
+                         ('display_as', lambda a: rdef_string(a.display_as))):
+            field_name = 'SEN:searchable' if key == 'searchable' else f'attr:{key}'
+            for attribute in st.attributes:
+                body.append(f'\t"{field_name}" = {fmt(attribute)}')
+        body.append(f'\t"type" = {rdef_string(st.id)}')
+        out.append(',\n'.join(body))
+        out.append('};')
+    if st.icon:
+        resource('"META:ICON") #\'VICN\' array {')
+        out.extend(hex_block(schema_dir, st.icon))
+        out.append('};')
+    return '\n'.join(out) + '\n'
 
 
 def indent_lines(lines, tabs=1):
@@ -290,7 +422,7 @@ def namespace_of(schema):
     return re.sub(r'^sen_', '', schema.name)
 
 
-def render_header(sv, classes, schema_file):
+def render_header(sv, classes, schema_file, types=()):
     schema = sv.schema
     ns = namespace_of(schema)
     out = ['/*', f' * Generated from {schema_file} by oni_gen.py: do not edit.',
@@ -319,7 +451,14 @@ def render_header(sv, classes, schema_file):
     for mc in classes:
         out.append(f'/** {mc.title}: {mc.description} */')
         out.append(f'inline constexpr char k{mc.cls_name}[] = "{mc.mime}";')
-    out += ['}\t// namespace mime', '', f'}}\t// namespace {ns}', '}\t// namespace onto', '}\t// namespace sen', '']
+    out += ['}\t// namespace mime', '']
+    if types:
+        out += ['namespace type {']
+        for st in types:
+            out.append(f'/** {st.title}: {st.description} */')
+            out.append(f'inline constexpr char k{st.cls_name}[] = "{st.id}";')
+        out += ['}\t// namespace type', '']
+    out += [f'}}\t// namespace {ns}', '}\t// namespace onto', '}\t// namespace sen', '']
     return '\n'.join(out)
 
 
@@ -339,12 +478,15 @@ def generate(schema_path, rdef_dir, header_dir):
     ontology = namespace_of(sv.schema)
     all_attributes(sv)                       # consistency check across the schema and its imports
     classes = read_classes(sv, schema_dir)
+    types = read_types(sv, schema_dir, schema_path)
     written = {}
     for mc in classes:
         written[rdef_path(rdef_dir, ontology, mc)] = render_rdef(mc, schema_file, schema_dir)
+    for st in types:
+        written[os.path.join(rdef_dir, ontology, 'types', st.id + '.rdef')] = render_type_rdef(st, schema_file, schema_dir)
     written[os.path.join(rdef_dir, ontology, 'ontology.rdef')] = render_ontology(sv)
     if header_dir:
-        written[os.path.join(header_dir, f'SenOnto{camel(ontology)}.h')] = render_header(sv, classes, schema_file)
+        written[os.path.join(header_dir, f'SenOnto{camel(ontology)}.h')] = render_header(sv, classes, schema_file, types)
     return written
 
 

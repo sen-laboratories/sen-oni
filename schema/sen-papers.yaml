@@ -99,15 +99,21 @@ slots:
     annotations: {attribute: "SEN:citationCount", editable: false, width: 50, alignment: 1}
 
 classes:
+  # The types of this ontology are semantic types (layer 2, sento/docs/semantic-types.md): the identifier of the registry is what META:TYPE says, the files keep
+  # their format (PDF, EPUB) as BEOS:TYPE, and there is no MIME type for a paper. How the types are related to the terms of other vocabularies is in the SSSOM file next
+  # to this schema (sen-papers.sssom.tsv).
   Document:
     description: Documents that SEN knows more about than their file format tells.
     title: Document
     abstract: true
-    annotations: {mime: document, supertype: true}
+    annotations: {type_id: org.sen-labs.document, conforms_to: public.document}
 
   ScientificPaper:
-    description: A scientific paper (an article, a preprint, a chapter) that has a DOI. It is the semantic type of the file (META:TYPE), the file keeps its own type (PDF, EPUB).
+    description: A scientific paper (an article, a preprint, a chapter) that has a DOI. The file keeps its format (PDF, EPUB), the semantic type says what it is.
     title: Scientific Paper
     is_a: Document
     slots: [identifier, title, creator, date, venue, citation_count, oa_status, subject, abstract_text, publisher, language, kind, url, content_url]
-    annotations: {mime: document/scientific-paper}
+    annotations:
+      type_id: org.sen-labs.paper
+      conforms_to: org.sen-labs.document
+      formats: application/pdf, application/epub+zip

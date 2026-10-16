@@ -1,0 +1,17 @@
+// Generated from schema/sen-papers.yaml by oni_gen.py: do not edit.
+// SPDX-License-Identifier: MIT
+// SPDX-FileCopyrightText: 2026 SEN Labs e.U.
+
+resource(0, "SEN:TYPE:ID") "org.sen-labs.document";
+resource(1, "META:S:DESC") #'MSDC' "Document";
+resource(2, "META:L:DESC") #'MLDC' "Documents that SEN knows more about than their file format tells.";
+resource(3, "SEN:TYPE:ABSTRACT") true;
+resource(4, "SEN:TYPE:CONFORMS") message {
+	"conformsTo" = "public.document"
+};
+resource(5, "SEN:TYPE:MAPPINGS") message {
+	"predicate" = "skos:exactMatch",
+	"object" = "public.document",
+	"justification" = "semapv:ManualMappingCuration",
+	"confidence" = "0.8"
+};

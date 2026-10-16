@@ -60,11 +60,14 @@ inline constexpr unsigned kIndexCount = sizeof(kIndices) / sizeof(kIndices[0]);
 #pragma GCC diagnostic pop
 
 namespace mime {
-/** Document: Documents that SEN knows more about than their file format tells. */
-inline constexpr char kDocument[] = "document";
-/** Scientific Paper: A scientific paper (an article, a preprint, a chapter) that has a DOI. It is the semantic type of the file (META:TYPE), the file keeps its own type (PDF, EPUB). */
-inline constexpr char kScientificPaper[] = "document/scientific-paper";
 }	// namespace mime
+
+namespace type {
+/** Document: Documents that SEN knows more about than their file format tells. */
+inline constexpr char kDocument[] = "org.sen-labs.document";
+/** Scientific Paper: A scientific paper (an article, a preprint, a chapter) that has a DOI. The file keeps its format (PDF, EPUB), the semantic type says what it is. */
+inline constexpr char kScientificPaper[] = "org.sen-labs.paper";
+}	// namespace type
 
 }	// namespace papers
 }	// namespace onto

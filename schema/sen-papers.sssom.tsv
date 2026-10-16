@@ -1,0 +1,12 @@
+#curie_map:
+#  sen: https://sen-labs.org/ns/type/
+#  schema: https://schema.org/
+#  skos: http://www.w3.org/2004/02/skos/core#
+#  public: https://developer.apple.com/documentation/uniformtypeidentifiers/
+#mapping_set_id: https://sen-labs.org/ns/oni/papers/mappings
+#mapping_set_description: How the semantic types of the papers ontology relate to the terms of other vocabularies and systems.
+#license: https://opensource.org/licenses/MIT
+subject_id	predicate_id	object_id	mapping_justification	confidence
+org.sen-labs.paper	skos:exactMatch	schema:ScholarlyArticle	semapv:ManualMappingCuration	0.95
+org.sen-labs.paper	skos:broadMatch	public.document	semapv:ManualMappingCuration	0.9
+org.sen-labs.document	skos:exactMatch	public.document	semapv:ManualMappingCuration	0.8

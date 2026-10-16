@@ -1,11 +1,28 @@
 // Generated from schema/sen-papers.yaml by oni_gen.py: do not edit.
 // SPDX-License-Identifier: MIT
-// SPDX-FileCopyrightText: 2024-2026 SEN Labs e.U.
+// SPDX-FileCopyrightText: 2026 SEN Labs e.U.
 
-resource(0, "META:TYPE") "document/scientific-paper";
-resource(1, "META:L:DESC") #'MLDC' "A scientific paper (an article, a preprint, a chapter) that has a DOI. It is the semantic type of the file (META:TYPE), the file keeps its own type (PDF, EPUB).";
-resource(2, "META:S:DESC") #'MSDC' "Scientific Paper";
-resource(3, "META:ATTR_INFO") message(233) {
+resource(0, "SEN:TYPE:ID") "org.sen-labs.paper";
+resource(1, "META:S:DESC") #'MSDC' "Scientific Paper";
+resource(2, "META:L:DESC") #'MLDC' "A scientific paper (an article, a preprint, a chapter) that has a DOI. The file keeps its format (PDF, EPUB), the semantic type says what it is.";
+resource(3, "SEN:TYPE:CONFORMS") message {
+	"conformsTo" = "org.sen-labs.document"
+};
+resource(4, "SEN:TYPE:FORMATS") message {
+	"format" = "application/pdf",
+	"format" = "application/epub+zip"
+};
+resource(5, "SEN:TYPE:MAPPINGS") message {
+	"predicate" = "skos:exactMatch",
+	"predicate" = "skos:broadMatch",
+	"object" = "schema:ScholarlyArticle",
+	"object" = "public.document",
+	"justification" = "semapv:ManualMappingCuration",
+	"justification" = "semapv:ManualMappingCuration",
+	"confidence" = "0.95",
+	"confidence" = "0.9"
+};
+resource(6, "META:ATTR_INFO") message(233) {
 	"attr:name" = "dc:identifier",
 	"attr:name" = "dc:title",
 	"attr:name" = "dc:creator",
@@ -132,5 +149,5 @@ resource(3, "META:ATTR_INFO") message(233) {
 	"attr:display_as" = "",
 	"attr:display_as" = "",
 	"attr:display_as" = "",
-	"type" = "document/scientific-paper"
+	"type" = "org.sen-labs.paper"
 };

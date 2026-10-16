@@ -26,6 +26,7 @@ A **class** is a MIME type, a **slot** is a file attribute. Standard LinkML elem
 |-------|-----------|---------|
 | schema | `oni_author`, `oni_stable`, `oni_schema_url` | the metadata of the ontology (`ontology.rdef`; the `version` and `description` of the schema are used, too) |
 | class | `mime` | the MIME type, required: a supertype (`entity`) or `supertype/name` |
+| class | `type_id`, `conforms_to`, `formats` | a **semantic type** instead of a MIME type (`mime` and `type_id` exclude each other): the identifier of the registry (`org.sen-labs.paper`, lower case words separated by dots), the identifiers that it conforms to (comma separated; those of other systems, `public.document`, are allowed) and the MIME types of the files that it can be found on. It becomes `ontologies/<name>/types/<id>.rdef`, an entry of the registry that the package brings in `data/sen/ontologies/<name>/types` (see `sento/docs/semantic-types.md`); there is no MIME type |
 | class | `supertype: true` | the class is a supertype (the resource gets the meta MIME type) |
 | class | `app`, `extensions`, `icon`, `folder_icon` | preferred application (a signature; never set for file types of other programs), file extensions (comma separated: one entry for each), the vector icon (`schema/icons/<name>.hex`), the icon of the relation folder |
 | class (relation) | `bidir`, `dynamic`, `contained`, `label`, `inverse_label` | the flavor of the relation (`SEN:bidir`, `SEN:dynamic`, `SEN:self`) and the labels of both directions, written to `SEN:REL:CONFIG` |
@@ -36,6 +37,8 @@ A **class** is a MIME type, a **slot** is a file attribute. Standard LinkML elem
 | slot | `viewable`, `editable`, `searchable`, `width`, `alignment`, `display_as` | the attribute info that Tracker shows; `searchable` (written to the attribute info as `SEN:searchable`, the namespace `attr:` is Haiku's) creates an index on every mounted volume |
 
 The `title` of a slot is its public name (the column title), the `title` of a class its short description.
+
+The mappings of a schema to other vocabularies and systems are in the SSSOM file next to it (`<schema>.sssom.tsv`: the columns `subject_id`, `predicate_id`, `object_id`, `mapping_justification`, `confidence`; `subject_id` is the identifier of a type); they become the resource `SEN:TYPE:MAPPINGS` of the entry of the type.
 
 ## What the generator checks
 
