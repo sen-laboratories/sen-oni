@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: MIT
 # SPDX-FileCopyrightText: 2024-2026 SEN Labs e.U.
 #
-# Scientific papers: the semantic type document/scientific-paper that the Paperboy plugin of SENSEI gives to PDF and EPUB files whose DOI it
+# Scientific papers: the semantic type org.sen-labs.paper that the Paperboy plugin of SENSEI gives to PDF and EPUB files whose DOI it
 # found, and the attributes it writes. Attributes use the established vocabularies (Dublin Core, schema.org), the same names that the books
 # ontology and Toji use. The attributes that hold a BMessage (schema:author, schema:encoding, paperboy:state) are not defined here: Tracker
 # cannot show a message in a column, and BFS cannot index it.

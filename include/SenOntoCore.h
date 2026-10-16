@@ -22,7 +22,7 @@ inline constexpr char kSenId[] = "SEN:ID";
 inline constexpr char kSenTo[] = "SEN:TO";
 /** IDs of the targets of the meta relations (classification and context) of the object. */
 inline constexpr char kSenMeta[] = "SEN:META";
-/** Semantic type of a file, e.g. document/scientific-paper, set by identify plugins (Haiku itself only knows the technical MIME type). Plugins carry the plugin type here. */
+/** Semantic type of a file, e.g. org.sen-labs.paper, set by identify plugins (Haiku itself only knows the technical MIME type). Plugins carry the plugin type here. */
 inline constexpr char kSemanticType[] = "META:TYPE";
 /** The entity is fictional. */
 inline constexpr char kFictional[] = "SEN:fictional";

@@ -66,7 +66,7 @@ slots:
     annotations: {attribute: "SEN:META", viewable: false, editable: false, searchable: true, chunks: 8}
   semantic_type:
     description: >-
-      Semantic type of a file, e.g. document/scientific-paper, set by identify plugins (Haiku itself only knows the
+      Semantic type of a file, e.g. org.sen-labs.paper, set by identify plugins (Haiku itself only knows the
       technical MIME type). Plugins carry the plugin type here.
     title: Semantic Type
     annotations: {attribute: "META:TYPE", editable: false, searchable: true}
