@@ -11,7 +11,9 @@ cd "$(dirname "$0")"
 [ -f bin/mime ] || { echo "bin/mime not found, run make first" >&2; exit 1; }
 ARCH=$(getarch)
 REVISION=${REVISION:-1}
-ONI_VERSION=1.0.0~dev
+# (SEN_VERSION_SUFFIX replaces dev for a preview; the ontologies have their own versions and ONTOLOGY_REVISION, which is REVISION if not set)
+ONI_VERSION=1.0.0~${SEN_VERSION_SUFFIX:-dev}
+ONTOLOGY_REVISION=${ONTOLOGY_REVISION:-$REVISION}
 STAGE=package-build
 OUT=$(pwd)
 
@@ -59,10 +61,10 @@ for folder in ontologies/*/; do
 	[ -f "$folder/README.md" ] && cp "$folder/README.md" $STAGE/$name/documentation/packages/sen_ontology_$name/
 	cp LICENSE $STAGE/$name/documentation/packages/sen_ontology_$name/
 
-	sed -e "s|@NAME@|$name|g" -e "s|@VERSION@|$version-$REVISION|g" -e "s|@SUMMARY@|$summary|g" \
+	sed -e "s|@NAME@|$name|g" -e "s|@VERSION@|$version-$ONTOLOGY_REVISION|g" -e "s|@SUMMARY@|$summary|g" \
 		-e "s|@DESCRIPTION@|$description|g" -e "s|@REQUIRES@|$requires|" package/PackageInfo.ontology.in \
 		> $STAGE/$name/.PackageInfo
-	package create -C $STAGE/$name "sen_ontology_$name-$version-$REVISION-any.hpkg"
-	echo "created sen_ontology_$name-$version-$REVISION-any.hpkg"
+	package create -C $STAGE/$name "sen_ontology_$name-$version-$ONTOLOGY_REVISION-any.hpkg"
+	echo "created sen_ontology_$name-$version-$ONTOLOGY_REVISION-any.hpkg"
 done
 rm -rf $STAGE
