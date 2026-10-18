@@ -224,26 +224,30 @@ slots:
     description: The version of the plugin (that of its application resource).
     title: Version
     annotations: {attribute: "SEN:plugin:version", editable: false, width: 60}
+  plugin_features:
+    description: What the plugin does (extract, enrich, identify, navigate, search), as one list that people read; the flags are the attributes of the features.
+    title: Features
+    annotations: {attribute: "SEN:plugin:features", editable: false, width: 160}
   plugin_extract:
     title: extract
     range: integer
-    annotations: {attribute: "SEN:plugin:extract", editable: false, width: 30}
+    annotations: {attribute: "SEN:plugin:extract", editable: false, width: 30, viewable: false}
   plugin_enrich:
     title: enrich
     range: integer
-    annotations: {attribute: "SEN:plugin:enrich", editable: false, width: 30}
+    annotations: {attribute: "SEN:plugin:enrich", editable: false, width: 30, viewable: false}
   plugin_identify:
     title: identify
     range: integer
-    annotations: {attribute: "SEN:plugin:identify", editable: false, width: 30}
+    annotations: {attribute: "SEN:plugin:identify", editable: false, width: 30, viewable: false}
   plugin_navigate:
     title: navigate
     range: integer
-    annotations: {attribute: "SEN:plugin:navigate", editable: false, width: 30}
+    annotations: {attribute: "SEN:plugin:navigate", editable: false, width: 30, viewable: false}
   plugin_search:
     title: search
     range: integer
-    annotations: {attribute: "SEN:plugin:search", editable: false, width: 30}
+    annotations: {attribute: "SEN:plugin:search", editable: false, width: 30, viewable: false}
 
   # ---- ontologies
   onto_schema_url:
@@ -433,7 +437,7 @@ classes:
   Plugin:
     description: a SEN plugin for handling various semantic tasks on entities or relations.
     title: SEN Plugin
-    slots: [plugin_version, semantic_type, plugin_extract, plugin_enrich, plugin_identify, plugin_navigate, plugin_search]
+    slots: [plugin_version, plugin_features, plugin_extract, plugin_enrich, plugin_identify, plugin_navigate, plugin_search]
     annotations:
       mime: application/x-vnd.sen-labs.plugin
       icon: x-vnd.sen-labs.plugin

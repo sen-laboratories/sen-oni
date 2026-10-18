@@ -80,6 +80,8 @@ inline constexpr char kLine[] = "be:line";
 inline constexpr char kColumn[] = "be:column";
 /** The version of the plugin (that of its application resource). */
 inline constexpr char kPluginVersion[] = "SEN:plugin:version";
+/** What the plugin does (extract, enrich, identify, navigate, search), as one list that people read; the flags are the attributes of the features. */
+inline constexpr char kPluginFeatures[] = "SEN:plugin:features";
 inline constexpr char kPluginExtract[] = "SEN:plugin:extract";
 inline constexpr char kPluginEnrich[] = "SEN:plugin:enrich";
 inline constexpr char kPluginIdentify[] = "SEN:plugin:identify";
