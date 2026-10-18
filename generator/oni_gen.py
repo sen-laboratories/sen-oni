@@ -101,9 +101,15 @@ def read_attribute(sv, slot_name):
     return Attribute(
         slot=slot_name, name=name, public=slot.title, type=type_code,
         viewable=bool(annotation(slot, 'viewable', True)), editable=bool(annotation(slot, 'editable', True)),
-        searchable=searchable, width=int(annotation(slot, 'width', 60)),
+        searchable=searchable, width=column_width(int(annotation(slot, 'width', 60)), slot.title),
         alignment=int(annotation(slot, 'alignment', 0)), display_as=str(annotation(slot, 'display_as', '')),
         description=one_line(slot.description), chunks=int(annotation(slot, 'chunks', 1)))
+
+
+def column_width(width, title):
+    """The width of the column of an attribute: as given, but not less than what its title needs (in a plain font about 7 pixels a character and
+    some room for the margins), so that the title of a column is never cut."""
+    return max(width, len(title) * 7 + 24)
 
 
 def expand(attribute):

@@ -122,16 +122,16 @@ slots:
   rel_label:
     description: Label of the relation.
     title: Label
-    annotations: {attribute: "SEN:REL:Label"}
+    annotations: {attribute: "SEN:REL:Label", width: 140}
   rel_kind:
     title: Kind
-    annotations: {attribute: "SEN:REL:Kind"}
+    annotations: {attribute: "SEN:REL:Kind", width: 100}
   rel_desc:
     title: Description
-    annotations: {attribute: "SEN:REL:Desc"}
+    annotations: {attribute: "SEN:REL:Desc", width: 220}
   rel_role:
     title: Role
-    annotations: {attribute: "SEN:REL:Role"}
+    annotations: {attribute: "SEN:REL:Role", width: 110}
 
   # ---- the attributes of a MIME type (the attribute info of the MIME database, as the contents of a type)
   attr_name:

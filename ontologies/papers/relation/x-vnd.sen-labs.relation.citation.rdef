@@ -13,7 +13,7 @@ resource(4, "META:ATTR_INFO") message(233) {
 	"attr:viewable" = true,
 	"attr:editable" = true,
 	"SEN:searchable" = false,
-	"attr:width" = 40,
+	"attr:width" = 52,
 	"attr:alignment" = 0,
 	"attr:display_as" = "",
 	"type" = "relation/x-vnd.sen-labs.relation.citation"
