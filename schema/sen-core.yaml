@@ -84,12 +84,6 @@ slots:
     range: boolean
     annotations: {attribute: "SEN:sticky"}
 
-  rel_year:
-    description: The year of the work that a reference points to (the plugins that read the references of a paper give it).
-    title: Year
-    range: integer
-    annotations: {attribute: "SEN:REL:year", width: 40}
-
   # ---- common attributes of relations (the files that materialize a relation)
   rel_source:
     description: ID of the source of the relation.
@@ -373,7 +367,6 @@ classes:
     description: generic reference to another entity.
     title: Generic Reference
     is_a: Relation
-    slots: [rel_year]
     annotations:
       mime: relation/x-vnd.sen-labs.relation.reference
       app: application/x-vnd.sen-plugin.sen-labs.reference-navigator

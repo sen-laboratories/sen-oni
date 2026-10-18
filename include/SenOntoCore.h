@@ -28,8 +28,6 @@ inline constexpr char kSemanticType[] = "META:TYPE";
 inline constexpr char kFictional[] = "SEN:fictional";
 /** New objects (and the relations that are made for them) are put into this classification automatically: the label, topic, project... is sticky. Of the contexts only the current one counts. */
 inline constexpr char kSticky[] = "SEN:sticky";
-/** The year of the work that a reference points to (the plugins that read the references of a paper give it). */
-inline constexpr char kRelYear[] = "SEN:REL:year";
 /** ID of the source of the relation. */
 inline constexpr char kRelSource[] = "SEN:REL:ID";
 /** ID of the target of the relation. */
