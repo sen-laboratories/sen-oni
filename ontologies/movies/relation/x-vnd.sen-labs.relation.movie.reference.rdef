@@ -53,3 +53,7 @@ resource(3, "META:ATTR_INFO") message(233) {
 	"attr:display_as" = "",
 	"type" = "relation/x-vnd.sen-labs.relation.movie.reference"
 };
+resource(4, "SEN:REL:CONFIG") message(233) {
+	"SEN:targetTypes" = "entity/x-vnd.sen-labs.entity.movie",
+	"SEN:targetTypes" = "video/"
+};
