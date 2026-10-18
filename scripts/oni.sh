@@ -187,6 +187,19 @@ function install_semantic_types()
     return 0
 }
 
+# Whether the MIME types of an ontology folder are all in the MIME database (a type that was removed, e.g. by an interrupted removal of the ontology,
+# is installed again by the next update, though the folder did not change).
+function types_present()
+{
+    local folder=${1%/} file rel
+    while read -r file; do
+        rel=${file#$folder/}
+        [ "$rel" = ontology.rsrc ] && continue
+        [ -e "$SETTINGS/mime_db/${rel%.rsrc}" ] || return 1
+    done < <(find "$folder" -type f -name '*.rsrc' -not -path "$folder/types/*")
+    return 0
+}
+
 function folder_sum()
 {
     (cd "$1" && find . -type f | sort | while read -r f; do md5sum "$f"; done | md5sum | cut -d' ' -f1)
@@ -326,6 +339,9 @@ function remove_ontology()
         return 1
     fi
     echo removing ontology $ontology_name...
+    # (an interrupted removal - the server restarts while packages are updated - must not look complete: without the sum the next update installs the
+    # ontology again if its package is there, and finishes the removal if it is not)
+    rmattr $ATTR_SUM "$placeholder" 2>/dev/null || true
 
     local mime_type other kept types
     types=$("$SEN_MIME" provides "$placeholder" 2>/dev/null || true)
@@ -383,7 +399,8 @@ function update_ontologies()
             [ -f "$folder/ontology.rsrc" ] || [ -f "$folder/ontology.rdef" ] || continue
             name=$(basename "$folder")
             present="$present$name "
-            if [ -e "$SEN_CONFIG_ONTO/$name" ] && [ "$(get_attr $ATTR_SUM "$SEN_CONFIG_ONTO/$name")" = "$(folder_sum "$folder")" ]; then
+            if [ -e "$SEN_CONFIG_ONTO/$name" ] && [ "$(get_attr $ATTR_SUM "$SEN_CONFIG_ONTO/$name")" = "$(folder_sum "$folder")" ] \
+                    && { [ -f "$folder/ontology.rdef" ] || types_present "$folder"; }; then
                 ensure_templates "$name" || true
                 continue
             fi
@@ -393,16 +410,33 @@ function update_ontologies()
     done < <(provided_folders)
 
     # ontologies whose package is gone (those installed from a source tree stay)
-    local placeholder source
+    local placeholder source gone=()
     for placeholder in "$SEN_CONFIG_ONTO"/*; do
         [ -f "$placeholder" ] || continue
         name=$(basename "$placeholder")
         case "$present" in *" $name "*) continue;; esac
         source=$(get_attr $ATTR_SOURCE "$placeholder")
         case "$source" in
-            */sen/ontologies/*) remove_ontology "$name";;
+            */sen/ontologies/*) gone+=("$name");;
         esac
     done
+    # (packages are changed one after the other: what is gone may be back a moment later, so it is looked at again before the types are removed)
+    if [ ${#gone[@]} -gt 0 ]; then
+        sleep 3
+        for name in "${gone[@]}"; do
+            ontology_provided "$name" || remove_ontology "$name"
+        done
+    fi
+}
+
+# Whether a package provides the ontology (its folder is in one of the data folders).
+function ontology_provided()
+{
+    local dir
+    while read -r dir; do
+        { [ -f "$dir/$1/ontology.rsrc" ] || [ -f "$dir/$1/ontology.rdef" ]; } && return 0
+    done < <(provided_folders)
+    return 1
 }
 
 function list_ontologies()
