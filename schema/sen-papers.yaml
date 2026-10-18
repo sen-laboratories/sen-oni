@@ -97,6 +97,11 @@ slots:
     title: Citations
     range: integer
     annotations: {attribute: "SEN:citationCount", editable: false, width: 50, alignment: 1}
+  rel_year:
+    description: The year of the work that a citation points to.
+    title: Year
+    range: integer
+    annotations: {attribute: "SEN:REL:year", width: 40}
 
 classes:
   Document:
@@ -111,3 +116,14 @@ classes:
     is_a: Document
     slots: [identifier, title, creator, date, venue, citation_count, oa_status, subject, abstract_text, publisher, language, kind, url, content_url]
     annotations: {mime: document/scientific-paper}
+
+  Citation:
+    description: a work that a paper cites (the generic reference, with what is known about the cited work).
+    title: Citation
+    is_a: Relation
+    slots: [rel_year]
+    annotations:
+      mime: relation/x-vnd.sen-labs.relation.citation
+      app: application/x-vnd.sen-plugin.sen-labs.reference-navigator
+      label: cites
+      inverse_label: cited by

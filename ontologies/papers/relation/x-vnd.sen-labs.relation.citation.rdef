@@ -1,0 +1,28 @@
+// Generated from schema/sen-papers.yaml by oni_gen.py: do not edit.
+// SPDX-License-Identifier: MIT
+// SPDX-FileCopyrightText: 2024-2026 SEN Labs e.U.
+
+resource(0, "META:TYPE") "relation/x-vnd.sen-labs.relation.citation";
+resource(1, "META:L:DESC") #'MLDC' "a work that a paper cites (the generic reference, with what is known about the cited work).";
+resource(2, "META:S:DESC") #'MSDC' "Citation";
+resource(3, "META:PREF_APP") #'MSIG' "application/x-vnd.sen-plugin.sen-labs.reference-navigator";
+resource(4, "META:ATTR_INFO") message(233) {
+	"attr:name" = "SEN:REL:year",
+	"attr:public_name" = "Year",
+	"attr:type" = 'LONG',
+	"attr:viewable" = true,
+	"attr:editable" = true,
+	"SEN:searchable" = false,
+	"attr:width" = 40,
+	"attr:alignment" = 0,
+	"attr:display_as" = "",
+	"type" = "relation/x-vnd.sen-labs.relation.citation"
+};
+resource(5, "SEN:REL:CONFIG") message(233) {
+	"SEN:relation" = message('SCrd') {
+		"SEN:REL:Label" = "cites"
+	},
+	"SEN:inverse" = message('SCrd') {
+		"SEN:REL:Label" = "cited by"
+	}
+};
