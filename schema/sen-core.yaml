@@ -220,6 +220,10 @@ slots:
 
   # ---- plugins: the feature flags are int32 attributes. They are not indexed: a query needs only one indexed attribute,
   # so plugins are found by META:TYPE (indexed, always first in the predicate) and the flag is compared on those files.
+  plugin_version:
+    description: The version of the plugin (that of its application resource).
+    title: Version
+    annotations: {attribute: "SEN:plugin:version", editable: false, width: 60}
   plugin_extract:
     title: extract
     range: integer
@@ -429,7 +433,7 @@ classes:
   Plugin:
     description: a SEN plugin for handling various semantic tasks on entities or relations.
     title: SEN Plugin
-    slots: [semantic_type, plugin_extract, plugin_enrich, plugin_identify, plugin_navigate, plugin_search]
+    slots: [plugin_version, semantic_type, plugin_extract, plugin_enrich, plugin_identify, plugin_navigate, plugin_search]
     annotations:
       mime: application/x-vnd.sen-labs.plugin
       icon: x-vnd.sen-labs.plugin

@@ -78,6 +78,8 @@ inline constexpr char kLineEnd[] = "SEN:REL:lineEnd";
 /** Line of the place (the attribute that Haiku's editors understand). */
 inline constexpr char kLine[] = "be:line";
 inline constexpr char kColumn[] = "be:column";
+/** The version of the plugin (that of its application resource). */
+inline constexpr char kPluginVersion[] = "SEN:plugin:version";
 inline constexpr char kPluginExtract[] = "SEN:plugin:extract";
 inline constexpr char kPluginEnrich[] = "SEN:plugin:enrich";
 inline constexpr char kPluginIdentify[] = "SEN:plugin:identify";
