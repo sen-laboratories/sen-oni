@@ -28,8 +28,6 @@ inline constexpr char kSemanticType[] = "META:TYPE";
 inline constexpr char kFictional[] = "SEN:fictional";
 /** New objects (and the relations that are made for them) are put into this classification automatically: the label, topic, project... is sticky. Of the contexts only the current one counts. */
 inline constexpr char kSticky[] = "SEN:sticky";
-/** The year of the work that a reference points to (the plugins that read the references of a paper give it). */
-inline constexpr char kRelYear[] = "SEN:REL:year";
 /** ID of the source of the relation. */
 inline constexpr char kRelSource[] = "SEN:REL:ID";
 /** ID of the target of the relation. */
@@ -80,6 +78,10 @@ inline constexpr char kLineEnd[] = "SEN:REL:lineEnd";
 /** Line of the place (the attribute that Haiku's editors understand). */
 inline constexpr char kLine[] = "be:line";
 inline constexpr char kColumn[] = "be:column";
+/** The version of the plugin (that of its application resource). */
+inline constexpr char kPluginVersion[] = "SEN:plugin:version";
+/** What the plugin does (extract, enrich, identify, navigate, search), as one list that people read; the flags are the attributes of the features. */
+inline constexpr char kPluginFeatures[] = "SEN:plugin:features";
 inline constexpr char kPluginExtract[] = "SEN:plugin:extract";
 inline constexpr char kPluginEnrich[] = "SEN:plugin:enrich";
 inline constexpr char kPluginIdentify[] = "SEN:plugin:identify";

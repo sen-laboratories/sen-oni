@@ -372,7 +372,7 @@ function remove_ontology()
 
 # The file manager saves the columns of a folder when it has shown it and does not use the defaults after that: the folder of the ontologies would keep
 # the columns of an older version (without the attributes of the type of an ontology). The columns are removed once for each version of the layout.
-ONTOLOGY_VIEW_VERSION=2
+ONTOLOGY_VIEW_VERSION=3
 
 function reset_folder_view()
 {

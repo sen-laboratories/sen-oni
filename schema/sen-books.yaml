@@ -110,4 +110,6 @@ classes:
     title: Book Quote
     is_a: Relation
     slots: [page_start, page_end, quote_start, quote_end, quote_source]
-    annotations: {mime: relation/x-vnd.sen-labs.relation.book.quote}
+    annotations:
+      mime: relation/x-vnd.sen-labs.relation.book.quote
+      target_types: entity/x-vnd.sen-labs.entity.book,application/pdf,application/epub+zip

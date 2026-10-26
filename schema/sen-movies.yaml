@@ -65,4 +65,6 @@ classes:
     title: Movie Reference
     is_a: Relation
     slots: [scene, chapter_start, chapter_end, time_start, time_end]
-    annotations: {mime: relation/x-vnd.sen-labs.relation.movie.reference}
+    annotations:
+      mime: relation/x-vnd.sen-labs.relation.movie.reference
+      target_types: entity/x-vnd.sen-labs.entity.movie,video/

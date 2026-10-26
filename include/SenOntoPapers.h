@@ -41,6 +41,8 @@ inline constexpr char kContentUrl[] = "schema:contentUrl";
 inline constexpr char kOaStatus[] = "SEN:oaStatus";
 /** How often the paper is cited. */
 inline constexpr char kCitationCount[] = "SEN:citationCount";
+/** The year of the work that a citation points to. */
+inline constexpr char kRelYear[] = "SEN:REL:year";
 }	// namespace attr
 
 #pragma GCC diagnostic push
@@ -60,6 +62,8 @@ inline constexpr unsigned kIndexCount = sizeof(kIndices) / sizeof(kIndices[0]);
 #pragma GCC diagnostic pop
 
 namespace mime {
+/** Citation: a work that a paper cites (the generic reference, with what is known about the cited work). */
+inline constexpr char kCitation[] = "relation/x-vnd.sen-labs.relation.citation";
 }	// namespace mime
 
 namespace type {

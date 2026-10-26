@@ -37,10 +37,10 @@ resource(3, "META:ATTR_INFO") message(233) {
 	"SEN:searchable" = false,
 	"SEN:searchable" = false,
 	"attr:width" = 60,
-	"attr:width" = 30,
-	"attr:width" = 30,
-	"attr:width" = 30,
-	"attr:width" = 30,
+	"attr:width" = 115,
+	"attr:width" = 101,
+	"attr:width" = 129,
+	"attr:width" = 115,
 	"attr:alignment" = 0,
 	"attr:alignment" = 0,
 	"attr:alignment" = 0,
@@ -52,4 +52,8 @@ resource(3, "META:ATTR_INFO") message(233) {
 	"attr:display_as" = "",
 	"attr:display_as" = "",
 	"type" = "relation/x-vnd.sen-labs.relation.movie.reference"
+};
+resource(4, "SEN:REL:CONFIG") message(233) {
+	"SEN:targetTypes" = "entity/x-vnd.sen-labs.entity.movie",
+	"SEN:targetTypes" = "video/"
 };
