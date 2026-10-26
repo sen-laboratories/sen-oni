@@ -11,8 +11,8 @@ cd "$(dirname "$0")"
 [ -f bin/mime ] || { echo "bin/mime not found, run make first" >&2; exit 1; }
 ARCH=$(getarch)
 REVISION=${REVISION:-1}
-# (SEN_VERSION_SUFFIX replaces dev for a preview; the ontologies have their own versions and ONTOLOGY_REVISION, which is REVISION if not set)
-ONI_VERSION=1.0.0~${SEN_VERSION_SUFFIX:-dev}
+# (SEN_VERSION_SUFFIX replaces develop.1, the development version of 2.0; the ontologies have their own versions and ONTOLOGY_REVISION, which is REVISION if not set)
+ONI_VERSION=2.0.0~${SEN_VERSION_SUFFIX:-develop.1}
 ONTOLOGY_REVISION=${ONTOLOGY_REVISION:-$REVISION}
 STAGE=package-build
 OUT=$(pwd)
