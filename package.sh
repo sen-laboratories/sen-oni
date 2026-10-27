@@ -45,6 +45,10 @@ for folder in ontologies/*/; do
 	[ -f "$rdef" ] || continue
 
 	version=$(resource_value "$rdef" SEN:onto:version)
+	# (package/ontology-revisions: the revision of a package that changed alone, never lower than the general one)
+	revision=$ONTOLOGY_REVISION
+	listed=$(awk -v n="$name" '$1 == n { print $2 }' package/ontology-revisions 2>/dev/null | head -n1)
+	[ -n "$listed" ] && [ "$listed" -gt "$revision" ] && revision=$listed
 	description=$(resource_value "$rdef" SEN:onto:description | sed 's/"/\\"/g')
 	summary="SEN ontology: $name"
 	requires=
@@ -61,10 +65,10 @@ for folder in ontologies/*/; do
 	[ -f "$folder/README.md" ] && cp "$folder/README.md" $STAGE/$name/documentation/packages/sen_ontology_$name/
 	cp LICENSE $STAGE/$name/documentation/packages/sen_ontology_$name/
 
-	sed -e "s|@NAME@|$name|g" -e "s|@VERSION@|$version-$ONTOLOGY_REVISION|g" -e "s|@SUMMARY@|$summary|g" \
+	sed -e "s|@NAME@|$name|g" -e "s|@VERSION@|$version-$revision|g" -e "s|@SUMMARY@|$summary|g" \
 		-e "s|@DESCRIPTION@|$description|g" -e "s|@REQUIRES@|$requires|" package/PackageInfo.ontology.in \
 		> $STAGE/$name/.PackageInfo
-	package create -C $STAGE/$name "sen_ontology_$name-$version-$ONTOLOGY_REVISION-any.hpkg"
-	echo "created sen_ontology_$name-$version-$ONTOLOGY_REVISION-any.hpkg"
+	package create -C $STAGE/$name "sen_ontology_$name-$version-$revision-any.hpkg"
+	echo "created sen_ontology_$name-$version-$revision-any.hpkg"
 done
 rm -rf $STAGE
