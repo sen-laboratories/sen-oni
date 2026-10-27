@@ -448,4 +448,4 @@ classes:
     annotations:
       mime: application/x-vnd.sen-labs.ontology
       app: application/x-vnd.sen-labs.FileTypes
-      icon: x-vnd.sen-labs.ontology
+      icon: x-vnd.sen-labs.relation.docref.folder    # a folder of relations (Akita opens it as the folder of its Dependency relations)
