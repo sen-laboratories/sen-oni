@@ -22,6 +22,10 @@ resource(5, "SEN:REL:CONFIG") message(233) {
 	"SEN:relation" = message('SCrd') {
 		"SEN:REL:Label" = "cites"
 	},
+	"SEN:sourceTypes" = "application/pdf",
+	"SEN:sourceTypes" = "application/epub+zip",
+	"SEN:targetTypes" = "application/pdf",
+	"SEN:targetTypes" = "application/epub+zip",
 	"SEN:inverse" = message('SCrd') {
 		"SEN:REL:Label" = "cited by"
 	}
