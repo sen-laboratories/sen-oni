@@ -133,3 +133,5 @@ classes:
       app: application/x-vnd.sen-plugin.sen-labs.reference-navigator
       label: cites
       inverse_label: cited by
+      source_types: application/pdf,application/epub+zip
+      target_types: application/pdf,application/epub+zip
