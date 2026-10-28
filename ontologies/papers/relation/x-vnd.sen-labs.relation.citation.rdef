@@ -22,8 +22,20 @@ resource(5, "SEN:REL:CONFIG") message(233) {
 	"SEN:relation" = message('SCrd') {
 		"SEN:REL:Label" = "cites"
 	},
+	"SEN:sourceTypes" = "entity/x-vnd.sen-labs.entity.book",
+	"SEN:sourceTypes" = "entity/x-vnd.sen-labs.entity.movie",
+	"SEN:sourceTypes" = "entity/x-vnd.sen-labs.entity.person",
+	"SEN:sourceTypes" = "application/x-person",
+	"SEN:sourceTypes" = "video/",
+	"SEN:sourceTypes" = "document/",
 	"SEN:sourceTypes" = "application/pdf",
 	"SEN:sourceTypes" = "application/epub+zip",
+	"SEN:targetTypes" = "entity/x-vnd.sen-labs.entity.book",
+	"SEN:targetTypes" = "entity/x-vnd.sen-labs.entity.movie",
+	"SEN:targetTypes" = "entity/x-vnd.sen-labs.entity.person",
+	"SEN:targetTypes" = "application/x-person",
+	"SEN:targetTypes" = "video/",
+	"SEN:targetTypes" = "document/",
 	"SEN:targetTypes" = "application/pdf",
 	"SEN:targetTypes" = "application/epub+zip",
 	"SEN:inverse" = message('SCrd') {

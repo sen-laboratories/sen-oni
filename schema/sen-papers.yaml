@@ -127,5 +127,5 @@ classes:
       app: application/x-vnd.sen-plugin.sen-labs.reference-navigator
       label: cites
       inverse_label: cited by
-      source_types: application/pdf,application/epub+zip
-      target_types: application/pdf,application/epub+zip
+      source_types: entity/x-vnd.sen-labs.entity.book,entity/x-vnd.sen-labs.entity.movie,entity/x-vnd.sen-labs.entity.person,application/x-person,video/,document/,application/pdf,application/epub+zip
+      target_types: entity/x-vnd.sen-labs.entity.book,entity/x-vnd.sen-labs.entity.movie,entity/x-vnd.sen-labs.entity.person,application/x-person,video/,document/,application/pdf,application/epub+zip
