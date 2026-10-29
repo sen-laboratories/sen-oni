@@ -71,6 +71,9 @@ To build the packages on Haiku (`make` first, the packages are written to the re
 ./package.sh                # sen_oni and one package for each ontology; REVISION=2 ./package.sh for a new revision
 ```
 
+`ONTOLOGY_REVISION` is the revision of the ontology packages (`REVISION` if it is not set). An ontology that changed alone can have a revision of its own: list it in `package/ontology-revisions` (name and revision; it counts
+when it is higher than the general one), so that `pkgman` updates that package without a new revision of all of them.
+
 ## The people ontology
 
 `people` (`schema/sen-people.yaml`) has the entities **Person** and **Organization** (attributes of FOAF and schema.org: name, given and family name, nickname, e-mail,
