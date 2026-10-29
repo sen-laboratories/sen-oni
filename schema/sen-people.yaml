@@ -25,6 +25,7 @@ prefixes:
   dc: http://purl.org/dc/elements/1.1/
   schema: https://schema.org/
   foaf: http://xmlns.com/foaf/0.1/
+  vcard: http://www.w3.org/2006/vcard/ns#
   rel: http://purl.org/vocab/relationship/
   be: https://www.haiku-os.org/ns/be#
 default_prefix: sen
@@ -81,6 +82,57 @@ slots:
     title: Description
     slot_uri: dc:description
     annotations: {attribute: "dc:description", viewable: false}
+  groups:
+    description: The groups that a person is in (Family, Friends, ...), as a list.
+    title: Groups
+    slot_uri: vcard:category
+    annotations: {attribute: "vcard:category", is_list: true, width: 120}
+  # ---- the attributes of the People application of Haiku (application/x-person), as Haiku defines them
+  be_name:
+    title: Contact name
+    annotations: {attribute: "META:name", width: 120}
+  be_company:
+    title: Company
+    annotations: {attribute: "META:company", width: 120}
+  be_address:
+    title: Address
+    annotations: {attribute: "META:address", width: 120}
+  be_city:
+    title: City
+    annotations: {attribute: "META:city", width: 90}
+  be_state:
+    title: State
+    annotations: {attribute: "META:state", width: 50}
+  be_zip:
+    title: Zip
+    annotations: {attribute: "META:zip", width: 50}
+  be_country:
+    title: Country
+    annotations: {attribute: "META:country", width: 120}
+  be_email:
+    title: E-mail
+    annotations: {attribute: "META:email", width: 120}
+  be_hphone:
+    title: Home phone
+    annotations: {attribute: "META:hphone", width: 90}
+  be_mphone:
+    title: Mobile phone
+    annotations: {attribute: "META:mphone", width: 90}
+  be_wphone:
+    title: Work phone
+    annotations: {attribute: "META:wphone", width: 90}
+  be_fax:
+    title: Fax
+    annotations: {attribute: "META:fax", width: 90}
+  be_url:
+    title: URL
+    annotations: {attribute: "META:url", width: 120}
+  be_group:
+    title: Group
+    annotations: {attribute: "META:group", width: 120, is_list: true}
+  be_nickname:
+    title: Nickname
+    annotations: {attribute: "META:nickname", width: 120}
   rel_since:
     description: When the relationship began.
     title: Since
@@ -97,8 +149,17 @@ classes:
     title: Person
     is_a: Entity
     class_uri: foaf:Person
-    slots: [name, given_name, family_name, nickname, mbox, phone, homepage, birth_date, job_title, description]
+    slots: [name, given_name, family_name, nickname, mbox, phone, homepage, birth_date, job_title, groups, description]
     annotations: {mime: entity/x-vnd.sen-labs.entity.person, icon: x-vnd.sen-labs.entity.person}
+
+  # The type of the People application of Haiku. It is not ours: only its attribute info is written (an overlay: the user's MIME database adds to
+  # the type of the system), the same attributes as Haiku has them, and the group of a person is a list ("Family, Friends").
+  PeoplePerson:
+    description: a person of the People application of Haiku
+    title: Person
+    class_uri: foaf:Person
+    slots: [be_name, be_company, be_address, be_city, be_state, be_zip, be_country, be_email, be_hphone, be_mphone, be_wphone, be_fax, be_url, be_group, be_nickname]
+    annotations: {mime: application/x-person, overlay: true}
 
   Organization:
     description: a company, institution, club or any other group of people with a name

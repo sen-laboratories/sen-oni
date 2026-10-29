@@ -14,6 +14,8 @@ resource(5, "META:ATTR_INFO") message(233) {
 	"attr:viewable" = true,
 	"attr:editable" = true,
 	"SEN:searchable" = false,
+	"SEN:is_list" = false,
+	"SEN:list_separator" = "",
 	"attr:width" = 66,
 	"attr:alignment" = 0,
 	"attr:display_as" = "",
