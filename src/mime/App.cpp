@@ -168,7 +168,8 @@ status_t InstallMimeTypeFromResource(const char* path, BString* installedType) {
         fprintf(stderr, "invalid MIME type '%s' in resource %s: %s\n", mime, path, strerror(result));
         return result;
     }
-    if (mimeType.IsInstalled()) {
+    const bool wasInstalled = mimeType.IsInstalled();
+    if (wasInstalled) {
         printf("MIME type %s is already installed, updating...\n", mime);
     } else {
         // we need to install as first step, since all other MimeType operations act on the MIME DB directly:(
@@ -186,11 +187,13 @@ status_t InstallMimeTypeFromResource(const char* path, BString* installedType) {
     }
 
     // get short description (used as type name in prefs)
+    // (a type of the system that an ontology only adds to, the attribute info of People for example, has none of its own: it keeps its name)
     sDesc = resources.LoadResource('MSDC', "META:S:DESC", size);
-    if (sDesc == NULL) {
+    if (sDesc != NULL) {
+        mimeType.SetShortDescription(reinterpret_cast<const char*>(sDesc));
+    } else if (!wasInstalled) {
         return B_ERROR;
     }
-    mimeType.SetShortDescription(reinterpret_cast<const char*>(sDesc));
 
     // get long description (optional)
     lDesc = resources.LoadResource('MLDC', "META:L:DESC", size);
@@ -227,7 +230,7 @@ status_t InstallMimeTypeFromResource(const char* path, BString* installedType) {
         message.GetInfo("attr:name", NULL, &attrCount);
 
         for (int32 i = 0; i < attrCount; i++) {
-            if (! message.GetBool("attr:searchable", i, false))
+            if (! message.GetBool(sen::attr::kAttrInfoSearchable, i, false))   // (a field of SEN, not of Haiku: the generator writes SEN:searchable)
                 continue;
 
             const char* attrName = message.GetString("attr:name", i, "");

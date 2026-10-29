@@ -43,12 +43,12 @@ slots:
     description: The names of the authors, separated by semicolons.
     title: Authors
     slot_uri: dc:creator
-    annotations: {attribute: "dc:creator", width: 140}
+    annotations: {attribute: "dc:creator", is_list: true, width: 140}
   subject:
     description: Keywords, separated by semicolons.
     title: Keywords
     slot_uri: dc:subject
-    annotations: {attribute: "dc:subject", viewable: false}
+    annotations: {attribute: "dc:subject", is_list: true, viewable: false}
   abstract_text:
     description: The abstract.
     title: Abstract
@@ -57,11 +57,11 @@ slots:
   publisher:
     title: Publisher
     slot_uri: dc:publisher
-    annotations: {attribute: "dc:publisher", viewable: false}
+    annotations: {attribute: "dc:publisher", is_list: true, viewable: false}
   language:
     title: Language
     slot_uri: dc:language
-    annotations: {attribute: "dc:language", viewable: false, width: 40}
+    annotations: {attribute: "dc:language", is_list: true, viewable: false, width: 40}
   date:
     description: Day of publication.
     title: Date

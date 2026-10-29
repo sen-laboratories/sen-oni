@@ -28,6 +28,23 @@ inline constexpr char kHomepage[] = "foaf:homepage";
 inline constexpr char kBirthDate[] = "schema:birthDate";
 inline constexpr char kJobTitle[] = "schema:jobTitle";
 inline constexpr char kDescription[] = "dc:description";
+/** The groups that a person is in (Family, Friends, ...), as a list. */
+inline constexpr char kGroups[] = "vcard:category";
+inline constexpr char kBeName[] = "META:name";
+inline constexpr char kBeCompany[] = "META:company";
+inline constexpr char kBeAddress[] = "META:address";
+inline constexpr char kBeCity[] = "META:city";
+inline constexpr char kBeState[] = "META:state";
+inline constexpr char kBeZip[] = "META:zip";
+inline constexpr char kBeCountry[] = "META:country";
+inline constexpr char kBeEmail[] = "META:email";
+inline constexpr char kBeHphone[] = "META:hphone";
+inline constexpr char kBeMphone[] = "META:mphone";
+inline constexpr char kBeWphone[] = "META:wphone";
+inline constexpr char kBeFax[] = "META:fax";
+inline constexpr char kBeUrl[] = "META:url";
+inline constexpr char kBeGroup[] = "META:group";
+inline constexpr char kBeNickname[] = "META:nickname";
 /** When the relationship began. */
 inline constexpr char kRelSince[] = "SEN:REL:since";
 /** What there is to say about the relationship. */
@@ -37,6 +54,8 @@ inline constexpr char kRelNote[] = "SEN:REL:note";
 namespace mime {
 /** Person: a person */
 inline constexpr char kPerson[] = "entity/x-vnd.sen-labs.entity.person";
+/** Person: a person of the People application of Haiku */
+inline constexpr char kPeoplePerson[] = "application/x-person";
 /** Organization: a company, institution, club or any other group of people with a name */
 inline constexpr char kOrganization[] = "entity/x-vnd.sen-labs.entity.organization";
 /** Knows: a person knows another one, in no particular way (the relationship that all the other kinds of relationships between people are special cases of) */

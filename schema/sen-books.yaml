@@ -36,19 +36,19 @@ slots:
     description: The authors.
     title: Authors
     slot_uri: dc:creator
-    annotations: {attribute: "dc:creator"}
+    annotations: {attribute: "dc:creator", is_list: true}
   subject:
     title: Subjects
     slot_uri: dc:subject
-    annotations: {attribute: "dc:subject"}
+    annotations: {attribute: "dc:subject", is_list: true}
   language:
     title: Languages
     slot_uri: dc:language
-    annotations: {attribute: "dc:language"}
+    annotations: {attribute: "dc:language", is_list: true}
   publisher:
     title: Publisher
     slot_uri: dc:publisher
-    annotations: {attribute: "dc:publisher"}
+    annotations: {attribute: "dc:publisher", is_list: true}
   date:
     description: Date of publication of the edition.
     title: Date
@@ -58,15 +58,15 @@ slots:
   book_class:
     description: Classification code of the library (Dewey, LoC, ...).
     title: Classification
-    annotations: {attribute: "SEN:classification", viewable: false, editable: false}
+    annotations: {attribute: "SEN:classification", viewable: false, editable: false, is_list: true}
   book_format:
     title: Format
     slot_uri: schema:bookFormat
-    annotations: {attribute: "schema:bookFormat", viewable: false, editable: false}
+    annotations: {attribute: "schema:bookFormat", viewable: false, editable: false, is_list: true}
   isbn:
     title: ISBN
     slot_uri: schema:isbn
-    annotations: {attribute: "schema:isbn", searchable: true, width: 30}
+    annotations: {attribute: "schema:isbn", is_list: true, searchable: true, width: 30}
   number_of_pages:
     title: Pages
     slot_uri: schema:numberOfPages

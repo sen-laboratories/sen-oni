@@ -57,6 +57,8 @@ class Attribute:
     viewable: bool = True
     editable: bool = True
     searchable: bool = False
+    is_list: bool = False        # the value is a list in one string (authors, subjects), see sento SenList.h
+    list_separator: str = ''     # the ONE character that separates the values of a list, empty for an attribute that is no list
     width: int = 60
     alignment: int = 0
     display_as: str = ''
@@ -99,12 +101,37 @@ def read_attribute(sv, slot_name):
     searchable = bool(annotation(slot, 'searchable', False))
     if searchable and type_code not in INDEXABLE:
         raise SchemaError(f'slot {slot_name}: a {type_code} attribute cannot be indexed')
+    is_list, list_separator = read_list(slot, slot_name, type_code)
     return Attribute(
         slot=slot_name, name=name, public=slot.title, type=type_code,
         viewable=bool(annotation(slot, 'viewable', True)), editable=bool(annotation(slot, 'editable', True)),
-        searchable=searchable, width=column_width(int(annotation(slot, 'width', 60)), slot.title),
+        searchable=searchable, is_list=is_list, list_separator=list_separator,
+        width=column_width(int(annotation(slot, 'width', 60)), slot.title),
         alignment=int(annotation(slot, 'alignment', 0)), display_as=str(annotation(slot, 'display_as', '')),
         description=one_line(slot.description), chunks=int(annotation(slot, 'chunks', 1)))
+
+
+LIST_SEPARATOR_DEFAULT = ','   # (Haiku's People keeps the groups of a person in META:group like this)
+# the fields of the attribute info that are SEN's own and not Haiku's ("attr:" is the namespace of Haiku)
+SEN_FIELDS = ('searchable', 'is_list', 'list_separator')
+
+
+def read_list(slot, slot_name, type_code):
+    """Whether the value of an attribute is a list in one string, and with what character its values are separated. `is_list: true` in the annotations
+    of the slot; `list_separator` is the one character (default ','); it is an error without `is_list`. The values can be put in quotes to hold the
+    separator itself (SenList.h), so any character is fine except quotes, a backslash and line breaks."""
+    is_list = bool(annotation(slot, 'is_list', False))
+    separator = annotation(slot, 'list_separator', None)
+    if not is_list:
+        if separator not in (None, ''):
+            raise SchemaError(f'slot {slot_name}: list_separator without is_list')
+        return False, ''
+    if type_code != 'CSTR':
+        raise SchemaError(f'slot {slot_name}: a list is kept in a string attribute, not in a {type_code}')
+    separator = LIST_SEPARATOR_DEFAULT if separator in (None, '') else str(separator)
+    if len(separator) != 1 or separator in '"\'\\\n\r':
+        raise SchemaError(f'slot {slot_name}: list_separator must be one character that is no quote, backslash or line break, not {separator!r}')
+    return True, separator
 
 
 def column_width(width, title):
@@ -121,7 +148,7 @@ def expand(attribute):
         result.append(Attribute(
             slot=f'{attribute.slot}_{index}', name=f'{attribute.name}:{index}', public=f'{attribute.public} ({index + 1})',
             type=attribute.type, viewable=attribute.viewable, editable=attribute.editable, searchable=attribute.searchable,
-            width=attribute.width, alignment=attribute.alignment, display_as=attribute.display_as,
+            is_list=attribute.is_list, list_separator=attribute.list_separator, width=attribute.width, alignment=attribute.alignment, display_as=attribute.display_as,
             description=attribute.description, chunks=1, is_chunk=True))
     return result
 
@@ -132,6 +159,10 @@ def all_attributes(sv):
     for slot_name in sv.all_slots():
         attribute = read_attribute(sv, slot_name)
         known = attributes.get(attribute.name)
+        if known is not None and (known.is_list, known.list_separator) != (attribute.is_list, attribute.list_separator):
+            raise SchemaError(
+                f'attribute {attribute.name} is a list in {known.slot} and not in {slot_name} (or the separators differ): '
+                f'one name must have one definition, other programs read it by name')
         if known is not None and (known.type, known.searchable) != (attribute.type, attribute.searchable):
             raise SchemaError(
                 f'attribute {attribute.name} is defined twice with different type or index flag '
@@ -170,6 +201,7 @@ class MimeClass:
     folder_icon: str = None
     attributes: list = field(default_factory=list)
     config: dict = None
+    overlay: bool = False   # a type of the system or of another program: only its attribute info is written (the description, the icon... stay as they are)
 
 
 def read_classes(sv, schema_dir):
@@ -191,7 +223,8 @@ def read_classes(sv, schema_dir):
             raise SchemaError(f'class {cls_name} has no title (short description of the type)')
         mc = MimeClass(cls_name, mime, supertype, one_line(cls.title), one_line(cls.description),
                        app=annotation(cls, 'app'), extensions=annotation(cls, 'extensions'),
-                       icon=annotation(cls, 'icon'), folder_icon=annotation(cls, 'folder_icon'))
+                       icon=annotation(cls, 'icon'), folder_icon=annotation(cls, 'folder_icon'),
+                       overlay=bool(annotation(cls, 'overlay', False)))
         for icon in (mc.icon, mc.folder_icon):
             if icon and not os.path.exists(os.path.join(schema_dir, 'icons', icon + '.hex')):
                 raise SchemaError(f'class {cls_name}: icon file icons/{icon}.hex does not exist')
@@ -305,9 +338,10 @@ def render_type_rdef(st, schema_file, schema_dir):
         for key, fmt in (('name', lambda a: rdef_string(a.name)), ('public_name', lambda a: rdef_string(a.public)),
                          ('type', lambda a: f"'{a.type}'"), ('viewable', lambda a: boolean(a.viewable)),
                          ('editable', lambda a: boolean(a.editable)), ('searchable', lambda a: boolean(a.searchable)),
+                         ('is_list', lambda a: boolean(a.is_list)), ('list_separator', lambda a: rdef_string(a.list_separator)),
                          ('width', lambda a: str(a.width)), ('alignment', lambda a: str(a.alignment)),
                          ('display_as', lambda a: rdef_string(a.display_as))):
-            field_name = 'SEN:searchable' if key == 'searchable' else f'attr:{key}'
+            field_name = f'SEN:{key}' if key in SEN_FIELDS else f'attr:{key}'
             for attribute in st.attributes:
                 body.append(f'\t"{field_name}" = {fmt(attribute)}')
         body.append(f'\t"type" = {rdef_string(st.id)}')
@@ -347,11 +381,12 @@ def render_rdef(mc, schema_file, schema_dir):
     if mc.supertype:
         resource('"BEOS:TYPE") #\'MIMS\' "application/x-vnd.Be-meta-mime";')
     resource(f'"META:TYPE") {rdef_string(mc.mime)};')
-    resource(f'"META:L:DESC") #\'MLDC\' {rdef_string(mc.description)};')
-    resource(f'"META:S:DESC") #\'MSDC\' {rdef_string(mc.title)};')
-    if mc.app:
+    if not mc.overlay:
+        resource(f'"META:L:DESC") #\'MLDC\' {rdef_string(mc.description)};')
+        resource(f'"META:S:DESC") #\'MSDC\' {rdef_string(mc.title)};')
+    if mc.app and not mc.overlay:
         resource(f'"META:PREF_APP") #\'MSIG\' {rdef_string(mc.app)};')
-    if mc.extensions:
+    if mc.extensions and not mc.overlay:
         # a comma separated list becomes one entry for each extension (as the MIME database keeps them)
         extensions = [e.strip() for e in mc.extensions.replace('\n', ',').split(',') if e.strip()]
         resource('"META:EXTENS") message {')
@@ -363,11 +398,12 @@ def render_rdef(mc, schema_file, schema_dir):
         for key, fmt in (('name', lambda a: rdef_string(a.name)), ('public_name', lambda a: rdef_string(a.public)),
                          ('type', lambda a: f"'{a.type}'"), ('viewable', lambda a: boolean(a.viewable)),
                          ('editable', lambda a: boolean(a.editable)), ('searchable', lambda a: boolean(a.searchable)),
+                         ('is_list', lambda a: boolean(a.is_list)), ('list_separator', lambda a: rdef_string(a.list_separator)),
                          ('width', lambda a: str(a.width)), ('alignment', lambda a: str(a.alignment)),
                          ('display_as', lambda a: rdef_string(a.display_as))):
             # "attr:" is the namespace of Haiku; what SEN adds to the attribute info has the prefix of SEN (Haiku may define
             # an attribute:searchable itself one day, with what meaning ever)
-            field = 'SEN:searchable' if key == 'searchable' else f'attr:{key}'
+            field = f'SEN:{key}' if key in SEN_FIELDS else f'attr:{key}'
             for attribute in mc.attributes:
                 body.append(f'\t"{field}" = {fmt(attribute)}')
         body.append(f'\t"type" = {rdef_string(mc.mime)}')
