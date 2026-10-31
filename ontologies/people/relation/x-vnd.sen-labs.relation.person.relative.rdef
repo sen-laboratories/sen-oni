@@ -5,7 +5,7 @@
 resource(0, "META:TYPE") "relation/x-vnd.sen-labs.relation.person.relative";
 resource(1, "META:L:DESC") #'MLDC' "people who are related by blood or marriage, in another way than parent, child or sibling";
 resource(2, "META:S:DESC") #'MSDC' "Relative";
-resource(3, "META:PREF_APP") #'MSIG' "application/x-vnd.sen-plugin.sen-labs.knows-navigator";
+resource(3, "META:PREF_APP") #'MSIG' "application/x-vnd.sen-plugin.sen-labs.personal-relation-navigator";
 resource(4, "META:ATTR_INFO") message(233) {
 	"attr:name" = "SEN:REL:since",
 	"attr:name" = "SEN:REL:note",
@@ -36,6 +36,7 @@ resource(5, "SEN:REL:CONFIG") message(233) {
 		"SEN:REL:Label" = "relative of"
 	},
 	"SEN:sourceTypes" = "entity/x-vnd.sen-labs.entity.person",
+	"SEN:sourceTypes" = "application/x-person",
 	"SEN:group" = "Family",
 	"SEN:inverse" = message('SCrd') {
 		"SEN:REL:Label" = "relative of"

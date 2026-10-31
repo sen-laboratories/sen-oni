@@ -103,7 +103,7 @@ classes:
       icon: x-vnd.sen-labs.entity.person
       label: author of
       inverse_label: authored by
-      source_types: entity/x-vnd.sen-labs.entity.person
+      source_types: entity/x-vnd.sen-labs.entity.person,application/x-person
       target_types: entity/x-vnd.sen-labs.entity.book
 
   BookQuote:

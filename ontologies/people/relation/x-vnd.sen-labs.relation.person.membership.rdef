@@ -5,7 +5,7 @@
 resource(0, "META:TYPE") "relation/x-vnd.sen-labs.relation.person.membership";
 resource(1, "META:L:DESC") #'MLDC' "a person is a member of an organization or group";
 resource(2, "META:S:DESC") #'MSDC' "Membership";
-resource(3, "META:PREF_APP") #'MSIG' "application/x-vnd.sen-plugin.sen-labs.knows-navigator";
+resource(3, "META:PREF_APP") #'MSIG' "application/x-vnd.sen-plugin.sen-labs.personal-relation-navigator";
 resource(4, "META:ATTR_INFO") message(233) {
 	"attr:name" = "SEN:REL:since",
 	"attr:name" = "SEN:REL:note",
@@ -37,6 +37,7 @@ resource(5, "SEN:REL:CONFIG") message(233) {
 		"SEN:REL:Label" = "member of"
 	},
 	"SEN:sourceTypes" = "entity/x-vnd.sen-labs.entity.person",
+	"SEN:sourceTypes" = "application/x-person",
 	"SEN:targetTypes" = "entity/x-vnd.sen-labs.entity.organization",
 	"SEN:group" = "Organizations",
 	"SEN:inverse" = message('SCrd') {

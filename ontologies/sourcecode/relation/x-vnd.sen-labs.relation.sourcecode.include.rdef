@@ -5,7 +5,7 @@
 resource(0, "META:TYPE") "relation/x-vnd.sen-labs.relation.sourcecode.include";
 resource(1, "META:L:DESC") #'MLDC' "include dependency to another sourcecode";
 resource(2, "META:S:DESC") #'MSDC' "Source Include";
-resource(3, "META:PREF_APP") #'MSIG' "application/x-vnd.sen-plugin.sen-labs.text-navigator";
+resource(3, "META:PREF_APP") #'MSIG' "application/x-vnd.sen-plugin.sen-labs.text-reference-navigator";
 resource(4, "META:ATTR_INFO") message(233) {
 	"attr:name" = "SEN:REL:includePath",
 	"attr:name" = "SEN:REL:includeGlobal",

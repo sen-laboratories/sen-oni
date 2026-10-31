@@ -2,10 +2,10 @@
 // SPDX-License-Identifier: MIT
 // SPDX-FileCopyrightText: 2024-2026 SEN Labs e.U.
 
-resource(0, "META:TYPE") "relation/x-vnd.sen-labs.relation.person.knows";
-resource(1, "META:L:DESC") #'MLDC' "a person knows another one, in no particular way (the relationship that all the other kinds of relationships between people are special cases of)";
-resource(2, "META:S:DESC") #'MSDC' "Knows";
-resource(3, "META:PREF_APP") #'MSIG' "application/x-vnd.sen-plugin.sen-labs.knows-navigator";
+resource(0, "META:TYPE") "relation/x-vnd.sen-labs.relation.person";
+resource(1, "META:L:DESC") #'MLDC' "what people are to one another, in no particular way (\"knows\"), the relation that all the other kinds of personal relations are special cases of";
+resource(2, "META:S:DESC") #'MSDC' "Personal Relation";
+resource(3, "META:PREF_APP") #'MSIG' "application/x-vnd.sen-plugin.sen-labs.personal-relation-navigator";
 resource(4, "META:ATTR_INFO") message(233) {
 	"attr:name" = "SEN:REL:since",
 	"attr:name" = "SEN:REL:note",
@@ -29,13 +29,14 @@ resource(4, "META:ATTR_INFO") message(233) {
 	"attr:alignment" = 0,
 	"attr:display_as" = "",
 	"attr:display_as" = "",
-	"type" = "relation/x-vnd.sen-labs.relation.person.knows"
+	"type" = "relation/x-vnd.sen-labs.relation.person"
 };
 resource(5, "SEN:REL:CONFIG") message(233) {
 	"SEN:relation" = message('SCrd') {
 		"SEN:REL:Label" = "knows"
 	},
 	"SEN:sourceTypes" = "entity/x-vnd.sen-labs.entity.person",
+	"SEN:sourceTypes" = "application/x-person",
 	"SEN:group" = "Personal",
 	"SEN:inverse" = message('SCrd') {
 		"SEN:REL:Label" = "known by"

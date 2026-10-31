@@ -9,9 +9,10 @@
 #
 # In the menus the relations are in groups (Personal, Family, Professional, Organizations: the annotation group), so that the list of the kinds is short.
 #
-# The relations start at a person (the type of SEN, entity/x-vnd.sen-labs.entity.person; the contacts of the People application of Haiku are legacy); they end at
-# the kinds of files that they can start at, those between a person and an organization at an organization. Opening the relation in a relation folder opens
-# the person or organization that it ends at, with the Knows navigator.
+# The relations start at a person (the type of SEN, entity/x-vnd.sen-labs.entity.person, is the one that new people are made as). The contacts of the People
+# application of Haiku (application/x-person, the legacy type) are accepted too, after it, as sources and, since they end at the kinds of files that they can start at,
+# as targets: the people that exist can be found and related; those between a person and an organization end at an organization. Opening the relation in a
+# relation folder opens the person or organization that it ends at, with the personal relation navigator.
 #
 # A relation has the properties Since (when it began) and Note, which are attributes of the file that stands for it in a relation folder.
 id: https://sen-labs.org/ns/oni/people
@@ -171,20 +172,20 @@ classes:
     annotations: {mime: entity/x-vnd.sen-labs.entity.organization, icon: x-vnd.sen-labs.entity.organization}
 
   # ---- what two people know of each other, from least to most close
-  Knows:
-    description: a person knows another one, in no particular way (the relationship that all the other kinds of relationships between people are special cases of)
-    title: Knows
+  PersonalRelation:
+    description: what people are to one another, in no particular way ("knows"), the relation that all the other kinds of personal relations are special cases of
+    title: Personal Relation
     is_a: Relation
     class_uri: foaf:knows
     slots: [rel_since, rel_note]
     annotations:
-      mime: relation/x-vnd.sen-labs.relation.person.knows
-      app: application/x-vnd.sen-plugin.sen-labs.knows-navigator
+      mime: relation/x-vnd.sen-labs.relation.person
+      app: application/x-vnd.sen-plugin.sen-labs.personal-relation-navigator
       icon: x-vnd.sen-labs.entity.person
       group: Personal
       label: knows
       inverse_label: known by
-      source_types: entity/x-vnd.sen-labs.entity.person
+      source_types: entity/x-vnd.sen-labs.entity.person,application/x-person
 
   Acquaintance:
     description: people who have met and know each other a little
@@ -194,12 +195,12 @@ classes:
     slots: [rel_since, rel_note]
     annotations:
       mime: relation/x-vnd.sen-labs.relation.person.acquaintance
-      app: application/x-vnd.sen-plugin.sen-labs.knows-navigator
+      app: application/x-vnd.sen-plugin.sen-labs.personal-relation-navigator
       icon: x-vnd.sen-labs.entity.person
       group: Personal
       label: acquainted with
       inverse_label: acquainted with
-      source_types: entity/x-vnd.sen-labs.entity.person
+      source_types: entity/x-vnd.sen-labs.entity.person,application/x-person
 
   Friend:
     description: people who like and trust each other
@@ -209,12 +210,12 @@ classes:
     slots: [rel_since, rel_note]
     annotations:
       mime: relation/x-vnd.sen-labs.relation.person.friend
-      app: application/x-vnd.sen-plugin.sen-labs.knows-navigator
+      app: application/x-vnd.sen-plugin.sen-labs.personal-relation-navigator
       icon: x-vnd.sen-labs.entity.person
       group: Personal
       label: friend of
       inverse_label: friend of
-      source_types: entity/x-vnd.sen-labs.entity.person
+      source_types: entity/x-vnd.sen-labs.entity.person,application/x-person
 
   CloseFriend:
     description: people who are very close, who share what matters to them
@@ -224,12 +225,12 @@ classes:
     slots: [rel_since, rel_note]
     annotations:
       mime: relation/x-vnd.sen-labs.relation.person.close-friend
-      app: application/x-vnd.sen-plugin.sen-labs.knows-navigator
+      app: application/x-vnd.sen-plugin.sen-labs.personal-relation-navigator
       icon: x-vnd.sen-labs.entity.person
       group: Personal
       label: close friend of
       inverse_label: close friend of
-      source_types: entity/x-vnd.sen-labs.entity.person
+      source_types: entity/x-vnd.sen-labs.entity.person,application/x-person
 
   Partner:
     description: people who live their lives together (life partners, spouses)
@@ -239,12 +240,12 @@ classes:
     slots: [rel_since, rel_note]
     annotations:
       mime: relation/x-vnd.sen-labs.relation.person.partner
-      app: application/x-vnd.sen-plugin.sen-labs.knows-navigator
+      app: application/x-vnd.sen-plugin.sen-labs.personal-relation-navigator
       icon: x-vnd.sen-labs.entity.person
       group: Personal
       label: partner of
       inverse_label: partner of
-      source_types: entity/x-vnd.sen-labs.entity.person
+      source_types: entity/x-vnd.sen-labs.entity.person,application/x-person
 
   # ---- family
   Parent:
@@ -255,12 +256,12 @@ classes:
     slots: [rel_since, rel_note]
     annotations:
       mime: relation/x-vnd.sen-labs.relation.person.parent
-      app: application/x-vnd.sen-plugin.sen-labs.knows-navigator
+      app: application/x-vnd.sen-plugin.sen-labs.personal-relation-navigator
       icon: x-vnd.sen-labs.entity.person
       group: Family
       label: parent of
       inverse_label: child of
-      source_types: entity/x-vnd.sen-labs.entity.person
+      source_types: entity/x-vnd.sen-labs.entity.person,application/x-person
 
   Sibling:
     description: people who have a parent in common
@@ -270,12 +271,12 @@ classes:
     slots: [rel_since, rel_note]
     annotations:
       mime: relation/x-vnd.sen-labs.relation.person.sibling
-      app: application/x-vnd.sen-plugin.sen-labs.knows-navigator
+      app: application/x-vnd.sen-plugin.sen-labs.personal-relation-navigator
       icon: x-vnd.sen-labs.entity.person
       group: Family
       label: sibling of
       inverse_label: sibling of
-      source_types: entity/x-vnd.sen-labs.entity.person
+      source_types: entity/x-vnd.sen-labs.entity.person,application/x-person
 
   Relative:
     description: people who are related by blood or marriage, in another way than parent, child or sibling
@@ -285,12 +286,12 @@ classes:
     slots: [rel_since, rel_note]
     annotations:
       mime: relation/x-vnd.sen-labs.relation.person.relative
-      app: application/x-vnd.sen-plugin.sen-labs.knows-navigator
+      app: application/x-vnd.sen-plugin.sen-labs.personal-relation-navigator
       icon: x-vnd.sen-labs.entity.person
       group: Family
       label: relative of
       inverse_label: relative of
-      source_types: entity/x-vnd.sen-labs.entity.person
+      source_types: entity/x-vnd.sen-labs.entity.person,application/x-person
 
   # ---- professional
   Colleague:
@@ -301,12 +302,12 @@ classes:
     slots: [rel_since, rel_note]
     annotations:
       mime: relation/x-vnd.sen-labs.relation.person.colleague
-      app: application/x-vnd.sen-plugin.sen-labs.knows-navigator
+      app: application/x-vnd.sen-plugin.sen-labs.personal-relation-navigator
       icon: x-vnd.sen-labs.entity.person
       group: Professional
       label: colleague of
       inverse_label: colleague of
-      source_types: entity/x-vnd.sen-labs.entity.person
+      source_types: entity/x-vnd.sen-labs.entity.person,application/x-person
 
   Superior:
     description: a person is the superior (manager, supervisor, lead) of another one
@@ -316,12 +317,12 @@ classes:
     slots: [rel_since, rel_note]
     annotations:
       mime: relation/x-vnd.sen-labs.relation.person.superior
-      app: application/x-vnd.sen-plugin.sen-labs.knows-navigator
+      app: application/x-vnd.sen-plugin.sen-labs.personal-relation-navigator
       icon: x-vnd.sen-labs.entity.person
       group: Professional
       label: superior of
       inverse_label: subordinate of
-      source_types: entity/x-vnd.sen-labs.entity.person
+      source_types: entity/x-vnd.sen-labs.entity.person,application/x-person
 
   Mentor:
     description: a person guides the professional or personal growth of another one
@@ -331,12 +332,12 @@ classes:
     slots: [rel_since, rel_note]
     annotations:
       mime: relation/x-vnd.sen-labs.relation.person.mentor
-      app: application/x-vnd.sen-plugin.sen-labs.knows-navigator
+      app: application/x-vnd.sen-plugin.sen-labs.personal-relation-navigator
       icon: x-vnd.sen-labs.entity.person
       group: Professional
       label: mentor of
       inverse_label: mentee of
-      source_types: entity/x-vnd.sen-labs.entity.person
+      source_types: entity/x-vnd.sen-labs.entity.person,application/x-person
 
   Collaborator:
     description: people who work together on something, without one of them being the superior of the other
@@ -346,12 +347,12 @@ classes:
     slots: [rel_since, rel_note]
     annotations:
       mime: relation/x-vnd.sen-labs.relation.person.collaborator
-      app: application/x-vnd.sen-plugin.sen-labs.knows-navigator
+      app: application/x-vnd.sen-plugin.sen-labs.personal-relation-navigator
       icon: x-vnd.sen-labs.entity.person
       group: Professional
       label: collaborates with
       inverse_label: collaborates with
-      source_types: entity/x-vnd.sen-labs.entity.person
+      source_types: entity/x-vnd.sen-labs.entity.person,application/x-person
 
   Client:
     description: a person is the client (customer, patient, student) of another one
@@ -360,12 +361,12 @@ classes:
     slots: [rel_since, rel_note]
     annotations:
       mime: relation/x-vnd.sen-labs.relation.person.client
-      app: application/x-vnd.sen-plugin.sen-labs.knows-navigator
+      app: application/x-vnd.sen-plugin.sen-labs.personal-relation-navigator
       icon: x-vnd.sen-labs.entity.person
       group: Professional
       label: client of
       inverse_label: provider of
-      source_types: entity/x-vnd.sen-labs.entity.person
+      source_types: entity/x-vnd.sen-labs.entity.person,application/x-person
 
   Employment:
     description: a person works for an organization
@@ -375,7 +376,7 @@ classes:
     slots: [rel_since, rel_note]
     annotations:
       mime: relation/x-vnd.sen-labs.relation.person.employment
-      app: application/x-vnd.sen-plugin.sen-labs.knows-navigator
+      app: application/x-vnd.sen-plugin.sen-labs.personal-relation-navigator
       icon: x-vnd.sen-labs.entity.organization
       group: Organizations
       # stored at the person only: what points to an organization is found by query (the person is not the kind of file that an organization can be)
@@ -383,7 +384,7 @@ classes:
       target_types: entity/x-vnd.sen-labs.entity.organization
       label: works for
       inverse_label: employs
-      source_types: entity/x-vnd.sen-labs.entity.person
+      source_types: entity/x-vnd.sen-labs.entity.person,application/x-person
 
   Membership:
     description: a person is a member of an organization or group
@@ -393,7 +394,7 @@ classes:
     slots: [rel_since, rel_note]
     annotations:
       mime: relation/x-vnd.sen-labs.relation.person.membership
-      app: application/x-vnd.sen-plugin.sen-labs.knows-navigator
+      app: application/x-vnd.sen-plugin.sen-labs.personal-relation-navigator
       icon: x-vnd.sen-labs.entity.organization
       group: Organizations
       # stored at the person only: what points to an organization is found by query (the person is not the kind of file that an organization can be)
@@ -401,4 +402,4 @@ classes:
       target_types: entity/x-vnd.sen-labs.entity.organization
       label: member of
       inverse_label: has member
-      source_types: entity/x-vnd.sen-labs.entity.person
+      source_types: entity/x-vnd.sen-labs.entity.person,application/x-person

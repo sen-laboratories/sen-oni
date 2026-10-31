@@ -402,7 +402,7 @@ classes:
     slots: [page_start, section, paragraph, anchor, heading]
     annotations:
       mime: relation/x-vnd.sen-labs.relation.docref
-      app: application/x-vnd.sen-plugin.sen-labs.pdf-navigator
+      app: application/x-vnd.sen-plugin.sen-labs.document-reference-navigator
       icon: x-vnd.sen-labs.relation.docref
       folder_icon: x-vnd.sen-labs.relation.docref.folder
       dynamic: true
@@ -430,7 +430,7 @@ classes:
     slots: [text_start, text_end, line_start, line_end, line, column]
     annotations:
       mime: relation/x-vnd.sen-labs.relation.textref
-      app: application/x-vnd.sen-plugin.sen-labs.text-navigator
+      app: application/x-vnd.sen-plugin.sen-labs.text-reference-navigator
       icon: x-vnd.sen-labs.relation.textref
 
   # ---- applications

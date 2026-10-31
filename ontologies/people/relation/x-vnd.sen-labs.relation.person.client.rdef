@@ -5,7 +5,7 @@
 resource(0, "META:TYPE") "relation/x-vnd.sen-labs.relation.person.client";
 resource(1, "META:L:DESC") #'MLDC' "a person is the client (customer, patient, student) of another one";
 resource(2, "META:S:DESC") #'MSDC' "Client";
-resource(3, "META:PREF_APP") #'MSIG' "application/x-vnd.sen-plugin.sen-labs.knows-navigator";
+resource(3, "META:PREF_APP") #'MSIG' "application/x-vnd.sen-plugin.sen-labs.personal-relation-navigator";
 resource(4, "META:ATTR_INFO") message(233) {
 	"attr:name" = "SEN:REL:since",
 	"attr:name" = "SEN:REL:note",
@@ -36,6 +36,7 @@ resource(5, "SEN:REL:CONFIG") message(233) {
 		"SEN:REL:Label" = "client of"
 	},
 	"SEN:sourceTypes" = "entity/x-vnd.sen-labs.entity.person",
+	"SEN:sourceTypes" = "application/x-person",
 	"SEN:group" = "Professional",
 	"SEN:inverse" = message('SCrd') {
 		"SEN:REL:Label" = "provider of"
