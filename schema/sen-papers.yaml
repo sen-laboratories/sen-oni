@@ -70,7 +70,7 @@ slots:
     annotations: {attribute: "dc:date", width: 100}
   kind:
     description: The kind of work (article, preprint, book-chapter, ...).
-    title: Kind
+    title: Kind of Work
     slot_uri: dc:type
     annotations: {attribute: "dc:type", viewable: false, width: 70}
   venue:
@@ -115,7 +115,8 @@ classes:
     title: Scientific Paper
     is_a: Document
     slots: [identifier, title, creator, date, venue, citation_count, oa_status, subject, abstract_text, publisher, language, kind, url, content_url]
-    annotations: {mime: document/scientific-paper}
+    # (the icon is File_Text_Open.svg from https://github.com/darealshinji/haiku-icons, MIT license, see the README)
+    annotations: {mime: document/scientific-paper, icon: document.scientific-paper}
 
   Citation:
     description: a work that a paper cites (the generic reference, with what is known about the cited work).

@@ -124,7 +124,7 @@ slots:
     title: Label
     annotations: {attribute: "SEN:REL:Label", width: 140}
   rel_kind:
-    title: Kind
+    title: Relation Kind
     annotations: {attribute: "SEN:REL:Kind", width: 100}
   rel_desc:
     title: Description
