@@ -104,7 +104,7 @@ classes:
       label: author of
       inverse_label: authored by
       source_types: entity/x-vnd.sen-labs.entity.person,application/x-person
-      target_types: entity/x-vnd.sen-labs.entity.book
+      target_types: entity/x-vnd.sen-labs.entity.book,document/,application/pdf,application/epub+zip
 
   BookQuote:
     description: quotes some text in a book

@@ -13,6 +13,9 @@ resource(4, "SEN:REL:CONFIG") message(233) {
 	"SEN:sourceTypes" = "entity/x-vnd.sen-labs.entity.person",
 	"SEN:sourceTypes" = "application/x-person",
 	"SEN:targetTypes" = "entity/x-vnd.sen-labs.entity.book",
+	"SEN:targetTypes" = "document/",
+	"SEN:targetTypes" = "application/pdf",
+	"SEN:targetTypes" = "application/epub+zip",
 	"SEN:inverse" = message('SCrd') {
 		"SEN:REL:Label" = "authored by"
 	}

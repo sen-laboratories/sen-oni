@@ -84,6 +84,26 @@ slots:
     title: Description
     slot_uri: dc:description
     annotations: {attribute: "dc:description", viewable: false}
+  same_as:
+    description: Where else the person is known (ORCID, Wikidata, OpenAlex...), as a list of IRIs.
+    title: Same As
+    slot_uri: schema:sameAs
+    annotations: {attribute: "schema:sameAs", is_list: true, viewable: false, width: 150}
+  image:
+    description: The page of the photo of the person (the thumbnail is the photo itself).
+    title: Photo
+    slot_uri: schema:image
+    annotations: {attribute: "schema:image", viewable: false, width: 150}
+  photo_license:
+    description: The license of the photo.
+    title: Photo License
+    slot_uri: schema:license
+    annotations: {attribute: "schema:license", viewable: false, width: 100}
+  photo_credit:
+    description: Who made the photo, as its license asks to say.
+    title: Photo Credit
+    slot_uri: schema:creditText
+    annotations: {attribute: "schema:creditText", viewable: false, width: 150}
   groups:
     description: The groups that a person is in (Family, Friends, ...), as a list.
     title: Groups
@@ -151,7 +171,7 @@ classes:
     title: Person
     is_a: Entity
     class_uri: foaf:Person
-    slots: [name, given_name, family_name, nickname, mbox, phone, homepage, birth_date, job_title, groups, description]
+    slots: [name, given_name, family_name, nickname, mbox, phone, homepage, birth_date, job_title, groups, description, same_as, image, photo_license, photo_credit]
     annotations: {mime: entity/x-vnd.sen-labs.entity.person, icon: x-vnd.sen-labs.entity.person}
 
   # The type of the People application of Haiku. It is not ours: only its attribute info is written (an overlay: the user's MIME database adds to

@@ -28,6 +28,14 @@ inline constexpr char kHomepage[] = "foaf:homepage";
 inline constexpr char kBirthDate[] = "schema:birthDate";
 inline constexpr char kJobTitle[] = "schema:jobTitle";
 inline constexpr char kDescription[] = "dc:description";
+/** Where else the person is known (ORCID, Wikidata, OpenAlex...), as a list of IRIs. */
+inline constexpr char kSameAs[] = "schema:sameAs";
+/** The page of the photo of the person (the thumbnail is the photo itself). */
+inline constexpr char kImage[] = "schema:image";
+/** The license of the photo. */
+inline constexpr char kPhotoLicense[] = "schema:license";
+/** Who made the photo, as its license asks to say. */
+inline constexpr char kPhotoCredit[] = "schema:creditText";
 /** The groups that a person is in (Family, Friends, ...), as a list. */
 inline constexpr char kGroups[] = "vcard:category";
 inline constexpr char kBeName[] = "META:name";
