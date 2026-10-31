@@ -99,10 +99,11 @@ classes:
     is_a: Relation
     annotations:
       mime: relation/x-vnd.sen-labs.relation.authorship
-      app: application/x-vnd.Be-TRAK
+      app: application/x-vnd.sen-plugin.sen-labs.authorship-navigator
+      icon: x-vnd.sen-labs.entity.person
       label: author of
       inverse_label: authored by
-      source_types: entity/x-vnd.sen-labs.entity.person,application/x-person
+      source_types: entity/x-vnd.sen-labs.entity.person
       target_types: entity/x-vnd.sen-labs.entity.book
 
   BookQuote:
