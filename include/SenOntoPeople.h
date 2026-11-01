@@ -28,6 +28,14 @@ inline constexpr char kHomepage[] = "foaf:homepage";
 inline constexpr char kBirthDate[] = "schema:birthDate";
 inline constexpr char kJobTitle[] = "schema:jobTitle";
 inline constexpr char kDescription[] = "dc:description";
+/** Where else the person is known (ORCID, Wikidata, OpenAlex...), as a list of IRIs. */
+inline constexpr char kSameAs[] = "schema:sameAs";
+/** The page of the photo of the person (the thumbnail is the photo itself). */
+inline constexpr char kImage[] = "schema:image";
+/** The license of the photo. */
+inline constexpr char kPhotoLicense[] = "schema:license";
+/** Who made the photo, as its license asks to say. */
+inline constexpr char kPhotoCredit[] = "schema:creditText";
 /** The groups that a person is in (Family, Friends, ...), as a list. */
 inline constexpr char kGroups[] = "vcard:category";
 inline constexpr char kBeName[] = "META:name";
@@ -58,8 +66,8 @@ inline constexpr char kPerson[] = "entity/x-vnd.sen-labs.entity.person";
 inline constexpr char kPeoplePerson[] = "application/x-person";
 /** Organization: a company, institution, club or any other group of people with a name */
 inline constexpr char kOrganization[] = "entity/x-vnd.sen-labs.entity.organization";
-/** Knows: a person knows another one, in no particular way (the relationship that all the other kinds of relationships between people are special cases of) */
-inline constexpr char kKnows[] = "relation/x-vnd.sen-labs.relation.person.knows";
+/** Personal Relation: what people are to one another, in no particular way ("knows"), the relation that all the other kinds of personal relations are special cases of */
+inline constexpr char kPersonalRelation[] = "relation/x-vnd.sen-labs.relation.person";
 /** Acquaintance: people who have met and know each other a little */
 inline constexpr char kAcquaintance[] = "relation/x-vnd.sen-labs.relation.person.acquaintance";
 /** Friend: people who like and trust each other */

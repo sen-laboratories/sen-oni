@@ -88,3 +88,8 @@ phone, homepage, birthday, job title) and the relationships between them, one re
 
 What is the same in both directions has one label; the relations have the properties *Since* and *Note*. A new kind is a class in the schema (`is_a: Relation`,
 `class_uri` names the term of the vocabulary), so the list can be extended without code.
+
+## Credits
+
+The icon of `document/scientific-paper` (`schema/icons/document.scientific-paper.hex`) is `File_Text_Open.svg` of [haiku-icons](https://github.com/darealshinji/haiku-icons/blob/master/svg/File_Text_Open.svg)
+by darealshinji (MIT license), converted to HVIF.

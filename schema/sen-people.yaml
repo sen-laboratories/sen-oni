@@ -9,8 +9,10 @@
 #
 # In the menus the relations are in groups (Personal, Family, Professional, Organizations: the annotation group), so that the list of the kinds is short.
 #
-# The relations start at a person (and at a person of the People application of Haiku, application/x-person, until the files are migrated); they end at
-# the kinds of files that they can start at, those between a person and an organization at an organization.
+# The relations start at a person (the type of SEN, entity/x-vnd.sen-labs.entity.person, is the one that new people are made as). The contacts of the People
+# application of Haiku (application/x-person, the legacy type) are accepted too, after it, as sources and, since they end at the kinds of files that they can start at,
+# as targets: the people that exist can be found and related; those between a person and an organization end at an organization. Opening the relation in a
+# relation folder opens the person or organization that it ends at, with the personal relation navigator.
 #
 # A relation has the properties Since (when it began) and Note, which are attributes of the file that stands for it in a relation folder.
 id: https://sen-labs.org/ns/oni/people
@@ -82,6 +84,26 @@ slots:
     title: Description
     slot_uri: dc:description
     annotations: {attribute: "dc:description", viewable: false}
+  same_as:
+    description: Where else the person is known (ORCID, Wikidata, OpenAlex...), as a list of IRIs.
+    title: Same As
+    slot_uri: schema:sameAs
+    annotations: {attribute: "schema:sameAs", is_list: true, viewable: false, width: 150}
+  image:
+    description: The page of the photo of the person (the thumbnail is the photo itself).
+    title: Photo
+    slot_uri: schema:image
+    annotations: {attribute: "schema:image", viewable: false, width: 150}
+  photo_license:
+    description: The license of the photo.
+    title: Photo License
+    slot_uri: schema:license
+    annotations: {attribute: "schema:license", viewable: false, width: 100}
+  photo_credit:
+    description: Who made the photo, as its license asks to say.
+    title: Photo Credit
+    slot_uri: schema:creditText
+    annotations: {attribute: "schema:creditText", viewable: false, width: 150}
   groups:
     description: The groups that a person is in (Family, Friends, ...), as a list.
     title: Groups
@@ -149,7 +171,7 @@ classes:
     title: Person
     is_a: Entity
     class_uri: foaf:Person
-    slots: [name, given_name, family_name, nickname, mbox, phone, homepage, birth_date, job_title, groups, description]
+    slots: [name, given_name, family_name, nickname, mbox, phone, homepage, birth_date, job_title, groups, description, same_as, image, photo_license, photo_credit]
     annotations: {mime: entity/x-vnd.sen-labs.entity.person, icon: x-vnd.sen-labs.entity.person}
 
   # The type of the People application of Haiku. It is not ours: only its attribute info is written (an overlay: the user's MIME database adds to
@@ -170,14 +192,16 @@ classes:
     annotations: {mime: entity/x-vnd.sen-labs.entity.organization, icon: x-vnd.sen-labs.entity.organization}
 
   # ---- what two people know of each other, from least to most close
-  Knows:
-    description: a person knows another one, in no particular way (the relationship that all the other kinds of relationships between people are special cases of)
-    title: Knows
+  PersonalRelation:
+    description: what people are to one another, in no particular way ("knows"), the relation that all the other kinds of personal relations are special cases of
+    title: Personal Relation
     is_a: Relation
     class_uri: foaf:knows
     slots: [rel_since, rel_note]
     annotations:
-      mime: relation/x-vnd.sen-labs.relation.person.knows
+      mime: relation/x-vnd.sen-labs.relation.person
+      app: application/x-vnd.sen-plugin.sen-labs.personal-relation-navigator
+      icon: x-vnd.sen-labs.entity.person
       group: Personal
       label: knows
       inverse_label: known by
@@ -191,6 +215,8 @@ classes:
     slots: [rel_since, rel_note]
     annotations:
       mime: relation/x-vnd.sen-labs.relation.person.acquaintance
+      app: application/x-vnd.sen-plugin.sen-labs.personal-relation-navigator
+      icon: x-vnd.sen-labs.entity.person
       group: Personal
       label: acquainted with
       inverse_label: acquainted with
@@ -204,6 +230,8 @@ classes:
     slots: [rel_since, rel_note]
     annotations:
       mime: relation/x-vnd.sen-labs.relation.person.friend
+      app: application/x-vnd.sen-plugin.sen-labs.personal-relation-navigator
+      icon: x-vnd.sen-labs.entity.person
       group: Personal
       label: friend of
       inverse_label: friend of
@@ -217,6 +245,8 @@ classes:
     slots: [rel_since, rel_note]
     annotations:
       mime: relation/x-vnd.sen-labs.relation.person.close-friend
+      app: application/x-vnd.sen-plugin.sen-labs.personal-relation-navigator
+      icon: x-vnd.sen-labs.entity.person
       group: Personal
       label: close friend of
       inverse_label: close friend of
@@ -230,6 +260,8 @@ classes:
     slots: [rel_since, rel_note]
     annotations:
       mime: relation/x-vnd.sen-labs.relation.person.partner
+      app: application/x-vnd.sen-plugin.sen-labs.personal-relation-navigator
+      icon: x-vnd.sen-labs.entity.person
       group: Personal
       label: partner of
       inverse_label: partner of
@@ -244,6 +276,8 @@ classes:
     slots: [rel_since, rel_note]
     annotations:
       mime: relation/x-vnd.sen-labs.relation.person.parent
+      app: application/x-vnd.sen-plugin.sen-labs.personal-relation-navigator
+      icon: x-vnd.sen-labs.entity.person
       group: Family
       label: parent of
       inverse_label: child of
@@ -257,6 +291,8 @@ classes:
     slots: [rel_since, rel_note]
     annotations:
       mime: relation/x-vnd.sen-labs.relation.person.sibling
+      app: application/x-vnd.sen-plugin.sen-labs.personal-relation-navigator
+      icon: x-vnd.sen-labs.entity.person
       group: Family
       label: sibling of
       inverse_label: sibling of
@@ -270,6 +306,8 @@ classes:
     slots: [rel_since, rel_note]
     annotations:
       mime: relation/x-vnd.sen-labs.relation.person.relative
+      app: application/x-vnd.sen-plugin.sen-labs.personal-relation-navigator
+      icon: x-vnd.sen-labs.entity.person
       group: Family
       label: relative of
       inverse_label: relative of
@@ -284,6 +322,8 @@ classes:
     slots: [rel_since, rel_note]
     annotations:
       mime: relation/x-vnd.sen-labs.relation.person.colleague
+      app: application/x-vnd.sen-plugin.sen-labs.personal-relation-navigator
+      icon: x-vnd.sen-labs.entity.person
       group: Professional
       label: colleague of
       inverse_label: colleague of
@@ -297,6 +337,8 @@ classes:
     slots: [rel_since, rel_note]
     annotations:
       mime: relation/x-vnd.sen-labs.relation.person.superior
+      app: application/x-vnd.sen-plugin.sen-labs.personal-relation-navigator
+      icon: x-vnd.sen-labs.entity.person
       group: Professional
       label: superior of
       inverse_label: subordinate of
@@ -310,6 +352,8 @@ classes:
     slots: [rel_since, rel_note]
     annotations:
       mime: relation/x-vnd.sen-labs.relation.person.mentor
+      app: application/x-vnd.sen-plugin.sen-labs.personal-relation-navigator
+      icon: x-vnd.sen-labs.entity.person
       group: Professional
       label: mentor of
       inverse_label: mentee of
@@ -323,6 +367,8 @@ classes:
     slots: [rel_since, rel_note]
     annotations:
       mime: relation/x-vnd.sen-labs.relation.person.collaborator
+      app: application/x-vnd.sen-plugin.sen-labs.personal-relation-navigator
+      icon: x-vnd.sen-labs.entity.person
       group: Professional
       label: collaborates with
       inverse_label: collaborates with
@@ -335,6 +381,8 @@ classes:
     slots: [rel_since, rel_note]
     annotations:
       mime: relation/x-vnd.sen-labs.relation.person.client
+      app: application/x-vnd.sen-plugin.sen-labs.personal-relation-navigator
+      icon: x-vnd.sen-labs.entity.person
       group: Professional
       label: client of
       inverse_label: provider of
@@ -348,6 +396,8 @@ classes:
     slots: [rel_since, rel_note]
     annotations:
       mime: relation/x-vnd.sen-labs.relation.person.employment
+      app: application/x-vnd.sen-plugin.sen-labs.personal-relation-navigator
+      icon: x-vnd.sen-labs.entity.organization
       group: Organizations
       # stored at the person only: what points to an organization is found by query (the person is not the kind of file that an organization can be)
       bidir: false
@@ -364,6 +414,8 @@ classes:
     slots: [rel_since, rel_note]
     annotations:
       mime: relation/x-vnd.sen-labs.relation.person.membership
+      app: application/x-vnd.sen-plugin.sen-labs.personal-relation-navigator
+      icon: x-vnd.sen-labs.entity.organization
       group: Organizations
       # stored at the person only: what points to an organization is found by query (the person is not the kind of file that an organization can be)
       bidir: false

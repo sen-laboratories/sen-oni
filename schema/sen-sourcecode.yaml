@@ -43,7 +43,7 @@ classes:
     slots: [include_path, include_global, line]
     annotations:
       mime: relation/x-vnd.sen-labs.relation.sourcecode.include
-      app: application/x-vnd.sen-plugin.sen-labs.text-navigator
+      app: application/x-vnd.sen-plugin.sen-labs.text-reference-navigator
       dynamic: true
       contained: true     # MAY be represented as a contained relation
 
