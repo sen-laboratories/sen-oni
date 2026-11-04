@@ -27,7 +27,7 @@ A **class** is a MIME type, a **slot** is a file attribute. Standard LinkML elem
 | schema | `oni_author`, `oni_stable`, `oni_schema_url` | the metadata of the ontology (`ontology.rdef`; the `version` and `description` of the schema are used, too) |
 | class | `mime` | the MIME type, required: a supertype (`entity`) or `supertype/name` |
 | class | `supertype: true` | the class is a supertype (the resource gets the meta MIME type) |
-| class (entity) | `library` | the name of the folder of this entity type in the Library of a context (`People`, `Books`): the resource `SEN:LIBRARY`, which the SEN server reads to say where a new entity of the type goes (without: the short description of the type) |
+| class (entity) | `plural` | the plural of the name of the type (`People`, `Books`), required for an entity type: the resource `SEN:PLURAL`. The SEN server names the folder of the type in the Library of a context after it (`~/Library/People`), and lists of the things of the type use it; it is the text to translate. |
 | class | `app`, `extensions`, `icon`, `folder_icon` | preferred application (a signature; never set for file types of other programs), file extensions (comma separated: one entry for each), the vector icon (`schema/icons/<name>.hex`), the icon of the relation folder |
 | class (relation) | `bidir`, `dynamic`, `contained`, `label`, `inverse_label` | the flavor of the relation (`SEN:bidir`, `SEN:dynamic`, `SEN:self`) and the labels of both directions, written to `SEN:REL:CONFIG` |
 | class (relation) | `group` | the name of a group of relations (`SEN:group`): the menus of relations show the relations of a group in a submenu of that name |

@@ -5,7 +5,7 @@
 resource(0, "META:TYPE") "entity/x-vnd.sen-labs.entity.book";
 resource(1, "META:L:DESC") #'MLDC' "describes a book entity";
 resource(2, "META:S:DESC") #'MSDC' "Book";
-resource(3, "SEN:LIBRARY") "Books";
+resource(3, "SEN:PLURAL") "Books";
 resource(4, "META:ATTR_INFO") message(233) {
 	"attr:name" = "schema:isbn",
 	"attr:name" = "dc:subject",

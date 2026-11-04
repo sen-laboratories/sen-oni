@@ -326,13 +326,13 @@ classes:
     description: a general object or Thing in SEN
     title: Object
     is_a: Entity
-    annotations: {mime: entity/x-vnd.sen-labs.entity.object}
+    annotations: {mime: entity/x-vnd.sen-labs.entity.object, plural: Objects}
 
   DocumentOutlineItem:
     description: a structural component in a document, e.g. bookmark or label.
     title: Document Outline
     is_a: Entity
-    annotations: {mime: entity/x-vnd.sen-labs.entity.document.outline-item}
+    annotations: {mime: entity/x-vnd.sen-labs.entity.document.outline-item, plural: Document Outlines}
 
   # ---- meta
   MimeAttribute:

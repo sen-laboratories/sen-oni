@@ -183,7 +183,7 @@ class MimeClass:
     extensions: str = None
     icon: str = None
     folder_icon: str = None
-    library: str = None     # the folder of this entity type in the Library of a context (`People`), see sento SenLibrary.h
+    plural: str = None      # the plural of the name of the type (`People`): the folder of the type in the Library of a context (sento SenLibrary.h); the base of translated lists
     attributes: list = field(default_factory=list)
     config: dict = None
     overlay: bool = False   # a type of the system or of another program: only its attribute info is written (the description, the icon... stay as they are)
@@ -204,9 +204,11 @@ def read_classes(sv, schema_dir):
             raise SchemaError(f'class {cls_name}: {mime} looks like a {"sub" if supertype else "super"}type')
         if not cls.title:
             raise SchemaError(f'class {cls_name} has no title (short description of the type)')
+        if mime.startswith('entity/') and not annotation(cls, 'plural') and not annotation(cls, 'overlay', False):
+            raise SchemaError(f'class {cls_name}: an entity type needs the annotation "plural" (the plural of its name, e.g. People)')
         mc = MimeClass(cls_name, mime, supertype, one_line(cls.title), one_line(cls.description),
                        app=annotation(cls, 'app'), extensions=annotation(cls, 'extensions'),
-                       icon=annotation(cls, 'icon'), folder_icon=annotation(cls, 'folder_icon'), library=annotation(cls, 'library'),
+                       icon=annotation(cls, 'icon'), folder_icon=annotation(cls, 'folder_icon'), plural=annotation(cls, 'plural'),
                        overlay=bool(annotation(cls, 'overlay', False)))
         for icon in (mc.icon, mc.folder_icon):
             if icon and not os.path.exists(os.path.join(schema_dir, 'icons', icon + '.hex')):
@@ -254,8 +256,8 @@ def render_rdef(mc, schema_file, schema_dir):
         resource(f'"META:S:DESC") #\'MSDC\' {rdef_string(mc.title)};')
     if mc.app and not mc.overlay:
         resource(f'"META:PREF_APP") #\'MSIG\' {rdef_string(mc.app)};')
-    if mc.library and not mc.overlay:
-        resource(f'"SEN:LIBRARY") {rdef_string(mc.library)};')
+    if mc.plural and not mc.overlay:
+        resource(f'"SEN:PLURAL") {rdef_string(mc.plural)};')
     if mc.extensions and not mc.overlay:
         # a comma separated list becomes one entry for each extension (as the MIME database keeps them)
         extensions = [e.strip() for e in mc.extensions.replace('\n', ',').split(',') if e.strip()]

@@ -49,7 +49,8 @@ slots:
     range: integer
     annotations: {attribute: "schema:endOffset", width: 30}
 
-  # ---- what a movie has (schema.org Movie; the people who made it are people with a Contribution to it, not attributes)
+  # ---- what a movie has (schema.org Movie; the people who made it are people with a Contribution to it; director and actor are only the names, for when the
+  # settings say that entities are not made as files)
   title:
     title: Title
     slot_uri: dc:title
@@ -70,6 +71,16 @@ slots:
     title: Duration
     slot_uri: schema:duration
     annotations: {attribute: "schema:duration", width: 30}
+  director:
+    description: The names of the directors, when the people are not entities of their own (otherwise they are the people with a Contribution to the movie).
+    title: Directors
+    slot_uri: schema:director
+    annotations: {attribute: "schema:director", is_list: true, viewable: false}
+  actor:
+    description: The names of the main actors, when the people are not entities of their own.
+    title: Actors
+    slot_uri: schema:actor
+    annotations: {attribute: "schema:actor", is_list: true, viewable: false}
   description:
     description: What the movie is about.
     title: Description
@@ -110,13 +121,13 @@ classes:
     title: Movie
     is_a: Entity
     class_uri: schema:Movie
-    slots: [title, original_title, release_date, duration, description, genre, in_language, country_of_origin, image, poster_license, same_as]
-    annotations: {mime: entity/x-vnd.sen-labs.entity.movie, library: Movies}
+    slots: [title, original_title, release_date, duration, director, actor, description, genre, in_language, country_of_origin, image, poster_license, same_as]
+    annotations: {mime: entity/x-vnd.sen-labs.entity.movie, plural: Movies}
   MovieMedium:
     description: a physical movie medium (VHS,DVD,Bluray)
     title: Movie medium
     is_a: Entity
-    annotations: {mime: entity/x-vnd.sen-labs.entity.movie.medium}
+    annotations: {mime: entity/x-vnd.sen-labs.entity.movie.medium, plural: Movie media}
   MovieReference:
     description: Reference to a Movie
     title: Movie Reference

@@ -5,7 +5,7 @@
 resource(0, "META:TYPE") "entity/x-vnd.sen-labs.entity.organization";
 resource(1, "META:L:DESC") #'MLDC' "a company, institution, club or any other group of people with a name";
 resource(2, "META:S:DESC") #'MSDC' "Organization";
-resource(3, "SEN:LIBRARY") "Organizations";
+resource(3, "SEN:PLURAL") "Organizations";
 resource(4, "META:ATTR_INFO") message(233) {
 	"attr:name" = "foaf:name",
 	"attr:name" = "foaf:mbox",

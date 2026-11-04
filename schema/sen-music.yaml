@@ -31,27 +31,27 @@ classes:
     description: a musical work or piece of music (general)
     title: Music work
     is_a: Entity
-    annotations: {mime: entity/x-vnd.sen-labs.entity.music.work}
+    annotations: {mime: entity/x-vnd.sen-labs.entity.music.work, plural: Music works}
   Song:
     description: an individual piece of music
     title: Song
     is_a: Entity
-    annotations: {mime: entity/x-vnd.sen-labs.entity.music.song, library: Songs}
+    annotations: {mime: entity/x-vnd.sen-labs.entity.music.song, plural: Songs}
   Movement:
     description: a movement of a musical work
     title: Movement
     is_a: Entity
-    annotations: {mime: entity/x-vnd.sen-labs.entity.music.movement}
+    annotations: {mime: entity/x-vnd.sen-labs.entity.music.movement, plural: Movements}
   MusicAlbum:
     description: a music album containing songs or pieces
     title: Music album
     is_a: Entity
-    annotations: {mime: entity/x-vnd.sen-labs.entity.music.album, library: Albums}
+    annotations: {mime: entity/x-vnd.sen-labs.entity.music.album, plural: Music albums}
   MusicMedium:
     description: a physical music medium (CD,DVD,Bluray etc.)
     title: Music medium
     is_a: Entity
-    annotations: {mime: entity/x-vnd.sen-labs.entity.music.medium}
+    annotations: {mime: entity/x-vnd.sen-labs.entity.music.medium, plural: Music media}
   TransitionTo:
     description: suitable as a transition from this song.
     title: Music transition to

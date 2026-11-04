@@ -5,7 +5,7 @@
 resource(0, "META:TYPE") "entity/x-vnd.sen-labs.entity.person";
 resource(1, "META:L:DESC") #'MLDC' "a person";
 resource(2, "META:S:DESC") #'MSDC' "Person";
-resource(3, "SEN:LIBRARY") "People";
+resource(3, "SEN:PLURAL") "People";
 resource(4, "META:ATTR_INFO") message(233) {
 	"attr:name" = "foaf:name",
 	"attr:name" = "foaf:givenName",

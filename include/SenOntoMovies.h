@@ -30,6 +30,10 @@ inline constexpr char kOriginalTitle[] = "schema:alternateName";
 inline constexpr char kReleaseDate[] = "schema:datePublished";
 /** The length of the movie, as an ISO 8601 duration (PT2H28M). */
 inline constexpr char kDuration[] = "schema:duration";
+/** The names of the directors, when the people are not entities of their own (otherwise they are the people with a Contribution to the movie). */
+inline constexpr char kDirector[] = "schema:director";
+/** The names of the main actors, when the people are not entities of their own. */
+inline constexpr char kActor[] = "schema:actor";
 /** What the movie is about. */
 inline constexpr char kDescription[] = "dc:description";
 inline constexpr char kGenre[] = "schema:genre";

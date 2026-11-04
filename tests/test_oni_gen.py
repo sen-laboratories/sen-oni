@@ -146,7 +146,7 @@ class ValidationTest(unittest.TestCase):
                 slots:
                   s: {title: S}
                 classes:
-                  A: {title: A, slots: [s], annotations: {mime: entity/x-a}}
+                  A: {title: A, slots: [s], annotations: {mime: entity/x-a, plural: As}}
                 ''')
 
     def test_invalid_attribute_name(self):
@@ -155,7 +155,7 @@ class ValidationTest(unittest.TestCase):
                 slots:
                   s: {title: S, annotations: {attribute: "no prefix"}}
                 classes:
-                  A: {title: A, slots: [s], annotations: {mime: entity/x-a}}
+                  A: {title: A, slots: [s], annotations: {mime: entity/x-a, plural: As}}
                 ''')
 
     def test_same_attribute_with_different_type(self):
@@ -165,15 +165,22 @@ class ValidationTest(unittest.TestCase):
                   a: {title: A, range: integer, annotations: {attribute: "dc:x"}}
                   b: {title: B, range: string, annotations: {attribute: "dc:x"}}
                 classes:
-                  A: {title: A, slots: [a, b], annotations: {mime: entity/x-a}}
+                  A: {title: A, slots: [a, b], annotations: {mime: entity/x-a, plural: As}}
                 ''')
+
+    def test_entity_needs_plural(self):
+        with self.assertRaisesRegex(oni_gen.SchemaError, 'plural'):
+            self.generate('''
+                classes:
+                  A: {title: A, annotations: {mime: entity/x-a}}
+            ''')
 
     def test_duplicate_mime_type(self):
         with self.assertRaisesRegex(oni_gen.SchemaError, 'used by'):
             self.generate('''
                 classes:
-                  A: {title: A, annotations: {mime: entity/x-a}}
-                  B: {title: B, annotations: {mime: entity/x-a}}
+                  A: {title: A, annotations: {mime: entity/x-a, plural: As}}
+                  B: {title: B, annotations: {mime: entity/x-a, plural: As}}
                 ''')
 
     def test_bool_attribute_cannot_be_indexed(self):
@@ -182,21 +189,21 @@ class ValidationTest(unittest.TestCase):
                 slots:
                   s: {title: S, range: boolean, annotations: {attribute: "dc:s", searchable: true}}
                 classes:
-                  A: {title: A, slots: [s], annotations: {mime: entity/x-a}}
+                  A: {title: A, slots: [s], annotations: {mime: entity/x-a, plural: As}}
                 ''')
 
     def test_missing_icon_file(self):
         with self.assertRaisesRegex(oni_gen.SchemaError, 'icon file'):
             self.generate('''
                 classes:
-                  A: {title: A, annotations: {mime: entity/x-a, icon: nothing}}
+                  A: {title: A, annotations: {mime: entity/x-a, plural: As, icon: nothing}}
                 ''')
 
     def test_flavors_only_on_relations(self):
         with self.assertRaisesRegex(oni_gen.SchemaError, 'not a relation'):
             self.generate('''
                 classes:
-                  A: {title: A, annotations: {mime: entity/x-a, dynamic: true}}
+                  A: {title: A, annotations: {mime: entity/x-a, plural: As, dynamic: true}}
                 ''')
 
     def test_valid_schema_generates_aligned_rdef(self):
@@ -204,7 +211,7 @@ class ValidationTest(unittest.TestCase):
             slots:
               s: {title: S, annotations: {attribute: "dc:s"}}
             classes:
-              A: {title: A, description: "An A", slots: [s], annotations: {mime: entity/x-a}}
+              A: {title: A, description: "An A", slots: [s], annotations: {mime: entity/x-a, plural: As}}
             ''')
         rdef = next(v for k, v in files.items() if k.endswith('x-a.rdef'))
         self.assertIn('"attr:name" = "dc:s"', rdef)
