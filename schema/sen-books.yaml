@@ -91,7 +91,8 @@ classes:
     title: Book
     is_a: Entity
     slots: [isbn, subject, title, creator, language, publisher, date, book_class, book_format, number_of_pages]
-    annotations: {mime: entity/x-vnd.sen-labs.entity.book, icon: Book, plural: Books}
+    slot_usage: {plural: {ifabsent: "string(Books)"}}
+    annotations: {mime: entity/x-vnd.sen-labs.entity.book, icon: Book}
 
   Authorship:
     description: authorship of a particular work

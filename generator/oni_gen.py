@@ -47,6 +47,21 @@ def annotation(obj, key, default=None):
     return default
 
 
+def is_type_property(slot):
+    """A slot that is a property of the type (annotation type_property: the plural), not an attribute of its files."""
+    return bool(annotation(slot, 'type_property', False))
+
+
+def plural_of(sv, cls_name):
+    """The plural of a type: the slot `plural` of the root entity class, set for the type with slot_usage (ifabsent: string(People)); None if the type has none."""
+    for slot in sv.class_induced_slots(cls_name):
+        if slot.name == 'plural':
+            value = (slot.ifabsent or '').strip()
+            if value.startswith('string(') and value.endswith(')'):
+                return value[len('string('):-1].strip() or None
+    return None
+
+
 @dataclass
 class Attribute:
     slot: str
@@ -156,6 +171,8 @@ def all_attributes(sv):
     """All attributes of the schema and its imports, with the consistency check: one attribute name means one definition."""
     attributes = {}
     for slot_name in sv.all_slots():
+        if is_type_property(sv.get_slot(slot_name)):
+            continue
         attribute = read_attribute(sv, slot_name)
         known = attributes.get(attribute.name)
         if known is not None and (known.is_list, known.list_separator) != (attribute.is_list, attribute.list_separator):
@@ -204,16 +221,17 @@ def read_classes(sv, schema_dir):
             raise SchemaError(f'class {cls_name}: {mime} looks like a {"sub" if supertype else "super"}type')
         if not cls.title:
             raise SchemaError(f'class {cls_name} has no title (short description of the type)')
-        if mime.startswith('entity/') and not annotation(cls, 'plural') and not annotation(cls, 'overlay', False):
-            raise SchemaError(f'class {cls_name}: an entity type needs the annotation "plural" (the plural of its name, e.g. People)')
+        plural = plural_of(sv, cls_name)
+        if mime.startswith('entity/') and not plural and not annotation(cls, 'overlay', False):
+            raise SchemaError(f'class {cls_name}: an entity type needs its plural: slot_usage of the slot "plural" with ifabsent: string(People) (the slot is on the class Entity of sen-core)')
         mc = MimeClass(cls_name, mime, supertype, one_line(cls.title), one_line(cls.description),
                        app=annotation(cls, 'app'), extensions=annotation(cls, 'extensions'),
-                       icon=annotation(cls, 'icon'), folder_icon=annotation(cls, 'folder_icon'), plural=annotation(cls, 'plural'),
+                       icon=annotation(cls, 'icon'), folder_icon=annotation(cls, 'folder_icon'), plural=plural,
                        overlay=bool(annotation(cls, 'overlay', False)))
         for icon in (mc.icon, mc.folder_icon):
             if icon and not os.path.exists(os.path.join(schema_dir, 'icons', icon + '.hex')):
                 raise SchemaError(f'class {cls_name}: icon file icons/{icon}.hex does not exist')
-        mc.attributes = [each for slot in (cls.slots or []) for each in expand(read_attribute(sv, slot))]
+        mc.attributes = [each for slot in (cls.slots or []) if not is_type_property(sv.get_slot(slot)) for each in expand(read_attribute(sv, slot))]
         flags = {key: annotation(cls, key) for key in ('bidir', 'dynamic', 'contained', 'label', 'inverse_label',
                                                          'source_types', 'exclude_types', 'target_types', 'exclude_target_types', 'group')}
         if any(value is not None for value in flags.values()):
@@ -345,12 +363,14 @@ def render_header(sv, classes, schema_file):
            f' * @brief Attribute names and MIME types of the ontology "{schema.title}": use these instead of string literals.',
            ' */', f'namespace sen {{', 'namespace onto {', f'namespace {ns} {{', '', 'namespace attr {']
     for slot_name in schema.slots:
+        if is_type_property(sv.get_slot(slot_name)):
+            continue
         a = read_attribute(sv, slot_name)
         if a.description:
             out.append(f'/** {a.description} */')
         out.append(f'inline constexpr char k{camel(slot_name)}[] = "{a.name}";')
     out += ['}\t// namespace attr', '']
-    indices = [e for s in schema.slots for e in expand(read_attribute(sv, s)) if e.searchable]
+    indices = [e for s in schema.slots if not is_type_property(sv.get_slot(s)) for e in expand(read_attribute(sv, s)) if e.searchable]
     if indices:
         out += ['#pragma GCC diagnostic push', '#pragma GCC diagnostic ignored "-Wmultichar"', '',
                 '/** An attribute that is queried and needs a BFS index on every volume (the type of the index is that of the attribute). */',

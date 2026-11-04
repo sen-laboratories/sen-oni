@@ -278,13 +278,22 @@ slots:
     range: boolean
     annotations: {attribute: "SEN:onto:stable", editable: false}
 
+  # ---- a property of a type, not an attribute of its files (annotation type_property: the generator writes it to the type, not to the attribute info)
+  plural:
+    description: >-
+      The plural of the name of the type (People for Person). It names the folder of the type in the Library of a context and is the text to translate for lists of the things
+      of the type. Every entity type sets it with slot_usage (ifabsent: string(People)).
+    title: Plural
+    required: true
+    annotations: {type_property: true}
+
 classes:
   # ---- supertypes
   Entity:
     description: A semantic entity representing anything.
     title: Abstract Entity
     abstract: true
-    slots: [sen_id, sen_to, sen_meta, semantic_type, fictional]
+    slots: [sen_id, sen_to, sen_meta, semantic_type, fictional, plural]
     annotations:
       mime: entity
       supertype: true
@@ -326,13 +335,15 @@ classes:
     description: a general object or Thing in SEN
     title: Object
     is_a: Entity
-    annotations: {mime: entity/x-vnd.sen-labs.entity.object, plural: Objects}
+    slot_usage: {plural: {ifabsent: "string(Objects)"}}
+    annotations: {mime: entity/x-vnd.sen-labs.entity.object}
 
   DocumentOutlineItem:
     description: a structural component in a document, e.g. bookmark or label.
     title: Document Outline
     is_a: Entity
-    annotations: {mime: entity/x-vnd.sen-labs.entity.document.outline-item, plural: Document Outlines}
+    slot_usage: {plural: {ifabsent: "string(Document Outlines)"}}
+    annotations: {mime: entity/x-vnd.sen-labs.entity.document.outline-item}
 
   # ---- meta
   MimeAttribute:

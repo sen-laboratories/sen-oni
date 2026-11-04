@@ -31,27 +31,32 @@ classes:
     description: a musical work or piece of music (general)
     title: Music work
     is_a: Entity
-    annotations: {mime: entity/x-vnd.sen-labs.entity.music.work, plural: Music works}
+    slot_usage: {plural: {ifabsent: "string(Music works)"}}
+    annotations: {mime: entity/x-vnd.sen-labs.entity.music.work}
   Song:
     description: an individual piece of music
     title: Song
     is_a: Entity
-    annotations: {mime: entity/x-vnd.sen-labs.entity.music.song, plural: Songs}
+    slot_usage: {plural: {ifabsent: "string(Songs)"}}
+    annotations: {mime: entity/x-vnd.sen-labs.entity.music.song}
   Movement:
     description: a movement of a musical work
     title: Movement
     is_a: Entity
-    annotations: {mime: entity/x-vnd.sen-labs.entity.music.movement, plural: Movements}
+    slot_usage: {plural: {ifabsent: "string(Movements)"}}
+    annotations: {mime: entity/x-vnd.sen-labs.entity.music.movement}
   MusicAlbum:
     description: a music album containing songs or pieces
     title: Music album
     is_a: Entity
-    annotations: {mime: entity/x-vnd.sen-labs.entity.music.album, plural: Music albums}
+    slot_usage: {plural: {ifabsent: "string(Music albums)"}}
+    annotations: {mime: entity/x-vnd.sen-labs.entity.music.album}
   MusicMedium:
     description: a physical music medium (CD,DVD,Bluray etc.)
     title: Music medium
     is_a: Entity
-    annotations: {mime: entity/x-vnd.sen-labs.entity.music.medium, plural: Music media}
+    slot_usage: {plural: {ifabsent: "string(Music media)"}}
+    annotations: {mime: entity/x-vnd.sen-labs.entity.music.medium}
   TransitionTo:
     description: suitable as a transition from this song.
     title: Music transition to

@@ -122,12 +122,14 @@ classes:
     is_a: Entity
     class_uri: schema:Movie
     slots: [title, original_title, release_date, duration, director, actor, description, genre, in_language, country_of_origin, image, poster_license, same_as]
-    annotations: {mime: entity/x-vnd.sen-labs.entity.movie, plural: Movies}
+    slot_usage: {plural: {ifabsent: "string(Movies)"}}
+    annotations: {mime: entity/x-vnd.sen-labs.entity.movie}
   MovieMedium:
     description: a physical movie medium (VHS,DVD,Bluray)
     title: Movie medium
     is_a: Entity
-    annotations: {mime: entity/x-vnd.sen-labs.entity.movie.medium, plural: Movie media}
+    slot_usage: {plural: {ifabsent: "string(Movie media)"}}
+    annotations: {mime: entity/x-vnd.sen-labs.entity.movie.medium}
   MovieReference:
     description: Reference to a Movie
     title: Movie Reference
