@@ -91,6 +91,8 @@ inline constexpr char kPluginEnrich[] = "SEN:plugin:enrich";
 inline constexpr char kPluginIdentify[] = "SEN:plugin:identify";
 inline constexpr char kPluginNavigate[] = "SEN:plugin:navigate";
 inline constexpr char kPluginSearch[] = "SEN:plugin:search";
+/** Whether the plugin has settings that the settings window can show. A plugin without the attribute (an older one) is asked; one that says false is not listed there. */
+inline constexpr char kPluginHasSettings[] = "SEN:plugin:hasSettings";
 inline constexpr char kOntoSchemaUrl[] = "SEN:onto:schema_url";
 inline constexpr char kOntoAuthor[] = "SEN:onto:author";
 inline constexpr char kOntoVersion[] = "SEN:onto:version";

@@ -259,6 +259,11 @@ slots:
     title: search
     range: integer
     annotations: {attribute: "SEN:plugin:search", editable: false, width: 30, viewable: false}
+  plugin_has_settings:
+    description: Whether the plugin has settings that the settings window can show. A plugin without the attribute (an older one) is asked; one that says false is not listed there.
+    title: has settings
+    range: boolean
+    annotations: {attribute: "SEN:plugin:hasSettings", editable: false, width: 30, viewable: false}
 
   # ---- ontologies
   onto_schema_url:
@@ -473,7 +478,7 @@ classes:
   Plugin:
     description: a SEN plugin for handling various semantic tasks on entities or relations.
     title: SEN Plugin
-    slots: [plugin_version, plugin_features, plugin_extract, plugin_enrich, plugin_identify, plugin_navigate, plugin_search]
+    slots: [plugin_version, plugin_features, plugin_extract, plugin_enrich, plugin_identify, plugin_navigate, plugin_search, plugin_has_settings]
     annotations:
       mime: application/x-vnd.sen-labs.plugin
       icon: x-vnd.sen-labs.plugin
