@@ -132,6 +132,17 @@ slots:
   rel_role:
     title: Role
     annotations: {attribute: "SEN:REL:Role", width: 110}
+  rel_character:
+    description: The character that an actor plays (a Contribution with the role Actor).
+    title: Character
+    slot_uri: schema:characterName
+    annotations: {attribute: "schema:characterName", width: 110}
+  rel_position:
+    description: The place among the others with the same role (the billing order of the cast), counted from 1.
+    title: Position
+    slot_uri: schema:position
+    range: integer
+    annotations: {attribute: "schema:position", width: 30}
 
   # ---- the attributes of a MIME type (the attribute info of the MIME database, as the contents of a type)
   attr_name:
@@ -370,6 +381,20 @@ classes:
       # except for links between two classification entities, which stay bidirectional (handled in code).
       bidir: false
       label: associated with
+
+  Contribution:
+    description: >-
+      what a person or an organization did for a work (a movie, a book, a piece of music): the role says what (Director, Writer, Producer, Actor, Cinematographer,
+      Composer, Editor, Staff, ...), the character the part of an actor, the position the place in the credits.
+    title: Contribution
+    is_a: Relation
+    slots: [rel_character, rel_position]
+    annotations:
+      mime: relation/x-vnd.sen-labs.relation.contribution
+      icon: x-vnd.sen-labs.entity.person
+      label: contributed to
+      inverse_label: contributors
+      source_types: entity/x-vnd.sen-labs.entity.person,entity/x-vnd.sen-labs.entity.organization,application/x-person
 
   Reference:
     description: generic reference to another entity.

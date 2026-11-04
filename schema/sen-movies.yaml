@@ -49,11 +49,68 @@ slots:
     range: integer
     annotations: {attribute: "schema:endOffset", width: 30}
 
+  # ---- what a movie has (schema.org Movie; the people who made it are people with a Contribution to it, not attributes)
+  title:
+    title: Title
+    slot_uri: dc:title
+    annotations: {attribute: "dc:title"}
+  original_title:
+    description: The title in the original language, if it is another one.
+    title: Original Title
+    slot_uri: schema:alternateName
+    annotations: {attribute: "schema:alternateName", viewable: false}
+  release_date:
+    description: The date of the first release.
+    title: Released
+    slot_uri: schema:datePublished
+    range: datetime
+    annotations: {attribute: "schema:datePublished", width: 30}
+  duration:
+    description: The length of the movie, as an ISO 8601 duration (PT2H28M).
+    title: Duration
+    slot_uri: schema:duration
+    annotations: {attribute: "schema:duration", width: 30}
+  description:
+    description: What the movie is about.
+    title: Description
+    slot_uri: dc:description
+    annotations: {attribute: "dc:description", viewable: false}
+  genre:
+    title: Genres
+    slot_uri: schema:genre
+    annotations: {attribute: "schema:genre", is_list: true}
+  in_language:
+    description: The languages of the movie (the original one first), as language codes.
+    title: Languages
+    slot_uri: schema:inLanguage
+    annotations: {attribute: "schema:inLanguage", is_list: true, viewable: false}
+  country_of_origin:
+    title: Countries
+    slot_uri: schema:countryOfOrigin
+    annotations: {attribute: "schema:countryOfOrigin", is_list: true, viewable: false}
+  image:
+    description: The page of the poster (the thumbnail is the poster itself).
+    title: Poster
+    slot_uri: schema:image
+    annotations: {attribute: "schema:image", viewable: false}
+  poster_license:
+    description: The license of the poster, or where it is from.
+    title: Poster License
+    slot_uri: schema:license
+    annotations: {attribute: "schema:license", viewable: false}
+  same_as:
+    description: Where else the movie is known (Wikidata, IMDb, TMDB, Letterboxd), as a list of IRIs.
+    title: Same As
+    slot_uri: schema:sameAs
+    annotations: {attribute: "schema:sameAs", is_list: true, viewable: false, width: 150}
+
 classes:
   Movie:
     description: a movie
     title: Movie
     is_a: Entity
+    class_uri: schema:Movie
+    slots: [title, original_title, release_date, duration, description, genre, in_language, country_of_origin, image, poster_license, same_as]
     annotations: {mime: entity/x-vnd.sen-labs.entity.movie, library: Movies}
   MovieMedium:
     description: a physical movie medium (VHS,DVD,Bluray)

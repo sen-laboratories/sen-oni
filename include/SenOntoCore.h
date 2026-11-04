@@ -49,6 +49,10 @@ inline constexpr char kRelLabel[] = "SEN:REL:Label";
 inline constexpr char kRelKind[] = "SEN:REL:Kind";
 inline constexpr char kRelDesc[] = "SEN:REL:Desc";
 inline constexpr char kRelRole[] = "SEN:REL:Role";
+/** The character that an actor plays (a Contribution with the role Actor). */
+inline constexpr char kRelCharacter[] = "schema:characterName";
+/** The place among the others with the same role (the billing order of the cast), counted from 1. */
+inline constexpr char kRelPosition[] = "schema:position";
 /** Name of the attribute, e.g. dc:title. */
 inline constexpr char kAttrName[] = "SEN:attr:name";
 /** Type of the value of the attribute (string, int32, bool, time, ...). */
@@ -154,6 +158,8 @@ inline constexpr char kCollection[] = "classification/x-vnd.sen-labs.entity.coll
 inline constexpr char kContext[] = "classification/x-vnd.sen-labs.entity.context";
 /** Association: special relation used for classification. */
 inline constexpr char kAssociation[] = "relation/x-vnd.sen-labs.relation.association";
+/** Contribution: what a person or an organization did for a work (a movie, a book, a piece of music): the role says what (Director, Writer, Producer, Actor, Cinematographer, Composer, Editor, Staff, ...), the character the part of an actor, the position the place in the credits. */
+inline constexpr char kContribution[] = "relation/x-vnd.sen-labs.relation.contribution";
 /** Generic Reference: generic reference to another entity. */
 inline constexpr char kReference[] = "relation/x-vnd.sen-labs.relation.reference";
 /** Contains: relates to self contained components or parts. */
