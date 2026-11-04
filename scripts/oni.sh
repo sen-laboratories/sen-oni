@@ -173,7 +173,8 @@ function types_present()
 
 function folder_sum()
 {
-    (cd "$1" && find . -type f | sort | while read -r f; do md5sum "$f"; done | md5sum | cut -d' ' -f1)
+    # (the number says how the types are installed: a new one makes the installed ontologies be installed again, e.g. 2: the plural of the entity types is written)
+    (echo "installer 2"; cd "$1" && find . -type f | sort | while read -r f; do md5sum "$f"; done) | md5sum | cut -d' ' -f1
 }
 
 function install_ontology()

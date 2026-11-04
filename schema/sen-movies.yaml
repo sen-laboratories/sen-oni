@@ -123,7 +123,7 @@ classes:
     class_uri: schema:Movie
     slots: [title, original_title, release_date, duration, director, actor, description, genre, in_language, country_of_origin, image, poster_license, same_as]
     slot_usage: {plural: {ifabsent: "string(Movies)"}}
-    annotations: {mime: entity/x-vnd.sen-labs.entity.movie}
+    annotations: {mime: entity/x-vnd.sen-labs.entity.movie, icon: x-vnd.sen-labs.entity.movie}
   MovieMedium:
     description: a physical movie medium (VHS,DVD,Bluray)
     title: Movie medium
