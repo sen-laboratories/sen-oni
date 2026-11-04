@@ -5,7 +5,8 @@
 resource(0, "META:TYPE") "entity/x-vnd.sen-labs.entity.organization";
 resource(1, "META:L:DESC") #'MLDC' "a company, institution, club or any other group of people with a name";
 resource(2, "META:S:DESC") #'MSDC' "Organization";
-resource(3, "META:ATTR_INFO") message(233) {
+resource(3, "SEN:LIBRARY") "Organizations";
+resource(4, "META:ATTR_INFO") message(233) {
 	"attr:name" = "foaf:name",
 	"attr:name" = "foaf:mbox",
 	"attr:name" = "foaf:phone",
@@ -63,7 +64,7 @@ resource(3, "META:ATTR_INFO") message(233) {
 	"attr:display_as" = "",
 	"type" = "entity/x-vnd.sen-labs.entity.organization"
 };
-resource(4, "META:ICON") #'VICN' array {
+resource(5, "META:ICON") #'VICN' array {
 	$"6E63696604015A6F8CFF017D93B0FF01F2E6A0FF013B4A5FFF0A0204B4C1CBB4"
 	$"B4C1CBB4B4C1CBB4B4C1B6AAB4C1B6AAB4C1B6AAC224B3CCC224B3CCC224B3CC"
 	$"C224CBB4C224CBB4C224CBB40204C224CBB4C224CBB4C224CBB4C224BC67C224"

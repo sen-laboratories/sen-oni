@@ -183,6 +183,7 @@ class MimeClass:
     extensions: str = None
     icon: str = None
     folder_icon: str = None
+    library: str = None     # the folder of this entity type in the Library of a context (`People`), see sento SenLibrary.h
     attributes: list = field(default_factory=list)
     config: dict = None
     overlay: bool = False   # a type of the system or of another program: only its attribute info is written (the description, the icon... stay as they are)
@@ -205,7 +206,7 @@ def read_classes(sv, schema_dir):
             raise SchemaError(f'class {cls_name} has no title (short description of the type)')
         mc = MimeClass(cls_name, mime, supertype, one_line(cls.title), one_line(cls.description),
                        app=annotation(cls, 'app'), extensions=annotation(cls, 'extensions'),
-                       icon=annotation(cls, 'icon'), folder_icon=annotation(cls, 'folder_icon'),
+                       icon=annotation(cls, 'icon'), folder_icon=annotation(cls, 'folder_icon'), library=annotation(cls, 'library'),
                        overlay=bool(annotation(cls, 'overlay', False)))
         for icon in (mc.icon, mc.folder_icon):
             if icon and not os.path.exists(os.path.join(schema_dir, 'icons', icon + '.hex')):
@@ -253,6 +254,8 @@ def render_rdef(mc, schema_file, schema_dir):
         resource(f'"META:S:DESC") #\'MSDC\' {rdef_string(mc.title)};')
     if mc.app and not mc.overlay:
         resource(f'"META:PREF_APP") #\'MSIG\' {rdef_string(mc.app)};')
+    if mc.library and not mc.overlay:
+        resource(f'"SEN:LIBRARY") {rdef_string(mc.library)};')
     if mc.extensions and not mc.overlay:
         # a comma separated list becomes one entry for each extension (as the MIME database keeps them)
         extensions = [e.strip() for e in mc.extensions.replace('\n', ',').split(',') if e.strip()]

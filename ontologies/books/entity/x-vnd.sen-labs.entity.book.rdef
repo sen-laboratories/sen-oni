@@ -5,7 +5,8 @@
 resource(0, "META:TYPE") "entity/x-vnd.sen-labs.entity.book";
 resource(1, "META:L:DESC") #'MLDC' "describes a book entity";
 resource(2, "META:S:DESC") #'MSDC' "Book";
-resource(3, "META:ATTR_INFO") message(233) {
+resource(3, "SEN:LIBRARY") "Books";
+resource(4, "META:ATTR_INFO") message(233) {
 	"attr:name" = "schema:isbn",
 	"attr:name" = "dc:subject",
 	"attr:name" = "dc:title",
@@ -118,7 +119,7 @@ resource(3, "META:ATTR_INFO") message(233) {
 	"attr:display_as" = "",
 	"type" = "entity/x-vnd.sen-labs.entity.book"
 };
-resource(4, "META:ICON") #'VICN' array {
+resource(5, "META:ICON") #'VICN' array {
 	$"6E6369660A0101000071030100000200060239C5F13B86F2BB86F239C5F1499A"
 	$"C14A457300C2772FFF7F4C0002000602B7C5DDB83FDB3A4F0AB9DF564A8ED24B"
 	$"4B0300E6E276FFE8BF71020106023E6DF33BA6B2B89B6D3B783749F557499261"

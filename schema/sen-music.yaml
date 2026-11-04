@@ -36,7 +36,7 @@ classes:
     description: an individual piece of music
     title: Song
     is_a: Entity
-    annotations: {mime: entity/x-vnd.sen-labs.entity.music.song}
+    annotations: {mime: entity/x-vnd.sen-labs.entity.music.song, library: Songs}
   Movement:
     description: a movement of a musical work
     title: Movement
@@ -46,7 +46,7 @@ classes:
     description: a music album containing songs or pieces
     title: Music album
     is_a: Entity
-    annotations: {mime: entity/x-vnd.sen-labs.entity.music.album}
+    annotations: {mime: entity/x-vnd.sen-labs.entity.music.album, library: Albums}
   MusicMedium:
     description: a physical music medium (CD,DVD,Bluray etc.)
     title: Music medium

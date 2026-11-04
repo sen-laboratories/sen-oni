@@ -54,7 +54,7 @@ classes:
     description: a movie
     title: Movie
     is_a: Entity
-    annotations: {mime: entity/x-vnd.sen-labs.entity.movie}
+    annotations: {mime: entity/x-vnd.sen-labs.entity.movie, library: Movies}
   MovieMedium:
     description: a physical movie medium (VHS,DVD,Bluray)
     title: Movie medium

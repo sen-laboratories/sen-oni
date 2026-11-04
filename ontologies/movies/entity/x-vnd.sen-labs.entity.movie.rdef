@@ -5,3 +5,4 @@
 resource(0, "META:TYPE") "entity/x-vnd.sen-labs.entity.movie";
 resource(1, "META:L:DESC") #'MLDC' "a movie";
 resource(2, "META:S:DESC") #'MSDC' "Movie";
+resource(3, "SEN:LIBRARY") "Movies";
