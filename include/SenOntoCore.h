@@ -49,6 +49,8 @@ inline constexpr char kRelLabel[] = "SEN:REL:Label";
 inline constexpr char kRelKind[] = "SEN:REL:Kind";
 inline constexpr char kRelDesc[] = "SEN:REL:Desc";
 inline constexpr char kRelRole[] = "SEN:REL:Role";
+/** Who created the relation, as the signature of the application or plugin (application/x-vnd.sen-plugin.sen-labs.movie-enricher); the server sets it from the sender of the request, so every relation has it. A relation that is made again by another program keeps the one that made it first. */
+inline constexpr char kRelProvenance[] = "prov:wasAttributedTo";
 /** The character that an actor plays (a Contribution with the role Actor). */
 inline constexpr char kRelCharacter[] = "schema:characterName";
 /** The place among the others with the same role (the billing order of the cast), counted from 1. */

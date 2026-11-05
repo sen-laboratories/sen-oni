@@ -18,6 +18,7 @@ prefixes:
   dcterms: http://purl.org/dc/terms/
   schema: https://schema.org/
   oa: http://www.w3.org/ns/oa#
+  prov: http://www.w3.org/ns/prov#
   be: https://www.haiku-os.org/ns/be#
 default_prefix: sen
 default_range: string
@@ -132,6 +133,11 @@ slots:
   rel_role:
     title: Role
     annotations: {attribute: "SEN:REL:Role", width: 110}
+  rel_provenance:
+    description: Who created the relation, as the signature of the application or plugin (application/x-vnd.sen-plugin.sen-labs.movie-enricher); the server sets it from the sender of the request, so every relation has it. A relation that is made again by another program keeps the one that made it first.
+    title: Provenance
+    slot_uri: prov:wasAttributedTo
+    annotations: {attribute: "prov:wasAttributedTo", editable: false, width: 160}
   rel_character:
     description: The character that an actor plays (a Contribution with the role Actor).
     title: Character
@@ -320,7 +326,7 @@ classes:
     description: a semantic relationship between files and entities in SEN.
     title: SEN Relation
     abstract: true
-    slots: [rel_source, rel_target, rel_source_ref, rel_target_ref, rel_id, rel_label, rel_kind, rel_desc, rel_role, rel_type, rel_readonly, rel_missing]
+    slots: [rel_source, rel_target, rel_source_ref, rel_target_ref, rel_id, rel_label, rel_kind, rel_desc, rel_role, rel_provenance, rel_type, rel_readonly, rel_missing]
     annotations:
       mime: relation
       supertype: true
