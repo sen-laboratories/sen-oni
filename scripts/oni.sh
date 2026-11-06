@@ -202,7 +202,8 @@ function types_present()
 
 function folder_sum()
 {
-    (cd "$1" && find . -type f | sort | while read -r f; do md5sum "$f"; done | md5sum | cut -d' ' -f1)
+    # (the number says how the types are installed: a new one makes the installed ontologies be installed again, e.g. 2: the plural of the entity types is written)
+    (echo "installer 2"; cd "$1" && find . -type f | sort | while read -r f; do md5sum "$f"; done) | md5sum | cut -d' ' -f1
 }
 
 function install_ontology()
@@ -386,11 +387,24 @@ function reset_folder_view()
     addattr -t string SEN:view:version "$ONTOLOGY_VIEW_VERSION" "$SEN_CONFIG_ONTO" 2>/dev/null || true
 }
 
+# A notification (the notification server of Haiku, the command `notify`) that the ontologies are being updated: it takes a while, and the user should not restart SEN or Haiku meanwhile. The same message
+# id replaces the notification, so it shows the progress and then says that it is done. Nothing is said when the ontologies are up to date (the update runs after every package change).
+function notify_update()
+{
+    local type=$1 message=$2 progress=$3
+    command -v notify >/dev/null 2>&1 || return 0
+    if [ "$type" = progress ]; then
+        notify --type progress --progress "$progress" --group SEN --title "Updating the ontologies of SEN" --messageID sen-oni-update "$message" >/dev/null 2>&1 || true
+    else
+        notify --type "$type" --timeout 8 --group SEN --title "Updating the ontologies of SEN" --messageID sen-oni-update "$message" >/dev/null 2>&1 || true
+    fi
+}
+
 function update_ontologies()
 {
     reset_folder_view
 
-    local present=" " dir folder name
+    local present=" " dir folder name todo=()
 
     # new and changed ontologies from packages
     while read -r dir; do
@@ -404,10 +418,24 @@ function update_ontologies()
                 ensure_templates "$name" || true
                 continue
             fi
-            # (one that cannot be installed does not keep the others from it: it has no sum, so the next update tries it again)
-            install_ontology "$folder" || echo "$name could not be installed, it is tried again by the next update."
+            todo+=("$folder")
         done
     done < <(provided_folders)
+
+    local total=${#todo[@]} index=0
+    if [ $total -gt 0 ]; then
+        notify_update progress "$total ontologies are installed or updated. This takes a while: please do not restart SEN or Haiku until it is done." 0
+    fi
+    for folder in "${todo[@]}"; do
+        name=$(basename "$folder")
+        notify_update progress "$name ($((index + 1)) of $total). Please do not restart SEN or Haiku until this is done." "$(awk "BEGIN { printf \"%.2f\", $index / $total }")"
+        index=$((index + 1))
+        # (one that cannot be installed does not keep the others from it: it has no sum, so the next update tries it again)
+        install_ontology "$folder" || echo "$name could not be installed, it is tried again by the next update."
+    done
+    if [ $total -gt 0 ]; then
+        notify_update information "The ontologies are up to date."
+    fi
 
     # ontologies whose package is gone (those installed from a source tree stay)
     local placeholder source gone=()

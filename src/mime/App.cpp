@@ -304,6 +304,19 @@ status_t InstallMimeTypeFromResource(const char* path, BString* installedType) {
         }
     }
 
+    // the plural of an entity type (the slot `plural` of the root class Entity): the name of the folder of its entities in the Library. It is an attribute of the entry of the type in
+    // the MIME database of the user (the MIME API has no place for it), like the configuration of a relation above.
+    const void* plural = resources.LoadResource(B_STRING_TYPE, sen::attr::kPlural, size);
+    if (plural != NULL && *size > 0) {
+        BPath pluralPath;
+        if (find_directory(B_USER_SETTINGS_DIRECTORY, &pluralPath) == B_OK && pluralPath.Append("mime_db") == B_OK && pluralPath.Append(mimeType.Type()) == B_OK) {
+            BNode pluralNode(pluralPath.Path());
+            const ssize_t written = pluralNode.InitCheck() == B_OK ? pluralNode.WriteAttr(sen::attr::kPlural, B_STRING_TYPE, 0, plural, *size) : -1;
+            if (written < (ssize_t)*size)
+                fprintf(stderr, "error writing %s to MIME DB file %s\n", sen::attr::kPlural, mimeType.Type());
+        }
+    }
+
     // lastly, add optional icon
     icon = resources.LoadResource(B_VECTOR_ICON_TYPE, "META:ICON", size);
     if (icon != NULL && *size > 0) {

@@ -18,6 +18,7 @@ prefixes:
   dcterms: http://purl.org/dc/terms/
   schema: https://schema.org/
   oa: http://www.w3.org/ns/oa#
+  prov: http://www.w3.org/ns/prov#
   be: https://www.haiku-os.org/ns/be#
 default_prefix: sen
 default_range: string
@@ -132,6 +133,22 @@ slots:
   rel_role:
     title: Role
     annotations: {attribute: "SEN:REL:Role", width: 110}
+  rel_provenance:
+    description: Who created the relation, as the signature of the application or plugin (application/x-vnd.sen-plugin.sen-labs.movie-enricher); the server sets it from the sender of the request, so every relation has it. A relation that is made again by another program keeps the one that made it first.
+    title: Provenance
+    slot_uri: prov:wasAttributedTo
+    annotations: {attribute: "prov:wasAttributedTo", editable: false, width: 160}
+  rel_character:
+    description: The character that an actor plays (a Contribution with the role Actor).
+    title: Character
+    slot_uri: schema:characterName
+    annotations: {attribute: "schema:characterName", width: 110}
+  rel_position:
+    description: The place among the others with the same role (the billing order of the cast), counted from 1.
+    title: Position
+    slot_uri: schema:position
+    range: integer
+    annotations: {attribute: "schema:position", width: 30}
 
   # ---- the attributes of a MIME type (the attribute info of the MIME database, as the contents of a type)
   attr_name:
@@ -248,6 +265,11 @@ slots:
     title: search
     range: integer
     annotations: {attribute: "SEN:plugin:search", editable: false, width: 30, viewable: false}
+  plugin_has_settings:
+    description: Whether the plugin has settings that the settings window can show. A plugin without the attribute (an older one) is asked; one that says false is not listed there.
+    title: has settings
+    range: boolean
+    annotations: {attribute: "SEN:plugin:hasSettings", editable: false, width: 30, viewable: false}
 
   # ---- ontologies
   onto_schema_url:
@@ -267,13 +289,22 @@ slots:
     range: boolean
     annotations: {attribute: "SEN:onto:stable", editable: false}
 
+  # ---- a property of a type, not an attribute of its files (annotation type_property: the generator writes it to the type, not to the attribute info)
+  plural:
+    description: >-
+      The plural of the name of the type (People for Person). It names the folder of the type in the Library of a context and is the text to translate for lists of the things
+      of the type. Every entity type sets it with slot_usage (ifabsent: string(People)).
+    title: Plural
+    required: true
+    annotations: {type_property: true}
+
 classes:
   # ---- supertypes
   Entity:
     description: A semantic entity representing anything.
     title: Abstract Entity
     abstract: true
-    slots: [sen_id, sen_to, sen_meta, semantic_type, fictional]
+    slots: [sen_id, sen_to, sen_meta, semantic_type, fictional, plural]
     annotations:
       mime: entity
       supertype: true
@@ -295,7 +326,7 @@ classes:
     description: a semantic relationship between files and entities in SEN.
     title: SEN Relation
     abstract: true
-    slots: [rel_source, rel_target, rel_source_ref, rel_target_ref, rel_id, rel_label, rel_kind, rel_desc, rel_role, rel_type, rel_readonly, rel_missing]
+    slots: [rel_source, rel_target, rel_source_ref, rel_target_ref, rel_id, rel_label, rel_kind, rel_desc, rel_role, rel_provenance, rel_type, rel_readonly, rel_missing]
     annotations:
       mime: relation
       supertype: true
@@ -315,12 +346,14 @@ classes:
     description: a general object or Thing in SEN
     title: Object
     is_a: Entity
+    slot_usage: {plural: {ifabsent: "string(Objects)"}}
     annotations: {mime: entity/x-vnd.sen-labs.entity.object}
 
   DocumentOutlineItem:
     description: a structural component in a document, e.g. bookmark or label.
     title: Document Outline
     is_a: Entity
+    slot_usage: {plural: {ifabsent: "string(Document Outlines)"}}
     annotations: {mime: entity/x-vnd.sen-labs.entity.document.outline-item}
 
   # ---- meta
@@ -370,6 +403,20 @@ classes:
       # except for links between two classification entities, which stay bidirectional (handled in code).
       bidir: false
       label: associated with
+
+  Contribution:
+    description: >-
+      what a person or an organization did for a work (a movie, a book, a piece of music): the role says what (Director, Writer, Producer, Actor, Cinematographer,
+      Composer, Editor, Staff, ...), the character the part of an actor, the position the place in the credits.
+    title: Contribution
+    is_a: Relation
+    slots: [rel_character, rel_position]
+    annotations:
+      mime: relation/x-vnd.sen-labs.relation.contribution
+      icon: x-vnd.sen-labs.entity.person
+      label: contributed to
+      inverse_label: contributors
+      source_types: entity/x-vnd.sen-labs.entity.person,entity/x-vnd.sen-labs.entity.organization,application/x-person
 
   Reference:
     description: generic reference to another entity.
@@ -437,7 +484,7 @@ classes:
   Plugin:
     description: a SEN plugin for handling various semantic tasks on entities or relations.
     title: SEN Plugin
-    slots: [plugin_version, plugin_features, plugin_extract, plugin_enrich, plugin_identify, plugin_navigate, plugin_search]
+    slots: [plugin_version, plugin_features, plugin_extract, plugin_enrich, plugin_identify, plugin_navigate, plugin_search, plugin_has_settings]
     annotations:
       mime: application/x-vnd.sen-labs.plugin
       icon: x-vnd.sen-labs.plugin

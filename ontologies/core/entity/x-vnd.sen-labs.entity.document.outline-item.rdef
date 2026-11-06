@@ -5,3 +5,4 @@
 resource(0, "META:TYPE") "entity/x-vnd.sen-labs.entity.document.outline-item";
 resource(1, "META:L:DESC") #'MLDC' "a structural component in a document, e.g. bookmark or label.";
 resource(2, "META:S:DESC") #'MSDC' "Document Outline";
+resource(3, "SEN:PLURAL") "Document Outlines";

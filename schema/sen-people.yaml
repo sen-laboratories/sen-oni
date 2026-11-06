@@ -172,6 +172,7 @@ classes:
     is_a: Entity
     class_uri: foaf:Person
     slots: [name, given_name, family_name, nickname, mbox, phone, homepage, birth_date, job_title, groups, description, same_as, image, photo_license, photo_credit]
+    slot_usage: {plural: {ifabsent: "string(People)"}}
     annotations: {mime: entity/x-vnd.sen-labs.entity.person, icon: x-vnd.sen-labs.entity.person}
 
   # The type of the People application of Haiku. It is not ours: only its attribute info is written (an overlay: the user's MIME database adds to
@@ -189,6 +190,7 @@ classes:
     is_a: Entity
     class_uri: foaf:Organization
     slots: [name, mbox, phone, homepage, description]
+    slot_usage: {plural: {ifabsent: "string(Organizations)"}}
     annotations: {mime: entity/x-vnd.sen-labs.entity.organization, icon: x-vnd.sen-labs.entity.organization}
 
   # ---- what two people know of each other, from least to most close
