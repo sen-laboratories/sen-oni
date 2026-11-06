@@ -59,12 +59,17 @@ slots:
     annotations: {attribute: "dc:description", viewable: false}
   place_type:
     description: >-
-      What kind of place it is, as the IRI of the tag of OpenStreetMap that the place was found with
-      (https://wiki.openstreetmap.org/wiki/Tag:amenity=place_of_worship); for an administrative boundary the tag place with the kind of the area
-      (https://wiki.openstreetmap.org/wiki/Tag:place=city, place=state, place=country), which says more than boundary=administrative.
+      What kind of place it is, in a word (the name of its type): place of worship, city, country, district. It is what is shown; the IRI of the type is in Place Type IRI.
     title: Place Type
+    annotations: {attribute: "SEN:placeType", width: 110}
+  place_type_uri:
+    description: >-
+      What kind of place it is, as an IRI: the tag of OpenStreetMap that the place was found with (https://wiki.openstreetmap.org/wiki/Tag:amenity=place_of_worship; for an
+      administrative boundary the tag place with the kind of the area, Tag:place=city, which says more than boundary=administrative), or the class of Wikidata
+      (http://www.wikidata.org/entity/Q515) for a place that Wikidata told.
+    title: Place Type IRI
     slot_uri: schema:additionalType
-    annotations: {attribute: "schema:additionalType", width: 110}
+    annotations: {attribute: "schema:additionalType", viewable: false, width: 150}
   url:
     description: The web site of the place.
     title: Web Site
@@ -176,7 +181,7 @@ classes:
     title: Place
     is_a: Entity
     class_uri: schema:Place
-    slots: [title, alternate_name, description, place_type, url, same_as, image, image_license, image_credit, latitude, longitude, elevation, box_south, box_north, box_west, box_east, geometry, address, postal_code, locality, region, country]
+    slots: [title, alternate_name, description, place_type, place_type_uri, url, same_as, image, image_license, image_credit, latitude, longitude, elevation, box_south, box_north, box_west, box_east, geometry, address, postal_code, locality, region, country]
     slot_usage: {plural: {ifabsent: "string(Places)"}}
     annotations: {mime: entity/x-vnd.sen-labs.entity.place, icon: x-vnd.sen-labs.entity.place}
 

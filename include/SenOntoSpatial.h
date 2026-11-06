@@ -22,8 +22,10 @@ inline constexpr char kTitle[] = "dc:title";
 inline constexpr char kAlternateName[] = "schema:alternateName";
 /** What there is to say about the place. */
 inline constexpr char kDescription[] = "dc:description";
-/** What kind of place it is, as the IRI of the tag of OpenStreetMap that the place was found with (https://wiki.openstreetmap.org/wiki/Tag:amenity=place_of_worship); for an administrative boundary the tag place with the kind of the area (https://wiki.openstreetmap.org/wiki/Tag:place=city, place=state, place=country), which says more than boundary=administrative. */
-inline constexpr char kPlaceType[] = "schema:additionalType";
+/** What kind of place it is, in a word (the name of its type): place of worship, city, country, district. It is what is shown; the IRI of the type is in Place Type IRI. */
+inline constexpr char kPlaceType[] = "SEN:placeType";
+/** What kind of place it is, as an IRI: the tag of OpenStreetMap that the place was found with (https://wiki.openstreetmap.org/wiki/Tag:amenity=place_of_worship; for an administrative boundary the tag place with the kind of the area, Tag:place=city, which says more than boundary=administrative), or the class of Wikidata (http://www.wikidata.org/entity/Q515) for a place that Wikidata told. */
+inline constexpr char kPlaceTypeUri[] = "schema:additionalType";
 /** The web site of the place. */
 inline constexpr char kUrl[] = "schema:url";
 /** Where else the place is known (Wikidata, OpenStreetMap, Wikipedia, GeoNames), as a list of IRIs. */
