@@ -1,0 +1,320 @@
+// Generated from schema/sen-spatial.yaml by oni_gen.py: do not edit.
+// SPDX-License-Identifier: MIT
+// SPDX-FileCopyrightText: 2024-2026 SEN Labs e.U.
+
+resource(0, "META:TYPE") "entity/x-vnd.sen-labs.entity.place";
+resource(1, "META:L:DESC") #'MLDC' "a place: a named thing with an identity, a meaning or a function (a city, a building, a café, a mountain), the same place even when its boundary shifts or its coordinates are not known";
+resource(2, "META:S:DESC") #'MSDC' "Place";
+resource(3, "SEN:PLURAL") "Places";
+resource(4, "META:ATTR_INFO") message(233) {
+	"attr:name" = "dc:title",
+	"attr:name" = "schema:alternateName",
+	"attr:name" = "dc:description",
+	"attr:name" = "schema:additionalType",
+	"attr:name" = "schema:url",
+	"attr:name" = "schema:sameAs",
+	"attr:name" = "schema:image",
+	"attr:name" = "schema:license",
+	"attr:name" = "schema:creditText",
+	"attr:name" = "schema:latitude",
+	"attr:name" = "schema:longitude",
+	"attr:name" = "schema:elevation",
+	"attr:name" = "SEN:boxSouth",
+	"attr:name" = "SEN:boxNorth",
+	"attr:name" = "SEN:boxWest",
+	"attr:name" = "SEN:boxEast",
+	"attr:name" = "geo:asWKT",
+	"attr:name" = "schema:address",
+	"attr:name" = "schema:postalCode",
+	"attr:name" = "schema:addressLocality",
+	"attr:name" = "schema:addressRegion",
+	"attr:name" = "schema:addressCountry",
+	"attr:public_name" = "Name",
+	"attr:public_name" = "Other Names",
+	"attr:public_name" = "Description",
+	"attr:public_name" = "Place Type",
+	"attr:public_name" = "Web Site",
+	"attr:public_name" = "Same As",
+	"attr:public_name" = "Picture",
+	"attr:public_name" = "Picture License",
+	"attr:public_name" = "Picture Credit",
+	"attr:public_name" = "Latitude",
+	"attr:public_name" = "Longitude",
+	"attr:public_name" = "Elevation",
+	"attr:public_name" = "Box South",
+	"attr:public_name" = "Box North",
+	"attr:public_name" = "Box West",
+	"attr:public_name" = "Box East",
+	"attr:public_name" = "Boundary",
+	"attr:public_name" = "Address",
+	"attr:public_name" = "Postal Code",
+	"attr:public_name" = "City",
+	"attr:public_name" = "Region",
+	"attr:public_name" = "Country",
+	"attr:type" = 'CSTR',
+	"attr:type" = 'CSTR',
+	"attr:type" = 'CSTR',
+	"attr:type" = 'CSTR',
+	"attr:type" = 'CSTR',
+	"attr:type" = 'CSTR',
+	"attr:type" = 'CSTR',
+	"attr:type" = 'CSTR',
+	"attr:type" = 'CSTR',
+	"attr:type" = 'DBLE',
+	"attr:type" = 'DBLE',
+	"attr:type" = 'DBLE',
+	"attr:type" = 'DBLE',
+	"attr:type" = 'DBLE',
+	"attr:type" = 'DBLE',
+	"attr:type" = 'DBLE',
+	"attr:type" = 'CSTR',
+	"attr:type" = 'CSTR',
+	"attr:type" = 'CSTR',
+	"attr:type" = 'CSTR',
+	"attr:type" = 'CSTR',
+	"attr:type" = 'CSTR',
+	"attr:viewable" = true,
+	"attr:viewable" = false,
+	"attr:viewable" = false,
+	"attr:viewable" = true,
+	"attr:viewable" = false,
+	"attr:viewable" = false,
+	"attr:viewable" = false,
+	"attr:viewable" = false,
+	"attr:viewable" = false,
+	"attr:viewable" = true,
+	"attr:viewable" = true,
+	"attr:viewable" = false,
+	"attr:viewable" = false,
+	"attr:viewable" = false,
+	"attr:viewable" = false,
+	"attr:viewable" = false,
+	"attr:viewable" = false,
+	"attr:viewable" = false,
+	"attr:viewable" = false,
+	"attr:viewable" = true,
+	"attr:viewable" = false,
+	"attr:viewable" = true,
+	"attr:editable" = true,
+	"attr:editable" = true,
+	"attr:editable" = true,
+	"attr:editable" = true,
+	"attr:editable" = true,
+	"attr:editable" = true,
+	"attr:editable" = true,
+	"attr:editable" = true,
+	"attr:editable" = true,
+	"attr:editable" = true,
+	"attr:editable" = true,
+	"attr:editable" = true,
+	"attr:editable" = true,
+	"attr:editable" = true,
+	"attr:editable" = true,
+	"attr:editable" = true,
+	"attr:editable" = false,
+	"attr:editable" = true,
+	"attr:editable" = true,
+	"attr:editable" = true,
+	"attr:editable" = true,
+	"attr:editable" = true,
+	"SEN:searchable" = false,
+	"SEN:searchable" = false,
+	"SEN:searchable" = false,
+	"SEN:searchable" = false,
+	"SEN:searchable" = false,
+	"SEN:searchable" = false,
+	"SEN:searchable" = false,
+	"SEN:searchable" = false,
+	"SEN:searchable" = false,
+	"SEN:searchable" = true,
+	"SEN:searchable" = true,
+	"SEN:searchable" = false,
+	"SEN:searchable" = true,
+	"SEN:searchable" = false,
+	"SEN:searchable" = false,
+	"SEN:searchable" = false,
+	"SEN:searchable" = false,
+	"SEN:searchable" = false,
+	"SEN:searchable" = false,
+	"SEN:searchable" = false,
+	"SEN:searchable" = false,
+	"SEN:searchable" = false,
+	"SEN:is_list" = false,
+	"SEN:is_list" = true,
+	"SEN:is_list" = false,
+	"SEN:is_list" = false,
+	"SEN:is_list" = false,
+	"SEN:is_list" = true,
+	"SEN:is_list" = false,
+	"SEN:is_list" = false,
+	"SEN:is_list" = false,
+	"SEN:is_list" = false,
+	"SEN:is_list" = false,
+	"SEN:is_list" = false,
+	"SEN:is_list" = false,
+	"SEN:is_list" = false,
+	"SEN:is_list" = false,
+	"SEN:is_list" = false,
+	"SEN:is_list" = false,
+	"SEN:is_list" = false,
+	"SEN:is_list" = false,
+	"SEN:is_list" = false,
+	"SEN:is_list" = false,
+	"SEN:is_list" = false,
+	"SEN:list_separator" = "",
+	"SEN:list_separator" = ",",
+	"SEN:list_separator" = "",
+	"SEN:list_separator" = "",
+	"SEN:list_separator" = "",
+	"SEN:list_separator" = ",",
+	"SEN:list_separator" = "",
+	"SEN:list_separator" = "",
+	"SEN:list_separator" = "",
+	"SEN:list_separator" = "",
+	"SEN:list_separator" = "",
+	"SEN:list_separator" = "",
+	"SEN:list_separator" = "",
+	"SEN:list_separator" = "",
+	"SEN:list_separator" = "",
+	"SEN:list_separator" = "",
+	"SEN:list_separator" = "",
+	"SEN:list_separator" = "",
+	"SEN:list_separator" = "",
+	"SEN:list_separator" = "",
+	"SEN:list_separator" = "",
+	"SEN:list_separator" = "",
+	"attr:width" = 150,
+	"attr:width" = 150,
+	"attr:width" = 101,
+	"attr:width" = 110,
+	"attr:width" = 150,
+	"attr:width" = 150,
+	"attr:width" = 150,
+	"attr:width" = 129,
+	"attr:width" = 150,
+	"attr:width" = 80,
+	"attr:width" = 87,
+	"attr:width" = 87,
+	"attr:width" = 87,
+	"attr:width" = 87,
+	"attr:width" = 80,
+	"attr:width" = 80,
+	"attr:width" = 100,
+	"attr:width" = 220,
+	"attr:width" = 101,
+	"attr:width" = 110,
+	"attr:width" = 110,
+	"attr:width" = 73,
+	"attr:alignment" = 0,
+	"attr:alignment" = 0,
+	"attr:alignment" = 0,
+	"attr:alignment" = 0,
+	"attr:alignment" = 0,
+	"attr:alignment" = 0,
+	"attr:alignment" = 0,
+	"attr:alignment" = 0,
+	"attr:alignment" = 0,
+	"attr:alignment" = 0,
+	"attr:alignment" = 0,
+	"attr:alignment" = 0,
+	"attr:alignment" = 0,
+	"attr:alignment" = 0,
+	"attr:alignment" = 0,
+	"attr:alignment" = 0,
+	"attr:alignment" = 0,
+	"attr:alignment" = 0,
+	"attr:alignment" = 0,
+	"attr:alignment" = 0,
+	"attr:alignment" = 0,
+	"attr:alignment" = 0,
+	"attr:display_as" = "",
+	"attr:display_as" = "",
+	"attr:display_as" = "",
+	"attr:display_as" = "",
+	"attr:display_as" = "",
+	"attr:display_as" = "",
+	"attr:display_as" = "",
+	"attr:display_as" = "",
+	"attr:display_as" = "",
+	"attr:display_as" = "",
+	"attr:display_as" = "",
+	"attr:display_as" = "",
+	"attr:display_as" = "",
+	"attr:display_as" = "",
+	"attr:display_as" = "",
+	"attr:display_as" = "",
+	"attr:display_as" = "",
+	"attr:display_as" = "",
+	"attr:display_as" = "",
+	"attr:display_as" = "",
+	"attr:display_as" = "",
+	"attr:display_as" = "",
+	"type" = "entity/x-vnd.sen-labs.entity.place"
+};
+resource(5, "META:ICON") #'VICN' array {
+	$"6E6369660C0400520303030205FB02000604B777D5B905C439047BB7795248A8"
+	$"2C4883D200B87B0C44CE8303ABF5CC61FFF3CE77030B6CB802011602BA22DD3A"
+	$"3F26B93D33B9170D47FA13476AF962FBD5BB03D1D3D305FF02010603B51FDDAC"
+	$"0D562D6DA8B69ECF49B8EB4A2E0200FEFFFF9CFEFFFFB9ACB0B803A5A8A803B0"
+	$"B3B302001202B20989371BDAB71A86B20A6348B56248EA0B00FBFFFFFB001802"
+	$"0ABD3BC465BD3BC465B9EBC517B75BC767BA38C5B0B920C89EC0FBC9DFC04BCB"
+	$"FFC3A4C835C900CC62C532CBD3CA06CB7ACC6CCA3DCB36CADECB2CC9B3C5D752"
+	$"C5E2C6F9C56CC6B9C1ABC8DBC229C904C188C8B1C140C85BC165C885C1FBC6CD"
+	$"C056C694C037C6E4C137C510BD3BC465BD42C466BD3BC4650606F30FBDFCBD4C"
+	$"BDFCBD4CBDFDBD4CBDFDBDFCBD4CBDFDBD4CBE01BDFCBE0CBF5BBE06BEAABD9B"
+	$"BF3FBCDCBE69BD42BEB8BCDBBDFDBDFCBD4CBDA4BD9BBDFCBD4C0214BEDBB395"
+	$"BEDBB395BEA4B395BE26B3EBBE65B3B1BE04B43BBE02BA77BE07B900BADBB3C5"
+	$"B688BE1FB391B92DB527BF58B662C340B40BC272B664C480B670C67CB650C63E"
+	$"B73BC7B5B934C757B7D3C7BE32C992BD1EC742BCD1C826BD2AC60CBD25C3A4BD"
+	$"23C4DDBD36C352BD81C2B4BD72C309BDA8C2B2BE1AC2BBBDF3C2BCBE18C500BE"
+	$"1AC97FBE0FC739BE50CA27BF6EC98ABF40CA52BF84C6A0BF7DC29EBF6EC5EBC0"
+	$"A4C195BF7DBF43C06AC06EBF7DBE56BF7DBC78BF7DBD68C36CBAA9C9B2BDD7C5"
+	$"E9C0BEC947B889C9C3B685CA10BA9EC648B5C1BFA6B463C2F5B511BF75B3DABE"
+	$"DBB395BF2FB396BEDBB3950205BF69B4CDBF69B4CDBFB5B715BF7DBBE0BFA2B9"
+	$"98C408BA7AC93ABD8BC606BFEBC8BBB978C947B6EBC99BB981C52AB612BF69B4"
+	$"CDC235B540BF69B4CD0205B7D2C044B7D2C044B8C7C06BBAB5C0FBB9B0C09CBA"
+	$"CCC20ABAA9C307BACEC276BA3BC31FB7C1C264B84EC2ACB7B4C194B7D2C044B7"
+	$"ADC141B7D2C044020CB6E2BEBCB6E2BEBCB470C06DB637C20BB5FDC37729BE96"
+	$"B6C4C060B6D5C016B6C7C12AB702C2F9B69CC2CEB865C3E0BB81C3D0BAC64BBB"
+	$"9BC2EDBB92C12EBB9FC22DBBB2C0A4BC59C170BC08C179BCC4C1A3BE0EC150BE"
+	$"18C1F8BE0EC0DABE0EBFF2BE0EC066BDADBFCDBD1EBF6ABD63BFA5BAE1BFC5B7"
+	$"2FBEEFBA56C0E0B719BECDB6E2BEBCB6F7BEABB6E2BEBC0203B674BD06B674BD"
+	$"06B7A8C05F36BC1ABC4BBF7DBB01B8DBB674BD06B51AB91FB674BD06020CC006"
+	$"B87AC006B87AC056B8A1C23AB971C1C8B97CC2A7B968C38EB8F2C324B8F3C400"
+	$"B8DAC3C1B95BC390B953C41FB969C60DB88CC503B881C60DB8B4C60DB90AC60D"
+	$"B8E0C6D4B8F5C851B8E6C78AB880C832B931C79AB986C7BAB93BC7E9B9FCC5CC"
+	$"BAC0C6B1BAD1C6CBBB76C45EBB1EC505BB1DC4A6BBDCC245BA13C2AEBAE8C1B9"
+	$"B9ABC006B87AC012B931C006B87A0204B6A0B9F8B6A0B9F8B9B0B86CBC25BBB9"
+	$"BB63BA62BC80BB04BD4FBA46BCA5BAA9BC36B70DB6A0B9F8B80EB701B6A0B9F8"
+	$"0209B6E6C385B6E6C385B6F4C3E0B856C4A5B7E7C471B8A84CB9C9C50BB97AC4"
+	$"D1BA5AC4F3BB79C4C5BAEAC4DCBB7CC5D7BB60C7FBBB96C73FBBB4C7D1BCAEC7"
+	$"1BBC85C77FBCA5C60638C3DBBC9AC4F0BAC1C4F1B6E4C386B8B3C42AB6E6C386"
+	$"B6E6C385B6E6C386B6E6C3850205B9C5C502B9C5C502BA5AC4EBBB83C4BCBAED"
+	$"C4D4BB84C5D3BB69C7FABB9EC73ABAE3C823B9D8C79DBA34C80EB9B0C760B9C5"
+	$"C502B9BDC5A0B9C5C5020205B6E8C383B6E8C382B6F7C3DBB85CC49CB7EDC46C"
+	$"B87FC56DB85CC71DB863C649B7D9C75DB6E9C685B728C6FAB6CDC63DB6E8C382"
+	$"B6E3C483B6E8C3820205B80DC0B1B80EC0B1B8CEC0DEBA4FC13BB98FC10DBA6E"
+	$"C155BA5BC2AABA5FC22EB9B4C2A0B81246B841C25EB810C1A8B80EC0B1B80FC1"
+	$"2DB80EC0B10607FF3EBE88B438BE88B438BE88B829BE88C00CBE88BC1ABE9DC0"
+	$"07BEF7BFF6BEE4BFFCBF08B5EDBF04B42BBF09B4EABF05B42BBF06B42ABF04B4"
+	$"28BF05B42ABEE9B415BE88B438BEB6B3DDBE88B4380202BB8DC143BB86C21DBD"
+	$"2AC286BB7CC3D0BDD9C34BBB83C2F60205BE96C25FBE96C25FBE85C60DBE80C9"
+	$"7ABE80C702BE80C996BF08C986BEDDC9B3BF08C72DBF09C27ABF09C4D4BEEEC2"
+	$"70BE96C25FBEB1C26ABE96C25F0203B83FBA21B83FBA21B77CBA78B708BC1DB6"
+	$"4FBB2BB76DBC4BB83FBA21B977BA9BB83FBA210205B865C4E4B865C4E4B8ADC5"
+	$"02B93AC53DB8F3C520B9404FB948C6B4B944C637B93352B856C71DB8A8C71DB8"
+	$"5AC660B865C4E4B860C5A0B865C4E40204B73CBEFBB73CBEFBB8EFBFFDBC8BBE"
+	$"CBBA26C054BCB3BECDBD2CBF74BD2BBF7335BF8FB73CBEFCB9ACC179B73CBEFB"
+	$"0205BFA6C037BFA6C037BF89BFFCBE85C0BDBEA8C06CBE78C114BE8CC1AFBE83"
+	$"C167BEB3C1DCBF71C1EDBF37C223C00DC1BDBFA6C037BFD7C0A1BFA6C0370203"
+	$"BDCFBB1DBDCFBB1DBD06BB53BD75BD2A39BD4FBDF8BD3BBDCFBB1DBE6BBB6ABD"
+	$"CFBB1D0204BC24BD2EBC21BD2EBBFABE1DBAC4BF51BB6BBEAFBB3BBF31BCD5BD"
+	$"B0BCFBBE07BCB0BD6CBC21BD2EBC58BD5FBC21BD2E0204BC1DC156BC1DC156BD"
+	$"0CC196BE0DC180BD74C175BE11C19ABE00C228BE27C207BD82C278BC1DC156BC"
+	$"A1C1D6BC1DC1560205BD1BBAD4BD1BBAD4BD3EBAD7BD84BADFBD61BADDBCE8BB"
+	$"9DBCEDBD2EBCB1BC3EBCC5BD25BC85BCEDBC91BD12BC29BC06BD1BBAD4BCC2BB"
+	$"11BD1BBAD4160A000100000A010201021001158100040A020103000A02020405"
+	$"000A030106000A040107000A050108000A060109000A02010A000A02010B000A"
+	$"02010C000A07010D000A06010E000A07010F000A020110000A060111000A0601"
+	$"12000A080113000A090114000A0A0115000A060116000A0B011700"
+};
