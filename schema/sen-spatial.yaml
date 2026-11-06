@@ -60,7 +60,8 @@ slots:
   place_type:
     description: >-
       What kind of place it is, as the IRI of the tag of OpenStreetMap that the place was found with
-      (https://wiki.openstreetmap.org/wiki/Tag:amenity=place_of_worship); for an administrative boundary the kind of the boundary (city, state, country).
+      (https://wiki.openstreetmap.org/wiki/Tag:amenity=place_of_worship); for an administrative boundary the tag place with the kind of the area
+      (https://wiki.openstreetmap.org/wiki/Tag:place=city, place=state, place=country), which says more than boundary=administrative.
     title: Place Type
     slot_uri: schema:additionalType
     annotations: {attribute: "schema:additionalType", width: 110}
