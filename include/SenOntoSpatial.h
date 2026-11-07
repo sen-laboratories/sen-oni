@@ -16,7 +16,7 @@ namespace onto {
 namespace spatial {
 
 namespace attr {
-/** The name of the place or location. */
+/** The name of the place or location (the property is called Title so that it is not taken for the name of the file, which a file manager shows as Name). */
 inline constexpr char kTitle[] = "dc:title";
 /** The other names of the place (in other languages, older names), as a list. */
 inline constexpr char kAlternateName[] = "schema:alternateName";
@@ -90,8 +90,8 @@ namespace mime {
 inline constexpr char kPlace[] = "entity/x-vnd.sen-labs.entity.place";
 /** Location: a location: where something is on Earth (a point, a bounding box, a polygon, a postal address), without more identity than that: the position of a photo, a waypoint, a meeting point */
 inline constexpr char kLocation[] = "entity/x-vnd.sen-labs.entity.location";
-/** Located At: a file or an entity is located at a place or a location (where a photo was taken, what a paper is about, where an event is). It is stored: you make it, or SUESS does when it has looked up a Location or a photo by its position (the place that was found is the target). */
-inline constexpr char kLocatedAt[] = "relation/x-vnd.sen-labs.relation.spatial.located-at";
+/** Located Near: a file or an entity is located near a place or a location (where a photo was taken, what a paper is about, where an event is): a place can be a building or an address, and there can be several near one position. It is stored: you make it, or SUESS does when it has looked up a Location or a photo by its position or its address (the place that was found, and the places that are near it). */
+inline constexpr char kLocatedNear[] = "relation/x-vnd.sen-labs.relation.spatial.located-near";
 /** Within: the place lies inside the other one, without touching its border (RCC-8 NTPP); seen from the other one it contains the place */
 inline constexpr char kWithin[] = "relation/x-vnd.sen-labs.relation.spatial.within";
 /** Covered By: the place lies inside the other one and touches its border (RCC-8 TPP); seen from the other one it covers the place */

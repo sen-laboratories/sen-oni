@@ -30,7 +30,7 @@ resource(4, "META:ATTR_INFO") message(233) {
 	"attr:name" = "schema:addressLocality",
 	"attr:name" = "schema:addressRegion",
 	"attr:name" = "schema:addressCountry",
-	"attr:public_name" = "Name",
+	"attr:public_name" = "Title",
 	"attr:public_name" = "Other Names",
 	"attr:public_name" = "Description",
 	"attr:public_name" = "Place Type",
