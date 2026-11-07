@@ -37,4 +37,12 @@ objects.*
 shoji
 __pycache__/
 *.pyc
+# macOS leftovers: never commit
 .DS_Store
+._*
+.AppleDouble
+.LSOverride
+.Spotlight-V100
+.Trashes
+.fseventsd
+__MACOSX/
