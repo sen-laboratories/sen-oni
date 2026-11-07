@@ -146,11 +146,11 @@ slots:
     description: The postal address in one line.
     title: Address
     slot_uri: schema:address
-    annotations: {attribute: "schema:address", viewable: false, width: 220}
+    annotations: {attribute: "schema:address", width: 220}
   postal_code:
     title: Postal Code
     slot_uri: schema:postalCode
-    annotations: {attribute: "schema:postalCode", viewable: false, width: 70}
+    annotations: {attribute: "schema:postalCode", width: 70}
   locality:
     description: The city, town or village.
     title: City
@@ -160,7 +160,7 @@ slots:
     description: The state or province.
     title: Region
     slot_uri: schema:addressRegion
-    annotations: {attribute: "schema:addressRegion", viewable: false, width: 110}
+    annotations: {attribute: "schema:addressRegion", width: 110}
   country:
     description: The country, as its two-letter code (ISO 3166-1).
     title: Country
