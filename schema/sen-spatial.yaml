@@ -204,7 +204,9 @@ classes:
 
   # A file (or any entity) is at a place or location. It is stored, since nothing could tell it.
   LocatedAt:
-    description: a file or an entity is located at a place or a location (where a photo was taken, what a paper is about, where an event is)
+    description: >-
+      a file or an entity is located at a place or a location (where a photo was taken, what a paper is about, where an event is). It is stored: you make it, or SUESS does when it
+      has looked up a Location or a photo by its position (the place that was found is the target).
     title: Located At
     is_a: Relation
     class_uri: dcterms:spatial

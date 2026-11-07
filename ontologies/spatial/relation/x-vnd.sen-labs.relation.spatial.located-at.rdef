@@ -3,7 +3,7 @@
 // SPDX-FileCopyrightText: 2024-2026 SEN Labs e.U.
 
 resource(0, "META:TYPE") "relation/x-vnd.sen-labs.relation.spatial.located-at";
-resource(1, "META:L:DESC") #'MLDC' "a file or an entity is located at a place or a location (where a photo was taken, what a paper is about, where an event is)";
+resource(1, "META:L:DESC") #'MLDC' "a file or an entity is located at a place or a location (where a photo was taken, what a paper is about, where an event is). It is stored: you make it, or SUESS does when it has looked up a Location or a photo by its position (the place that was found is the target).";
 resource(2, "META:S:DESC") #'MSDC' "Located At";
 resource(3, "META:ATTR_INFO") message(233) {
 	"attr:name" = "SEN:REL:note",

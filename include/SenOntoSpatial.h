@@ -90,7 +90,7 @@ namespace mime {
 inline constexpr char kPlace[] = "entity/x-vnd.sen-labs.entity.place";
 /** Location: a location: where something is on Earth (a point, a bounding box, a polygon, a postal address), without more identity than that: the position of a photo, a waypoint, a meeting point */
 inline constexpr char kLocation[] = "entity/x-vnd.sen-labs.entity.location";
-/** Located At: a file or an entity is located at a place or a location (where a photo was taken, what a paper is about, where an event is) */
+/** Located At: a file or an entity is located at a place or a location (where a photo was taken, what a paper is about, where an event is). It is stored: you make it, or SUESS does when it has looked up a Location or a photo by its position (the place that was found is the target). */
 inline constexpr char kLocatedAt[] = "relation/x-vnd.sen-labs.relation.spatial.located-at";
 /** Within: the place lies inside the other one, without touching its border (RCC-8 NTPP); seen from the other one it contains the place */
 inline constexpr char kWithin[] = "relation/x-vnd.sen-labs.relation.spatial.within";
