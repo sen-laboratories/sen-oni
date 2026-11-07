@@ -6,8 +6,34 @@ resource(0, "META:TYPE") "relation/x-vnd.sen-labs.relation.spatial.equal";
 resource(1, "META:L:DESC") #'MLDC' "two places cover exactly the same area (RCC-8 EQ), like two files for the same parcel";
 resource(2, "META:S:DESC") #'MSDC' "Equal";
 resource(3, "META:PREF_APP") #'MSIG' "application/x-vnd.sen-plugin.sen-labs.spatial-navigator";
-resource(4, "SEN:REL:CONFIG") message(233) {
+resource(4, "META:ATTR_INFO") message(233) {
+	"attr:name" = "SEN:REL:Kind",
+	"attr:name" = "SEN:REL:Rcc8",
+	"attr:public_name" = "Relation Kind",
+	"attr:public_name" = "RCC-8",
+	"attr:type" = 'CSTR',
+	"attr:type" = 'CSTR',
+	"attr:viewable" = true,
+	"attr:viewable" = false,
+	"attr:editable" = true,
+	"attr:editable" = true,
+	"SEN:searchable" = false,
+	"SEN:searchable" = false,
+	"SEN:is_list" = false,
+	"SEN:is_list" = false,
+	"SEN:list_separator" = "",
+	"SEN:list_separator" = "",
+	"attr:width" = 115,
+	"attr:width" = 70,
+	"attr:alignment" = 0,
+	"attr:alignment" = 0,
+	"attr:display_as" = "",
+	"attr:display_as" = "",
+	"type" = "relation/x-vnd.sen-labs.relation.spatial.equal"
+};
+resource(5, "SEN:REL:CONFIG") message(233) {
 	"SEN:dynamic" = true,
+	"SEN:remote" = true,
 	"SEN:relation" = message('SCrd') {
 		"SEN:REL:Label" = "equal to"
 	},
@@ -20,7 +46,7 @@ resource(4, "SEN:REL:CONFIG") message(233) {
 		"SEN:REL:Label" = "equal to"
 	}
 };
-resource(5, "META:ICON") #'VICN' array {
+resource(6, "META:ICON") #'VICN' array {
 	$"6E636966080500020106040000003E7FCBBE7FCB00000048398949594C0033FF"
 	$"FF5333FFFFD70066FFFF0034CC04015D02010606000000BEF141BEF141000000"
 	$"48D52047FDC200FFFFFF3300FF006600E4009900B200CC009900FF0080000400"

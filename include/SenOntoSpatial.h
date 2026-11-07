@@ -63,6 +63,8 @@ inline constexpr char kRegion[] = "schema:addressRegion";
 inline constexpr char kCountry[] = "schema:addressCountry";
 /** What there is to say about the relation (where in the place, how it is located). */
 inline constexpr char kRelNote[] = "SEN:REL:note";
+/** The code of the relation in the Region Connection Calculus (RCC-8), as the comparison of the shapes of the two places gave it: NTPP (within, not touching the border), NTPPi (contains), TPP (covered by, touching the border), TPPi (covers), EC (touch), PO (overlap), EQ (equal), DC (disconnected). The name in words is the property Kind. */
+inline constexpr char kRcc8[] = "SEN:REL:Rcc8";
 }	// namespace attr
 
 #pragma GCC diagnostic push

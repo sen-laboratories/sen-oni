@@ -172,6 +172,12 @@ slots:
     description: What there is to say about the relation (where in the place, how it is located).
     title: Note
     annotations: {attribute: "SEN:REL:note", width: 160}
+  rcc8:
+    description: >-
+      The code of the relation in the Region Connection Calculus (RCC-8), as the comparison of the shapes of the two places gave it: NTPP (within, not touching the border),
+      NTPPi (contains), TPP (covered by, touching the border), TPPi (covers), EC (touch), PO (overlap), EQ (equal), DC (disconnected). The name in words is the property Kind.
+    title: RCC-8
+    annotations: {attribute: "SEN:REL:Rcc8", viewable: false, width: 70}
 
 classes:
   Place:
@@ -216,12 +222,14 @@ classes:
     description: the place lies inside the other one, without touching its border (RCC-8 NTPP); seen from the other one it contains the place
     title: Within
     is_a: Relation
+    slots: [rel_kind, rcc8]
     class_uri: geo:rcc8ntpp
     annotations:
       mime: relation/x-vnd.sen-labs.relation.spatial.within
       icon: x-vnd.sen-labs.entity.location
       app: application/x-vnd.sen-plugin.sen-labs.spatial-navigator
       dynamic: true
+      remote: true
       group: Spatial
       label: within
       inverse_label: contains
@@ -232,12 +240,14 @@ classes:
     description: the place lies inside the other one and touches its border (RCC-8 TPP); seen from the other one it covers the place
     title: Covered By
     is_a: Relation
+    slots: [rel_kind, rcc8]
     class_uri: geo:rcc8tpp
     annotations:
       mime: relation/x-vnd.sen-labs.relation.spatial.covered-by
       icon: x-vnd.sen-labs.entity.location
       app: application/x-vnd.sen-plugin.sen-labs.spatial-navigator
       dynamic: true
+      remote: true
       group: Spatial
       label: covered by
       inverse_label: covers
@@ -248,12 +258,14 @@ classes:
     description: the borders of two places meet and the places do not overlap (RCC-8 EC), like two neighbouring countries
     title: Touch
     is_a: Relation
+    slots: [rel_kind, rcc8]
     class_uri: geo:rcc8ec
     annotations:
       mime: relation/x-vnd.sen-labs.relation.spatial.touch
       icon: x-vnd.sen-labs.entity.location
       app: application/x-vnd.sen-plugin.sen-labs.spatial-navigator
       dynamic: true
+      remote: true
       group: Spatial
       label: touches
       inverse_label: touches
@@ -264,12 +276,14 @@ classes:
     description: two places have a part in common and each has a part of its own (RCC-8 PO), like an island in two districts
     title: Overlap
     is_a: Relation
+    slots: [rel_kind, rcc8]
     class_uri: geo:rcc8po
     annotations:
       mime: relation/x-vnd.sen-labs.relation.spatial.overlap
       icon: x-vnd.sen-labs.entity.location
       app: application/x-vnd.sen-plugin.sen-labs.spatial-navigator
       dynamic: true
+      remote: true
       group: Spatial
       label: overlaps
       inverse_label: overlaps
@@ -280,12 +294,14 @@ classes:
     description: two places cover exactly the same area (RCC-8 EQ), like two files for the same parcel
     title: Equal
     is_a: Relation
+    slots: [rel_kind, rcc8]
     class_uri: geo:rcc8eq
     annotations:
       mime: relation/x-vnd.sen-labs.relation.spatial.equal
       icon: x-vnd.sen-labs.entity.location
       app: application/x-vnd.sen-plugin.sen-labs.spatial-navigator
       dynamic: true
+      remote: true
       group: Spatial
       label: equal to
       inverse_label: equal to
