@@ -55,7 +55,7 @@ inline constexpr char kRelProvenance[] = "prov:wasAttributedTo";
 inline constexpr char kRelCharacter[] = "schema:characterName";
 /** The place among the others with the same role (the billing order of the cast), counted from 1. */
 inline constexpr char kRelPosition[] = "schema:position";
-/** Name of the attribute, e.g. dc:title. */
+/** Name of the attribute, e.g. dc:title (the property is called Attribute Name so that it is not taken for the name of the file, which a file manager shows as Name). */
 inline constexpr char kAttrName[] = "SEN:attr:name";
 /** Type of the value of the attribute (string, int32, bool, time, ...). */
 inline constexpr char kAttrType[] = "SEN:attr:type";

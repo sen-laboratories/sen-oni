@@ -220,6 +220,26 @@ classes:
       inverse_label: nearby
       target_types: entity/x-vnd.sen-labs.entity.place,entity/x-vnd.sen-labs.entity.location
 
+  # The named things in the area of a place (OpenStreetMap, through the Overpass API), asked for when the relation is opened.
+  PointOfInterest:
+    description: >-
+      the points of interest in the area of a place or around a location: everything with a name that OpenStreetMap knows there (shops, cafés, sights, stops; not the roads and the
+      borders), the nearest first. It is not stored: it is asked of the Overpass API when it is opened, and a place is made in the Library for each point that is not there yet.
+    title: Point of Interest
+    is_a: Relation
+    class_uri: schema:containsPlace
+    annotations:
+      mime: relation/x-vnd.sen-labs.relation.spatial.point-of-interest
+      icon: x-vnd.sen-labs.entity.location
+      app: application/x-vnd.sen-plugin.sen-labs.spatial-navigator
+      dynamic: true
+      remote: true
+      group: Spatial
+      label: point of interest
+      inverse_label: in the area of
+      source_types: entity/x-vnd.sen-labs.entity.place,entity/x-vnd.sen-labs.entity.location
+      target_types: entity/x-vnd.sen-labs.entity.place
+
   # ---- the topological relations (RCC-8), worked out when asked
   Within:
     description: the place lies inside the other one, without touching its border (RCC-8 NTPP); seen from the other one it contains the place

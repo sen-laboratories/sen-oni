@@ -152,8 +152,8 @@ slots:
 
   # ---- the attributes of a MIME type (the attribute info of the MIME database, as the contents of a type)
   attr_name:
-    description: Name of the attribute, e.g. dc:title.
-    title: Name
+    description: Name of the attribute, e.g. dc:title (the property is called Attribute Name so that it is not taken for the name of the file, which a file manager shows as Name).
+    title: Attribute Name
     annotations: {attribute: "SEN:attr:name", editable: false, width: 120}
   attr_type:
     description: Type of the value of the attribute (string, int32, bool, time, ...).

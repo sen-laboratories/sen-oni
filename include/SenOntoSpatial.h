@@ -92,6 +92,8 @@ inline constexpr char kPlace[] = "entity/x-vnd.sen-labs.entity.place";
 inline constexpr char kLocation[] = "entity/x-vnd.sen-labs.entity.location";
 /** Located Near: a file or an entity is located near a place or a location (where a photo was taken, what a paper is about, where an event is): a place can be a building or an address, and there can be several near one position. It is stored: you make it, or SUESS does when it has looked up a Location or a photo by its position or its address (the place that was found, and the places that are near it). */
 inline constexpr char kLocatedNear[] = "relation/x-vnd.sen-labs.relation.spatial.located-near";
+/** Point of Interest: the points of interest in the area of a place or around a location: everything with a name that OpenStreetMap knows there (shops, cafés, sights, stops; not the roads and the borders), the nearest first. It is not stored: it is asked of the Overpass API when it is opened, and a place is made in the Library for each point that is not there yet. */
+inline constexpr char kPointOfInterest[] = "relation/x-vnd.sen-labs.relation.spatial.point-of-interest";
 /** Within: the place lies inside the other one, without touching its border (RCC-8 NTPP); seen from the other one it contains the place */
 inline constexpr char kWithin[] = "relation/x-vnd.sen-labs.relation.spatial.within";
 /** Covered By: the place lies inside the other one and touches its border (RCC-8 TPP); seen from the other one it covers the place */
