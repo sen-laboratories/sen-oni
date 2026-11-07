@@ -123,7 +123,15 @@ function add_templates()
             addattr -t bool _trk/_template_submenu 1 "$folder" 2>/dev/null || true
             addattr -t string $ATTR_TEMPLATE "$ontology_name" "$folder" 2>/dev/null || true
         fi
-        [ -e "$folder/$description" ] && continue
+        if [ -e "$folder/$description" ]; then
+            # (a template of ours follows the type: one that has the wrong type, e.g. from an older installer, is corrected; one that people made themselves is left alone)
+            if [ "$(get_attr $ATTR_TEMPLATE "$folder/$description")" = "$ontology_name" ] \
+                    && [ "$(get_attr BEOS:TYPE "$folder/$description")" != "$mime_type" ]; then
+                addattr -t mime BEOS:TYPE "$mime_type" "$folder/$description"
+                echo "  template corrected: $description"
+            fi
+            continue
+        fi
         touch "$folder/$description"
         addattr -t mime BEOS:TYPE "$mime_type" "$folder/$description"
         addattr -t string $ATTR_TEMPLATE "$ontology_name" "$folder/$description"
