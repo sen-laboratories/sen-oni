@@ -178,6 +178,11 @@ slots:
       NTPPi (contains), TPP (covered by, touching the border), TPPi (covers), EC (touch), PO (overlap), EQ (equal), DC (disconnected). The name in words is the property Kind.
     title: RCC-8
     annotations: {attribute: "SEN:REL:Rcc8", viewable: false, width: 70}
+  distance:
+    description: How far the place is from the place or location that the relation is opened at, in metres (from its centre to the position of the other one). Sorts as a number.
+    title: Distance (m)
+    range: integer
+    annotations: {attribute: "SEN:REL:Distance", editable: false, width: 80}
 
 classes:
   Place:
@@ -220,23 +225,25 @@ classes:
       inverse_label: nearby
       target_types: entity/x-vnd.sen-labs.entity.place,entity/x-vnd.sen-labs.entity.location
 
-  # The named things in the area of a place (OpenStreetMap, through the Overpass API), asked for when the relation is opened.
-  PointOfInterest:
+  # What is near a place: the named things of OpenStreetMap (Overpass API), asked for when the relation is opened.
+  Nearby:
     description: >-
-      the points of interest in the area of a place or around a location: everything with a name that OpenStreetMap knows there (shops, cafés, sights, stops; not the roads and the
-      borders), the nearest first. It is not stored: it is asked of the Overpass API when it is opened, and a place is made in the Library for each point that is not there yet.
-    title: Point of Interest
+      the named things that are near a place or around a location: what OpenStreetMap knows there (shops, cafés, sights, stops; not the roads and the borders), the notable ones and the
+      nearest first. Each has its distance from the place (in metres) and what it is as the label. It is not stored: it is asked of the Overpass API when it is opened, and a place is made
+      in the Library for each thing that is not there yet.
+    title: Nearby
     is_a: Relation
-    class_uri: schema:containsPlace
+    slots: [distance]
+    class_uri: sen:nearby
     annotations:
-      mime: relation/x-vnd.sen-labs.relation.spatial.point-of-interest
+      mime: relation/x-vnd.sen-labs.relation.spatial.nearby
       icon: x-vnd.sen-labs.entity.location
       app: application/x-vnd.sen-plugin.sen-labs.spatial-navigator
       dynamic: true
       remote: true
       group: Spatial
-      label: point of interest
-      inverse_label: in the area of
+      label: nearby
+      inverse_label: nearby
       source_types: entity/x-vnd.sen-labs.entity.place,entity/x-vnd.sen-labs.entity.location
       target_types: entity/x-vnd.sen-labs.entity.place
 

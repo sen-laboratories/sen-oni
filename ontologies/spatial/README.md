@@ -1,6 +1,6 @@
 # SEN Spatial
 
-Places and locations, and the spatial relations between them (within, covered by, touches, overlaps, equal to), the points of interest in the area of a place (OpenStreetMap, asked when the relation is opened) and where a file is located near. The ontology is defined in `schema/sen-spatial.yaml`
+Places and locations, and the spatial relations between them (within, covered by, touches, overlaps, equal to), what is nearby a place (named things of OpenStreetMap, asked when the relation is opened) and where a file is located near. The ontology is defined in `schema/sen-spatial.yaml`
 (the files in this folder are generated from it).
 
 ## Credits
