@@ -49,7 +49,7 @@ inline constexpr char kRelLabel[] = "SEN:REL:Label";
 inline constexpr char kRelKind[] = "SEN:REL:Kind";
 inline constexpr char kRelDesc[] = "SEN:REL:Desc";
 inline constexpr char kRelRole[] = "SEN:REL:Role";
-/** Who created the relation, as the signature of the application or plugin (application/x-vnd.sen-plugin.sen-labs.movie-enricher); the server sets it from the sender of the request, so every relation has it. A relation that is made again by another program keeps the one that made it first. */
+/** Who or what made the relation, as the signature of the application or plugin (application/x-vnd.sen-plugin.sen-labs.movie-enricher), or as the IRI of the source that it was taken from (https://www.wikidata.org/wiki/Property:P131 for the places that Wikidata says contain a place); the server sets it from the sender of the request, so every relation has it. A relation that is made again by another program keeps the one that made it first. */
 inline constexpr char kRelProvenance[] = "prov:wasAttributedTo";
 /** The character that an actor plays (a Contribution with the role Actor). */
 inline constexpr char kRelCharacter[] = "schema:characterName";
