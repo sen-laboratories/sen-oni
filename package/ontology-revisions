@@ -1,4 +1,4 @@
 # The revision of an ontology package that changed since the others (name and revision). The general ONTOLOGY_REVISION is the revision of all
 # packages; one that is listed here has this one instead if it is higher (so that an update of a single ontology is one for pkgman).
 core 2	# the ontology type has the icon of a folder of relations
-spatial 39	# the Place has the icon "Maps" by zuki (38: the relation "point of interest" is gone)
+spatial 39	# the Place has the icon "Maps" by zuMi (38: the relation "point of interest" is gone)
