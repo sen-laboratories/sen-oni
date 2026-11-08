@@ -7,7 +7,7 @@ Places and locations, and the spatial relations between them (within, covered by
 
 The icons of the types are the work of others and are used under the MIT license:
 
-* **Place**: the icon "Haikunaut" by Arti (from [HVIF Store](https://hvif-store.art/)), MIT license.
+* **Place**: the icon "Maps" by zuki, MIT license.
 * **Location** and the spatial relations: the icon "GCompris" by 3dEyes (from [HVIF Store](https://hvif-store.art/)), MIT license.
 
 The MIT license (for these two icons):
