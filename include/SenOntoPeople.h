@@ -16,7 +16,7 @@ namespace onto {
 namespace people {
 
 namespace attr {
-/** The full name (of a person or an organization). */
+/** The full name (of a person or an organization; the property is called Full Name so that it is not taken for the name of the file, which a file manager shows as Name). */
 inline constexpr char kName[] = "foaf:name";
 inline constexpr char kGivenName[] = "foaf:givenName";
 inline constexpr char kFamilyName[] = "foaf:familyName";

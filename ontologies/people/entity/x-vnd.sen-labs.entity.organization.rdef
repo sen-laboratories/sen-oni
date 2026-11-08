@@ -12,7 +12,7 @@ resource(4, "META:ATTR_INFO") message(233) {
 	"attr:name" = "foaf:phone",
 	"attr:name" = "foaf:homepage",
 	"attr:name" = "dc:description",
-	"attr:public_name" = "Name",
+	"attr:public_name" = "Full Name",
 	"attr:public_name" = "E-mail",
 	"attr:public_name" = "Phone",
 	"attr:public_name" = "Homepage",

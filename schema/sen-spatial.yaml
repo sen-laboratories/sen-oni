@@ -1,0 +1,346 @@
+# SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: 2026 SEN Labs e.U.
+#
+# Places and locations, and how they are related in space.
+#
+# A PLACE is a human, social entity: a named thing with an identity, a meaning or a function ("TU Wien", "Café Central", "Vienna"). It stays the same place when its
+# boundary shifts or when nobody knows its coordinates. A LOCATION is the spatial reference: where something is on Earth (a point, a bounding box, a polygon, a postal
+# address), without any more identity than that (the position of a photo, a waypoint, "the meeting point"). They follow schema.org (Place) and Dublin Core terms (Location),
+# the footprint follows schema.org (latitude, longitude, address) and GeoSPARQL (asWKT). Both have the attributes of the footprint; a Place has them when they are known, a
+# Location is not much without them. A file (a photo, a paper, a note) is located near a place or a location with the relation Located Near (dcterms:spatial).
+#
+# The topological relations between two places or locations are those of the Region Connection Calculus (RCC-8), in the names of everyday use: equal (EQ), within (NTPP, the
+# other one strictly inside), covered by (TPP, inside and touching the border), touch (EC), overlap (PO) and the inverses contains (NTPPi) and covers (TPPi). Disjoint (DC) is
+# not a relation: nearly every two places are disjoint, it is computed when asked. They follow the OGC GeoSPARQL RCC-8 vocabulary (rcc8ntpp, rcc8tpp, rcc8ec, rcc8po, rcc8eq).
+# These relations are DYNAMIC: they are not stored, the spatial navigator works them out from the footprints when the relation is chosen (from the footprint of the places in the
+# neighbourhood with a geometry engine, and for within and contains also from the places that contain a place in Wikidata, the "located in" chain), so they never go stale when a
+# boundary is corrected, and enriching a place needs no more than the lookup of the place itself.
+#
+# They are not the relation Contains of the core ontology (the parts of a document); "contains" here is the inverse of "within" and is in the group Spatial.
+id: https://sen-labs.org/ns/oni/spatial
+name: sen_spatial
+title: SEN Spatial
+description: This ontology defines places and locations, and the spatial relations between them (equal, within, covered by, touch, overlap).
+version: 0.1.0
+license: MIT
+prefixes:
+  linkml: https://w3id.org/linkml/
+  sen: https://sen-labs.org/ns/sen#
+  dc: http://purl.org/dc/elements/1.1/
+  dcterms: http://purl.org/dc/terms/
+  schema: https://schema.org/
+  geo: http://www.opengis.net/ont/geosparql#
+default_prefix: sen
+default_range: string
+imports:
+  - linkml:types
+  - sen-core
+annotations:
+  oni_author: Gregor B. Rosenauer <gregor.rosenauer@gmail.com>
+  oni_stable: false
+  oni_schema_url: https://github.com/sen-laboratories/sen-oni/tree/main/schema/sen-spatial.yaml
+
+slots:
+  # ---- what a place is (schema.org Place)
+  title:
+    description: The name of the place or location (the property is called Title so that it is not taken for the name of the file, which a file manager shows as Name).
+    title: Title
+    slot_uri: dc:title
+    annotations: {attribute: "dc:title", width: 150}
+  alternate_name:
+    description: The other names of the place (in other languages, older names), as a list.
+    title: Other Names
+    slot_uri: schema:alternateName
+    annotations: {attribute: "schema:alternateName", is_list: true, viewable: false, width: 150}
+  description:
+    description: What there is to say about the place.
+    title: Description
+    slot_uri: dc:description
+    annotations: {attribute: "dc:description", viewable: false}
+  place_type:
+    description: >-
+      What kind of place it is, in a word (the name of its type): place of worship, city, country, district. It is what is shown; the IRI of the type is in Place Type IRI.
+    title: Place Type
+    annotations: {attribute: "SEN:placeType", width: 110}
+  place_type_uri:
+    description: >-
+      What kind of place it is, as an IRI: the tag of OpenStreetMap that the place was found with (https://wiki.openstreetmap.org/wiki/Tag:amenity=place_of_worship; for an
+      administrative boundary the tag place with the kind of the area, Tag:place=city, which says more than boundary=administrative), or the class of Wikidata
+      (http://www.wikidata.org/entity/Q515) for a place that Wikidata told.
+    title: Place Type IRI
+    slot_uri: schema:additionalType
+    annotations: {attribute: "schema:additionalType", viewable: false, width: 150}
+  url:
+    description: The web site of the place.
+    title: Web Site
+    slot_uri: schema:url
+    annotations: {attribute: "schema:url", viewable: false, width: 150}
+  same_as:
+    description: Where else the place is known (Wikidata, OpenStreetMap, Wikipedia, GeoNames), as a list of IRIs.
+    title: Same As
+    slot_uri: schema:sameAs
+    annotations: {attribute: "schema:sameAs", is_list: true, viewable: false, width: 150}
+  image:
+    description: The page of the picture of the place (the thumbnail is the picture itself; a photo, the coat of arms or the flag, or a map).
+    title: Picture
+    slot_uri: schema:image
+    annotations: {attribute: "schema:image", viewable: false, width: 150}
+  image_license:
+    description: The license of the picture.
+    title: Picture License
+    slot_uri: schema:license
+    annotations: {attribute: "schema:license", viewable: false, width: 100}
+  image_credit:
+    description: Who made the picture, as its license asks to say.
+    title: Picture Credit
+    slot_uri: schema:creditText
+    annotations: {attribute: "schema:creditText", viewable: false, width: 150}
+
+  # ---- where it is (the footprint: schema.org GeoCoordinates and PostalAddress, GeoSPARQL Geometry)
+  latitude:
+    description: The latitude in degrees (WGS 84), north is positive.
+    title: Latitude
+    range: double
+    slot_uri: schema:latitude
+    annotations: {attribute: "schema:latitude", searchable: true, width: 80}
+  longitude:
+    description: The longitude in degrees (WGS 84), east is positive.
+    title: Longitude
+    range: double
+    slot_uri: schema:longitude
+    annotations: {attribute: "schema:longitude", searchable: true, width: 80}
+  elevation:
+    description: The height above sea level in metres.
+    title: Elevation
+    range: double
+    slot_uri: schema:elevation
+    annotations: {attribute: "schema:elevation", viewable: false, width: 70}
+  box_south:
+    description: The south edge of the bounding box in degrees of latitude. The four edges are separate numbers so that the places in a region are found with a query.
+    title: Box South
+    range: double
+    annotations: {attribute: "SEN:boxSouth", searchable: true, viewable: false, width: 70}
+  box_north:
+    description: The north edge of the bounding box in degrees of latitude.
+    title: Box North
+    range: double
+    annotations: {attribute: "SEN:boxNorth", viewable: false, width: 70}
+  box_west:
+    description: The west edge of the bounding box in degrees of longitude.
+    title: Box West
+    range: double
+    annotations: {attribute: "SEN:boxWest", viewable: false, width: 70}
+  box_east:
+    description: The east edge of the bounding box in degrees of longitude.
+    title: Box East
+    range: double
+    annotations: {attribute: "SEN:boxEast", viewable: false, width: 70}
+  geometry:
+    description: >-
+      The boundary of the place as Well-Known Text (POLYGON or MULTIPOLYGON, WGS 84, longitude first), simplified: it is meant to tell where places are in relation to each other,
+      not to draw a map.
+    title: Boundary
+    slot_uri: geo:asWKT
+    annotations: {attribute: "geo:asWKT", viewable: false, editable: false, width: 100}
+  address:
+    description: The postal address in one line.
+    title: Address
+    slot_uri: schema:address
+    annotations: {attribute: "schema:address", width: 220}
+  postal_code:
+    title: Postal Code
+    slot_uri: schema:postalCode
+    annotations: {attribute: "schema:postalCode", width: 70}
+  locality:
+    description: The city, town or village.
+    title: City
+    slot_uri: schema:addressLocality
+    annotations: {attribute: "schema:addressLocality", width: 110}
+  region:
+    description: The state or province.
+    title: Region
+    slot_uri: schema:addressRegion
+    annotations: {attribute: "schema:addressRegion", width: 110}
+  country:
+    description: The country, as its two-letter code (ISO 3166-1).
+    title: Country
+    slot_uri: schema:addressCountry
+    annotations: {attribute: "schema:addressCountry", width: 60}
+
+  # ---- what a relation has
+  rel_note:
+    description: What there is to say about the relation (where in the place, how it is located).
+    title: Note
+    annotations: {attribute: "SEN:REL:note", width: 160}
+  rcc8:
+    description: >-
+      The code of the relation in the Region Connection Calculus (RCC-8), as the comparison of the shapes of the two places gave it: NTPP (within, not touching the border),
+      NTPPi (contains), TPP (covered by, touching the border), TPPi (covers), EC (touch), PO (overlap), EQ (equal), DC (disconnected). The name in words is the property Kind.
+    title: RCC-8
+    annotations: {attribute: "SEN:REL:Rcc8", viewable: false, width: 70}
+  distance:
+    description: How far the place is from the place or location that the relation is opened at, in metres (from its centre to the position of the other one). Sorts as a number.
+    title: Distance (m)
+    range: integer
+    annotations: {attribute: "SEN:REL:Distance", editable: false, width: 80}
+
+classes:
+  Place:
+    description: >-
+      a place: a named thing with an identity, a meaning or a function (a city, a building, a café, a mountain), the same place even when its boundary shifts or its
+      coordinates are not known
+    title: Place
+    is_a: Entity
+    class_uri: schema:Place
+    slots: [title, alternate_name, description, place_type, place_type_uri, url, same_as, image, image_license, image_credit, latitude, longitude, elevation, box_south, box_north, box_west, box_east, geometry, address, postal_code, locality, region, country]
+    slot_usage: {plural: {ifabsent: "string(Places)"}}
+    annotations: {mime: entity/x-vnd.sen-labs.entity.place, icon: x-vnd.sen-labs.entity.place}
+
+  Location:
+    description: >-
+      a location: where something is on Earth (a point, a bounding box, a polygon, a postal address), without more identity than that: the position of a photo,
+      a waypoint, a meeting point
+    title: Location
+    is_a: Entity
+    class_uri: dcterms:Location
+    slots: [title, description, place_type, place_type_uri, same_as, latitude, longitude, elevation, box_south, box_north, box_west, box_east, geometry, address, postal_code, locality, region, country]
+    slot_usage: {plural: {ifabsent: "string(Locations)"}}
+    annotations: {mime: entity/x-vnd.sen-labs.entity.location, icon: x-vnd.sen-labs.entity.location}
+
+  # A file (or any entity) is near a place or location. It is stored, since nothing could tell it by itself; SUESS makes it when it has looked up a Location or a photo.
+  LocatedNear:
+    description: >-
+      a file or an entity is located near a place or a location (where a photo was taken, what a paper is about, where an event is): a place can be a building or an address, and there can be
+      several near one position. It is stored: you make it, or SUESS does when it has looked up a Location or a photo by its position or its address (the place that was found, and the places that
+      are near it).
+    title: Located Near
+    is_a: Relation
+    class_uri: dcterms:spatial
+    slots: [rel_note]
+    annotations:
+      mime: relation/x-vnd.sen-labs.relation.spatial.located-near
+      icon: x-vnd.sen-labs.entity.location
+      group: Spatial
+      folder_icon: x-vnd.sen-labs.relation.spatial.folder
+      label: located near
+      inverse_label: nearby
+      target_types: entity/x-vnd.sen-labs.entity.place,entity/x-vnd.sen-labs.entity.location
+
+  # What is near a place: the named things of OpenStreetMap (Overpass API), asked for when the relation is opened.
+  Nearby:
+    description: >-
+      the named things that are near a place or around a location: what OpenStreetMap knows there (shops, cafés, sights, stops; not the roads and the borders), the notable ones and the
+      nearest first. Each has its distance from the place (in metres) and what it is as the label. It is not stored: it is asked of the Overpass API when it is opened, and a place is made
+      in the Library for each thing that is not there yet.
+    title: Nearby
+    is_a: Relation
+    slots: [distance]
+    class_uri: sen:nearby
+    annotations:
+      mime: relation/x-vnd.sen-labs.relation.spatial.nearby
+      icon: x-vnd.sen-labs.entity.location
+      app: application/x-vnd.sen-plugin.sen-labs.spatial-navigator
+      dynamic: true
+      remote: true
+      group: Spatial
+      folder_icon: x-vnd.sen-labs.relation.spatial.folder
+      label: nearby
+      inverse_label: nearby
+      source_types: entity/x-vnd.sen-labs.entity.place,entity/x-vnd.sen-labs.entity.location
+      target_types: entity/x-vnd.sen-labs.entity.place
+
+  # ---- the topological relations (RCC-8), worked out when asked
+  Within:
+    description: the place lies inside the other one, without touching its border (RCC-8 NTPP); seen from the other one it contains the place
+    title: Within
+    is_a: Relation
+    slots: [rel_kind, rcc8]
+    class_uri: geo:rcc8ntpp
+    annotations:
+      mime: relation/x-vnd.sen-labs.relation.spatial.within
+      icon: x-vnd.sen-labs.entity.location
+      app: application/x-vnd.sen-plugin.sen-labs.spatial-navigator
+      dynamic: true
+      remote: true
+      group: Spatial
+      folder_icon: x-vnd.sen-labs.relation.spatial.folder
+      label: within
+      inverse_label: contains
+      source_types: entity/x-vnd.sen-labs.entity.place,entity/x-vnd.sen-labs.entity.location
+      target_types: entity/x-vnd.sen-labs.entity.place,entity/x-vnd.sen-labs.entity.location
+
+  CoveredBy:
+    description: the place lies inside the other one and touches its border (RCC-8 TPP); seen from the other one it covers the place
+    title: Covered By
+    is_a: Relation
+    slots: [rel_kind, rcc8]
+    class_uri: geo:rcc8tpp
+    annotations:
+      mime: relation/x-vnd.sen-labs.relation.spatial.covered-by
+      icon: x-vnd.sen-labs.entity.location
+      app: application/x-vnd.sen-plugin.sen-labs.spatial-navigator
+      dynamic: true
+      remote: true
+      group: Spatial
+      folder_icon: x-vnd.sen-labs.relation.spatial.folder
+      label: covered by
+      inverse_label: covers
+      source_types: entity/x-vnd.sen-labs.entity.place,entity/x-vnd.sen-labs.entity.location
+      target_types: entity/x-vnd.sen-labs.entity.place,entity/x-vnd.sen-labs.entity.location
+
+  Touch:
+    description: the borders of two places meet and the places do not overlap (RCC-8 EC), like two neighbouring countries
+    title: Touch
+    is_a: Relation
+    slots: [rel_kind, rcc8]
+    class_uri: geo:rcc8ec
+    annotations:
+      mime: relation/x-vnd.sen-labs.relation.spatial.touch
+      icon: x-vnd.sen-labs.entity.location
+      app: application/x-vnd.sen-plugin.sen-labs.spatial-navigator
+      dynamic: true
+      remote: true
+      group: Spatial
+      folder_icon: x-vnd.sen-labs.relation.spatial.folder
+      label: touches
+      inverse_label: touches
+      source_types: entity/x-vnd.sen-labs.entity.place,entity/x-vnd.sen-labs.entity.location
+      target_types: entity/x-vnd.sen-labs.entity.place,entity/x-vnd.sen-labs.entity.location
+
+  Overlap:
+    description: two places have a part in common and each has a part of its own (RCC-8 PO), like an island in two districts
+    title: Overlap
+    is_a: Relation
+    slots: [rel_kind, rcc8]
+    class_uri: geo:rcc8po
+    annotations:
+      mime: relation/x-vnd.sen-labs.relation.spatial.overlap
+      icon: x-vnd.sen-labs.entity.location
+      app: application/x-vnd.sen-plugin.sen-labs.spatial-navigator
+      dynamic: true
+      remote: true
+      group: Spatial
+      folder_icon: x-vnd.sen-labs.relation.spatial.folder
+      label: overlaps
+      inverse_label: overlaps
+      source_types: entity/x-vnd.sen-labs.entity.place,entity/x-vnd.sen-labs.entity.location
+      target_types: entity/x-vnd.sen-labs.entity.place,entity/x-vnd.sen-labs.entity.location
+
+  Equal:
+    description: two places cover exactly the same area (RCC-8 EQ), like two files for the same parcel
+    title: Equal
+    is_a: Relation
+    slots: [rel_kind, rcc8]
+    class_uri: geo:rcc8eq
+    annotations:
+      mime: relation/x-vnd.sen-labs.relation.spatial.equal
+      icon: x-vnd.sen-labs.entity.location
+      app: application/x-vnd.sen-plugin.sen-labs.spatial-navigator
+      dynamic: true
+      remote: true
+      group: Spatial
+      folder_icon: x-vnd.sen-labs.relation.spatial.folder
+      label: equal to
+      inverse_label: equal to
+      source_types: entity/x-vnd.sen-labs.entity.place,entity/x-vnd.sen-labs.entity.location
+      target_types: entity/x-vnd.sen-labs.entity.place,entity/x-vnd.sen-labs.entity.location

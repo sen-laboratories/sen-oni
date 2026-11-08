@@ -42,8 +42,8 @@ annotations:
 
 slots:
   name:
-    description: The full name (of a person or an organization).
-    title: Name
+    description: The full name (of a person or an organization; the property is called Full Name so that it is not taken for the name of the file, which a file manager shows as Name).
+    title: Full Name
     slot_uri: foaf:name
     annotations: {attribute: "foaf:name", width: 150}
   given_name:

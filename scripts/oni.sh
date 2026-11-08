@@ -124,7 +124,15 @@ function add_templates()
             addattr -t bool _trk/_template_submenu 1 "$folder" 2>/dev/null || true
             addattr -t string $ATTR_TEMPLATE "$ontology_name" "$folder" 2>/dev/null || true
         fi
-        [ -e "$folder/$description" ] && continue
+        if [ -e "$folder/$description" ]; then
+            # (a template of ours follows the type: one that has the wrong type, e.g. from an older installer, is corrected; one that people made themselves is left alone)
+            if [ "$(get_attr $ATTR_TEMPLATE "$folder/$description")" = "$ontology_name" ] \
+                    && [ "$(get_attr BEOS:TYPE "$folder/$description")" != "$mime_type" ]; then
+                addattr -t mime BEOS:TYPE "$mime_type" "$folder/$description"
+                echo "  template corrected: $description"
+            fi
+            continue
+        fi
         touch "$folder/$description"
         addattr -t mime BEOS:TYPE "$mime_type" "$folder/$description"
         addattr -t string $ATTR_TEMPLATE "$ontology_name" "$folder/$description"
@@ -299,20 +307,13 @@ function install_ontology()
     done < $types_file
     # the types of an earlier version that are gone (renamed, or now semantic types): only when the ontology is complete, and not if another provides them
     if [ $related = 1 ]; then
-        local other kept
         while read -r mime_type; do
             [ -n "$mime_type" ] || continue
             grep -qxF "$mime_type" "$types_file" && continue
-            kept=
-            for other in "$SEN_CONFIG_ONTO"/*; do
-                [ -f "$other" ] && [ "$other" != "$sen_onto_path" ] || continue
-                if "$SEN_MIME" provides "$other" 2>/dev/null | grep -qxF "$mime_type"; then kept=1; break; fi
-            done
-            "$SEN_MIME" unrelate "$sen_onto_path" "$mime_type" 2>/dev/null || true
-            if [ -z "$kept" ]; then
-                echo "  $mime_type is not provided any more, removing it."
-                "$SEN_MIME" uninstall "$mime_type" || true
-            fi
+            # (files of the type are not touched: they keep it, and a query for BEOS:TYPE finds them)
+            echo "  $mime_type is not provided by $ontology_name any more (files of that type keep it)."
+            remove_template_of_type "$ontology_name" "$mime_type"
+            drop_type "$sen_onto_path" "$mime_type"
         done < "$previous"
     fi
     # not to supertypes: they are folders with the types of all ontologies. Relations that an older installer made are removed.
@@ -330,6 +331,37 @@ function install_ontology()
     echo "Done: $ontology_name."
 }
 
+# Takes one MIME type out of an ontology: the relation of the ontology to it goes, and the type itself unless another installed ontology provides it, too (it stays
+# with the types of the others).
+function drop_type()
+{
+    local placeholder=$1 mime_type=$2 other kept=
+    "$SEN_MIME" unrelate "$placeholder" "$mime_type" 2>/dev/null || true
+    for other in "$SEN_CONFIG_ONTO"/*; do
+        [ -f "$other" ] && [ "$other" != "$placeholder" ] || continue
+        if "$SEN_MIME" provides "$other" 2>/dev/null | grep -qxF "$mime_type"; then kept=1; break; fi
+    done
+    if [ -z "$kept" ]; then
+        "$SEN_MIME" uninstall "$mime_type" || true
+    else
+        echo "  $mime_type stays: another ontology provides it, too."
+    fi
+}
+
+# The template of a type that the ontology made (not one that people made or changed) goes with the type.
+function remove_template_of_type()
+{
+    local ontology_name=$1 mime_type=$2 folder file
+    folder=$(template_folder "$ontology_name")
+    [ -d "$folder" ] || return 0
+    for file in "$folder"/*; do
+        if [ -f "$file" ] && [ "$(get_attr $ATTR_TEMPLATE "$file")" = "$ontology_name" ] && [ "$(get_attr BEOS:TYPE "$file")" = "$mime_type" ]; then
+            rm -f "$file"
+            echo "  template removed: $(basename "$file")"
+        fi
+    done
+}
+
 # Removes an ontology, and the MIME types of it that no other installed ontology provides (they stay with the types of the others).
 function remove_ontology()
 {
@@ -344,22 +376,11 @@ function remove_ontology()
     # ontology again if its package is there, and finishes the removal if it is not)
     rmattr $ATTR_SUM "$placeholder" 2>/dev/null || true
 
-    local mime_type other kept types
+    local mime_type types
     types=$("$SEN_MIME" provides "$placeholder" 2>/dev/null || true)
     while read -r mime_type; do
         [ -n "$mime_type" ] || continue
-        # the relation of the ontology to the type goes in any case
-        "$SEN_MIME" unrelate "$placeholder" "$mime_type" 2>/dev/null || true
-        kept=
-        for other in "$SEN_CONFIG_ONTO"/*; do
-            [ -f "$other" ] && [ "$other" != "$placeholder" ] || continue
-            if "$SEN_MIME" provides "$other" 2>/dev/null | grep -qxF "$mime_type"; then kept=1; break; fi
-        done
-        if [ -z "$kept" ]; then
-            "$SEN_MIME" uninstall "$mime_type" || true
-        else
-            echo "  $mime_type stays: another ontology provides it, too."
-        fi
+        drop_type "$placeholder" "$mime_type"
     done <<< "$types"
     remove_templates "$ontology_name"
     # (the semantic types that were compiled from a source tree)
