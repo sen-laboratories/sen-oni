@@ -221,6 +221,7 @@ classes:
       mime: relation/x-vnd.sen-labs.relation.spatial.located-near
       icon: x-vnd.sen-labs.entity.location
       group: Spatial
+      folder_icon: x-vnd.sen-labs.relation.spatial.folder
       label: located near
       inverse_label: nearby
       target_types: entity/x-vnd.sen-labs.entity.place,entity/x-vnd.sen-labs.entity.location
@@ -242,6 +243,7 @@ classes:
       dynamic: true
       remote: true
       group: Spatial
+      folder_icon: x-vnd.sen-labs.relation.spatial.folder
       label: nearby
       inverse_label: nearby
       source_types: entity/x-vnd.sen-labs.entity.place,entity/x-vnd.sen-labs.entity.location
@@ -261,6 +263,7 @@ classes:
       dynamic: true
       remote: true
       group: Spatial
+      folder_icon: x-vnd.sen-labs.relation.spatial.folder
       label: within
       inverse_label: contains
       source_types: entity/x-vnd.sen-labs.entity.place,entity/x-vnd.sen-labs.entity.location
@@ -279,6 +282,7 @@ classes:
       dynamic: true
       remote: true
       group: Spatial
+      folder_icon: x-vnd.sen-labs.relation.spatial.folder
       label: covered by
       inverse_label: covers
       source_types: entity/x-vnd.sen-labs.entity.place,entity/x-vnd.sen-labs.entity.location
@@ -297,6 +301,7 @@ classes:
       dynamic: true
       remote: true
       group: Spatial
+      folder_icon: x-vnd.sen-labs.relation.spatial.folder
       label: touches
       inverse_label: touches
       source_types: entity/x-vnd.sen-labs.entity.place,entity/x-vnd.sen-labs.entity.location
@@ -315,6 +320,7 @@ classes:
       dynamic: true
       remote: true
       group: Spatial
+      folder_icon: x-vnd.sen-labs.relation.spatial.folder
       label: overlaps
       inverse_label: overlaps
       source_types: entity/x-vnd.sen-labs.entity.place,entity/x-vnd.sen-labs.entity.location
@@ -333,6 +339,7 @@ classes:
       dynamic: true
       remote: true
       group: Spatial
+      folder_icon: x-vnd.sen-labs.relation.spatial.folder
       label: equal to
       inverse_label: equal to
       source_types: entity/x-vnd.sen-labs.entity.place,entity/x-vnd.sen-labs.entity.location
