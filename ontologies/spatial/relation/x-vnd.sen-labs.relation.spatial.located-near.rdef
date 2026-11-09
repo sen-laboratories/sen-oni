@@ -3,7 +3,7 @@
 // SPDX-FileCopyrightText: 2024-2026 SEN Labs e.U.
 
 resource(0, "META:TYPE") "relation/x-vnd.sen-labs.relation.spatial.located-near";
-resource(1, "META:L:DESC") #'MLDC' "a file or an entity is located near a place or a location (where a photo was taken, what a paper is about, where an event is): a place can be a building or an address, and there can be several near one position. It is stored: you make it, or SUESS does when it has looked up a Location or a photo by its position or its address (the place that was found, and the places that are near it).";
+resource(1, "META:L:DESC") #'MLDC' "a file or an entity is located near a place or a location (where a photo was taken, what a paper is about, where an event is): a place can be a building or an address, and there can be several near one position. It is stored: you make it, or Spaces does when it has looked up a Location or a photo by its position or its address (the place that was found, and the places that are near it).";
 resource(2, "META:S:DESC") #'MSDC' "Located Near";
 resource(3, "META:ATTR_INFO") message(233) {
 	"attr:name" = "SEN:REL:note",

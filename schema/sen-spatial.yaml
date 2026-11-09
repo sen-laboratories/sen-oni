@@ -207,11 +207,11 @@ classes:
     slot_usage: {plural: {ifabsent: "string(Locations)"}}
     annotations: {mime: entity/x-vnd.sen-labs.entity.location, icon: x-vnd.sen-labs.entity.location}
 
-  # A file (or any entity) is near a place or location. It is stored, since nothing could tell it by itself; SUESS makes it when it has looked up a Location or a photo.
+  # A file (or any entity) is near a place or location. It is stored, since nothing could tell it by itself; Spaces makes it when it has looked up a Location or a photo.
   LocatedNear:
     description: >-
       a file or an entity is located near a place or a location (where a photo was taken, what a paper is about, where an event is): a place can be a building or an address, and there can be
-      several near one position. It is stored: you make it, or SUESS does when it has looked up a Location or a photo by its position or its address (the place that was found, and the places that
+      several near one position. It is stored: you make it, or Spaces does when it has looked up a Location or a photo by its position or its address (the place that was found, and the places that
       are near it).
     title: Located Near
     is_a: Relation

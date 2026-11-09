@@ -1,5 +1,5 @@
 # The revision of an ontology package that changed since the others (name and revision). The general ONTOLOGY_REVISION is the revision of all
 # packages; one that is listed here has this one instead if it is higher (so that an update of a single ontology is one for pkgman).
 core 2	# the ontology type has the icon of a folder of relations
-spatial 40	# Location and the spatial relations have the globe "Earth" (39: the Place has the icon Maps by zuMi)
+spatial 41	# SUESS is now called Spaces in the descriptions (40: Location and the spatial relations have the globe "Earth"; 39: the Place has the icon Maps by zuMi)
 people 34	# Person: status (foaf:status), the date of the latest post (SEN:statusDate), the feed (foaf:weblog), the relation status (the posts of a person)
