@@ -28,6 +28,7 @@ prefixes:
   schema: https://schema.org/
   foaf: http://xmlns.com/foaf/0.1/
   vcard: http://www.w3.org/2006/vcard/ns#
+  vivo: http://vivoweb.org/ontology/core#
   rel: http://purl.org/vocab/relationship/
   be: https://www.haiku-os.org/ns/be#
 default_prefix: sen
@@ -55,9 +56,10 @@ slots:
     slot_uri: foaf:familyName
     annotations: {attribute: "foaf:familyName", width: 100}
   nickname:
-    title: Nickname
+    description: The handle of the person, the short name it uses on the net and for a login (FOAF says that a nickname covers those); with or without the `@`. A Fediverse handle is `user@server`, one of Bluesky a domain (`alice.bsky.social`, `sen-labs.org`), one of GitHub the login.
+    title: Handle
     slot_uri: foaf:nick
-    annotations: {attribute: "foaf:nick", viewable: false, width: 80}
+    annotations: {attribute: "foaf:nick", width: 110}
   mbox:
     description: The e-mail address.
     title: E-mail
@@ -84,6 +86,21 @@ slots:
     title: Description
     slot_uri: dc:description
     annotations: {attribute: "dc:description", viewable: false}
+  location:
+    description: Where the person lives or says to be (the place as the person writes it).
+    title: Location
+    slot_uri: schema:homeLocation
+    annotations: {attribute: "schema:homeLocation", viewable: false, width: 110}
+  works_for:
+    description: The company or organization that the person works for.
+    title: Company
+    slot_uri: schema:worksFor
+    annotations: {attribute: "schema:worksFor", viewable: false, width: 110}
+  orcid:
+    description: The ORCID iD of a researcher (0000-0002-1825-0097).
+    title: ORCID
+    slot_uri: vivo:orcidId
+    annotations: {attribute: "vivo:orcidId", viewable: false, width: 140}
   same_as:
     description: Where else the person is known (ORCID, Wikidata, OpenAlex...), as a list of IRIs.
     title: Same As
@@ -187,7 +204,7 @@ classes:
     title: Person
     is_a: Entity
     class_uri: foaf:Person
-    slots: [name, given_name, family_name, nickname, mbox, phone, homepage, birth_date, job_title, groups, description, same_as, image, photo_license, photo_credit, status, status_date, feed]
+    slots: [name, given_name, family_name, nickname, mbox, phone, homepage, birth_date, job_title, works_for, location, groups, description, orcid, same_as, image, photo_license, photo_credit, status, status_date, feed]
     slot_usage: {plural: {ifabsent: "string(People)"}}
     annotations: {mime: entity/x-vnd.sen-labs.entity.person, icon: x-vnd.sen-labs.entity.person}
 
