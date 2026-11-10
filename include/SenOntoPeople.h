@@ -20,7 +20,7 @@ namespace attr {
 inline constexpr char kName[] = "foaf:name";
 inline constexpr char kGivenName[] = "foaf:givenName";
 inline constexpr char kFamilyName[] = "foaf:familyName";
-/** The handle of the person, the short name it uses on the net and for a login (FOAF says that a nickname covers those); with or without the `@`. A Fediverse handle is `user@server`, one of Bluesky a domain (`alice.bsky.social`, `sen-labs.org`), one of GitHub the login. */
+/** The nickname of the person, the short name it uses on the net and for a login (FOAF says that a nickname covers those, so does a handle); with or without the `@`. A Fediverse handle is `user@server`, one of Bluesky a domain (`alice.bsky.social`, `sen-labs.org`), one of GitHub the login. */
 inline constexpr char kNickname[] = "foaf:nick";
 /** The e-mail address. */
 inline constexpr char kMbox[] = "foaf:mbox";

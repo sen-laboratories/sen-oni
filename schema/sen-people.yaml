@@ -56,8 +56,8 @@ slots:
     slot_uri: foaf:familyName
     annotations: {attribute: "foaf:familyName", width: 100}
   nickname:
-    description: The handle of the person, the short name it uses on the net and for a login (FOAF says that a nickname covers those); with or without the `@`. A Fediverse handle is `user@server`, one of Bluesky a domain (`alice.bsky.social`, `sen-labs.org`), one of GitHub the login.
-    title: Handle
+    description: The nickname of the person, the short name it uses on the net and for a login (FOAF says that a nickname covers those, so does a handle); with or without the `@`. A Fediverse handle is `user@server`, one of Bluesky a domain (`alice.bsky.social`, `sen-labs.org`), one of GitHub the login.
+    title: Nickname
     slot_uri: foaf:nick
     annotations: {attribute: "foaf:nick", width: 110}
   mbox:
