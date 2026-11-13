@@ -1,0 +1,117 @@
+// Generated from schema/sen-temporal.yaml by oni_gen.py: do not edit.
+// SPDX-License-Identifier: MIT
+// SPDX-FileCopyrightText: 2024-2026 SEN Labs e.U.
+
+resource(0, "META:TYPE") "entity/x-vnd.sen-labs.entity.event";
+resource(1, "META:L:DESC") #'MLDC' "an event: anything that occurs in time (a meeting, a trip, a task, a shooting). Its time is a start and an end, or a start and a duration; each can be exact or fuzzy. Any file can have these properties, the event is the entity that is about nothing else";
+resource(2, "META:S:DESC") #'MSDC' "Event";
+resource(3, "SEN:PLURAL") "Events";
+resource(4, "META:ATTR_INFO") message(233) {
+	"attr:name" = "dc:title",
+	"attr:name" = "dc:description",
+	"attr:name" = "schema:startDate",
+	"attr:name" = "SEN:startDateEdtf",
+	"attr:name" = "schema:endDate",
+	"attr:name" = "SEN:endDateEdtf",
+	"attr:name" = "schema:duration",
+	"attr:public_name" = "Title",
+	"attr:public_name" = "Description",
+	"attr:public_name" = "Start",
+	"attr:public_name" = "Start (EDTF)",
+	"attr:public_name" = "End",
+	"attr:public_name" = "End (EDTF)",
+	"attr:public_name" = "Duration",
+	"attr:type" = 'CSTR',
+	"attr:type" = 'CSTR',
+	"attr:type" = 'TIME',
+	"attr:type" = 'CSTR',
+	"attr:type" = 'TIME',
+	"attr:type" = 'CSTR',
+	"attr:type" = 'CSTR',
+	"attr:viewable" = true,
+	"attr:viewable" = false,
+	"attr:viewable" = true,
+	"attr:viewable" = false,
+	"attr:viewable" = true,
+	"attr:viewable" = false,
+	"attr:viewable" = true,
+	"attr:editable" = true,
+	"attr:editable" = true,
+	"attr:editable" = true,
+	"attr:editable" = true,
+	"attr:editable" = true,
+	"attr:editable" = true,
+	"attr:editable" = true,
+	"SEN:searchable" = false,
+	"SEN:searchable" = false,
+	"SEN:searchable" = true,
+	"SEN:searchable" = false,
+	"SEN:searchable" = true,
+	"SEN:searchable" = false,
+	"SEN:searchable" = false,
+	"SEN:is_list" = false,
+	"SEN:is_list" = false,
+	"SEN:is_list" = false,
+	"SEN:is_list" = false,
+	"SEN:is_list" = false,
+	"SEN:is_list" = false,
+	"SEN:is_list" = false,
+	"SEN:list_separator" = "",
+	"SEN:list_separator" = "",
+	"SEN:list_separator" = "",
+	"SEN:list_separator" = "",
+	"SEN:list_separator" = "",
+	"SEN:list_separator" = "",
+	"SEN:list_separator" = "",
+	"attr:width" = 150,
+	"attr:width" = 101,
+	"attr:width" = 120,
+	"attr:width" = 110,
+	"attr:width" = 120,
+	"attr:width" = 110,
+	"attr:width" = 80,
+	"attr:alignment" = 0,
+	"attr:alignment" = 0,
+	"attr:alignment" = 0,
+	"attr:alignment" = 0,
+	"attr:alignment" = 0,
+	"attr:alignment" = 0,
+	"attr:alignment" = 0,
+	"attr:display_as" = "",
+	"attr:display_as" = "",
+	"attr:display_as" = "",
+	"attr:display_as" = "",
+	"attr:display_as" = "",
+	"attr:display_as" = "",
+	"attr:display_as" = "",
+	"type" = "entity/x-vnd.sen-labs.entity.event"
+};
+resource(5, "META:ICON") #'VICN' array {
+	$"6E63696605018F99A5FF01FAFAFAFF01D9453BFF014A4F55FF016C7A89FF0B02"
+	$"08B704B68EB5A3B68EB704B68EC87CB68EC87CB68EC9DDB68ECB3EB950CB3EB7"
+	$"EFCB3EB950CB3EC8F2CB3EC8F2CB3ECA53C87CCBB4C9DDCBB4C87CCBB4B704CB"
+	$"B4B704CBB4B5A3CBB4B442C8F2B442CA53B442C8F2B442B950B442B950B442B7"
+	$"EF0208B704B704B5DEB704B704B704C87CB704C87CB704C9A2B704CAC9B950CA"
+	$"C9B82ACAC9B950CAC9C8F2CAC9C8F2CAC9CA18C87CCB3EC9A2CB3EC87CCB3EB7"
+	$"04CB3EB704CB3EB5DECB3EB4B7C8F2B4B7CA18B4B7C8F2B4B7B950B4B7B950B4"
+	$"B7B82A0206B704B68EB5A3B68EB704B68EC87CB68EC87CB68EC9DDB68ECB3EB9"
+	$"50CB3EB7EFCB3EB950CB3EBCFECB3EBCFECB3EBCFEB442BCFEB442BCFEB442BC"
+	$"FEB442B950B442B950B442B7EF0208BA01B3CCB96EB3CCBA01B3CCBA01B3CCBA"
+	$"01B3CCBA94B3CCBB27B4F2BB27B45FBB27B4F2BB27B8A0BB27B8A0BB27B933BA"
+	$"01B9C6BA94B9C6BA01B9C6BA01B9C6BA01B9C6B96EB9C6B8DBB8A0B8DBB933B8"
+	$"DBB8A0B8DBB4F2B8DBB4F2B8DBB45F0208C57FB3CCC4ECB3CCC57FB3CCC57FB3"
+	$"CCC57FB3CCC612B3CCC6A5B4F2C6A5B45FC6A5B4F2C6A5B8A0C6A5B8A0C6A5B9"
+	$"33C57FB9C6C612B9C6C57FB9C6C57FB9C6C57FB9C6C4ECB9C6C459B8A0C459B9"
+	$"33C459B8A0C459B4F2C459B4F2C459B45F0204B77ABFC0B77ABFC0B77ABFC0BB"
+	$"9DBFC0BB9DBFC0BB9DBFC0BB9DC36EBB9DC36EBB9DC36EB77AC36EB77AC36EB7"
+	$"7AC36E0204BD74BFC0BD74BFC0BD74BFC0C197BFC0C197BFC0C197BFC0C197C3"
+	$"6EC197C36EC197C36EBD74C36EBD74C36EBD74C36E0204C36EBFC0C36EBFC0C3"
+	$"6EBFC0C791BFC0C791BFC0C791BFC0C791C36EC791C36EC791C36EC36EC36EC3"
+	$"6EC36EC36EC36E0204B77AC544B77AC544B77AC544BB9DC544BB9DC544BB9DC5"
+	$"44BB9DC8F2BB9DC8F2BB9DC8F2B77AC8F2B77AC8F2B77AC8F20204BD74C544BD"
+	$"74C544BD74C544C197C544C197C544C197C544C197C8F2C197C8F2C197C8F2BD"
+	$"74C8F2BD74C8F2BD74C8F20204C36EC544C36EC544C36EC544C791C544C791C5"
+	$"44C791C544C791C8F2C791C8F2C791C8F2C36EC8F2C36EC8F2C36EC8F20B0A00"
+	$"0100000A010101000A020102000A030103000A030104000A040105000A040106"
+	$"000A040107000A040108000A020109000A04010A00"
+};

@@ -1,0 +1,91 @@
+# SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: 2026 SEN Labs e.U.
+#
+# Events and times: when something happens, how long it takes, and how two such times are related.
+#
+# An EVENT is any thing that occurs in time (a meeting, a trip, a task, the shooting of a film). Its time is a START, an END, or a START and a DURATION. The attributes are
+# plain attributes of the file, and ANY file can carry them (a photo, a document, a task): the temporal engine builds the interval from them. They follow schema.org (Event:
+# startDate, endDate, duration), which is also what W3C OWL-Time (time:hasBeginning, time:hasEnd, time:hasDuration) says in other words; the Instants and Intervals of OWL-Time
+# are not entities of their own here, they would be one more file for every start and end.
+#
+# A time can be exact or fuzzy. The start and the end are of the type TIME (the earliest moment of the value): they sort, are shown in the columns of the file manager and are found
+# with a query. A value that is fuzzy ("1994-05~", "202X", "1994?", in the Extended Date/Time Format, EDTF, ISO 8601-2) is also kept as text in the attribute beside it
+# (Start Date EDTF, End Date EDTF), which the engine reads when it is there; an exact time has no text. The duration is the ISO 8601 text (PT2H, P3D).
+#
+# The temporal relations between two things (before, meets, overlaps, during, equals and their inverses: Allen's interval algebra) are DYNAMIC: they are not stored, the temporal
+# navigator works them out from the intervals when the relation is chosen, so they never go stale when a time is corrected.
+id: https://sen-labs.org/ns/oni/temporal
+name: sen_temporal
+title: SEN Temporal
+description: This ontology defines events and the times that things have (start, end and duration), exact or fuzzy (EDTF).
+version: 0.1.0
+license: MIT
+prefixes:
+  linkml: https://w3id.org/linkml/
+  sen: https://sen-labs.org/ns/sen#
+  dc: http://purl.org/dc/elements/1.1/
+  dcterms: http://purl.org/dc/terms/
+  schema: https://schema.org/
+  time: http://www.w3.org/2006/time#
+default_prefix: sen
+default_range: string
+imports:
+  - linkml:types
+  - sen-core
+annotations:
+  oni_author: Gregor B. Rosenauer <gregor.rosenauer@gmail.com>
+  oni_stable: false
+  oni_schema_url: https://github.com/sen-laboratories/sen-oni/tree/main/schema/sen-temporal.yaml
+
+slots:
+  title:
+    description: The name of the event (the property is called Title so that it is not taken for the name of the file, which a file manager shows as Name).
+    title: Title
+    slot_uri: dc:title
+    annotations: {attribute: "dc:title", width: 150}
+  description:
+    description: What there is to say about the event.
+    title: Description
+    slot_uri: dc:description
+    annotations: {attribute: "dc:description", viewable: false}
+  start_date:
+    description: >-
+      When the event starts (time:hasBeginning), as a time. For a fuzzy start (Start Date EDTF) it is the earliest moment of the value, so that the events sort and are found with a query.
+    title: Start
+    range: datetime
+    slot_uri: schema:startDate
+    annotations: {attribute: "schema:startDate", searchable: true, width: 120}
+  end_date:
+    description: >-
+      When the event ends (time:hasEnd), as a time. For a fuzzy end (End Date EDTF) it is the latest moment of the value. An event with a start and a duration has no end of its own.
+    title: End
+    range: datetime
+    slot_uri: schema:endDate
+    annotations: {attribute: "schema:endDate", searchable: true, width: 120}
+  start_date_edtf:
+    description: >-
+      The start as it was said, when it is not exact: 1994? (the year is uncertain), 1994-05~ (about May 1994), 202X (some year of the 2020s). The text is in the Extended Date/Time Format
+      (EDTF, ISO 8601-2). An exact start has none.
+    title: Start (EDTF)
+    annotations: {attribute: "SEN:startDateEdtf", viewable: false, width: 110}
+  end_date_edtf:
+    description: The end as it was said, when it is not exact (see Start (EDTF)). An exact end has none.
+    title: End (EDTF)
+    annotations: {attribute: "SEN:endDateEdtf", viewable: false, width: 110}
+  duration:
+    description: The length of the event, as an ISO 8601 duration (PT2H, PT1H55M, P3D); for an event that has a start and no end.
+    title: Duration
+    slot_uri: schema:duration
+    annotations: {attribute: "schema:duration", width: 30}
+
+classes:
+  Event:
+    description: >-
+      an event: anything that occurs in time (a meeting, a trip, a task, a shooting). Its time is a start and an end, or a start and a duration; each can be exact or fuzzy. Any file can have
+      these properties, the event is the entity that is about nothing else
+    title: Event
+    is_a: Entity
+    class_uri: schema:Event
+    slots: [title, description, start_date, start_date_edtf, end_date, end_date_edtf, duration]
+    slot_usage: {plural: {ifabsent: "string(Events)"}}
+    annotations: {mime: entity/x-vnd.sen-labs.entity.event, icon: x-vnd.sen-labs.entity.event}
