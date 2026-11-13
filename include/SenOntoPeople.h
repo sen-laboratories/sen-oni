@@ -20,6 +20,7 @@ namespace attr {
 inline constexpr char kName[] = "foaf:name";
 inline constexpr char kGivenName[] = "foaf:givenName";
 inline constexpr char kFamilyName[] = "foaf:familyName";
+/** The nickname of the person, the short name it uses on the net and for a login (FOAF says that a nickname covers those, so does a handle); with or without the `@`. A Fediverse handle is `user@server`, one of Bluesky a domain (`alice.bsky.social`, `sen-labs.org`), one of GitHub the login. */
 inline constexpr char kNickname[] = "foaf:nick";
 /** The e-mail address. */
 inline constexpr char kMbox[] = "foaf:mbox";
@@ -28,6 +29,12 @@ inline constexpr char kHomepage[] = "foaf:homepage";
 inline constexpr char kBirthDate[] = "schema:birthDate";
 inline constexpr char kJobTitle[] = "schema:jobTitle";
 inline constexpr char kDescription[] = "dc:description";
+/** Where the person lives or says to be (the place as the person writes it). */
+inline constexpr char kLocation[] = "schema:homeLocation";
+/** The company or organization that the person works for. */
+inline constexpr char kWorksFor[] = "schema:worksFor";
+/** The ORCID iD of a researcher (0000-0002-1825-0097). */
+inline constexpr char kOrcid[] = "vivo:orcidId";
 /** Where else the person is known (ORCID, Wikidata, OpenAlex...), as a list of IRIs. */
 inline constexpr char kSameAs[] = "schema:sameAs";
 /** The page of the photo of the person (the thumbnail is the photo itself). */
@@ -38,6 +45,12 @@ inline constexpr char kPhotoLicense[] = "schema:license";
 inline constexpr char kPhotoCredit[] = "schema:creditText";
 /** The groups that a person is in (Family, Friends, ...), as a list. */
 inline constexpr char kGroups[] = "vcard:category";
+/** The latest status message or microfeed note of the person. */
+inline constexpr char kStatus[] = "foaf:status";
+/** When the latest status message was posted. */
+inline constexpr char kStatusDate[] = "SEN:statusDate";
+/** The feed of the person's posts (RSS, Atom, the outbox of an ActivityPub actor or the RSS feed of a Bluesky profile). foaf:weblog is "a weblog of some thing". */
+inline constexpr char kFeed[] = "foaf:weblog";
 inline constexpr char kBeName[] = "META:name";
 inline constexpr char kBeCompany[] = "META:company";
 inline constexpr char kBeAddress[] = "META:address";
@@ -96,6 +109,8 @@ inline constexpr char kClient[] = "relation/x-vnd.sen-labs.relation.person.clien
 inline constexpr char kEmployment[] = "relation/x-vnd.sen-labs.relation.person.employment";
 /** Membership: a person is a member of an organization or group */
 inline constexpr char kMembership[] = "relation/x-vnd.sen-labs.relation.person.membership";
+/** Status: recent status messages and microfeed posts of a person */
+inline constexpr char kStatusRelation[] = "relation/x-vnd.sen-labs.relation.person.status";
 }	// namespace mime
 
 }	// namespace people

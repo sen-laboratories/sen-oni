@@ -8,7 +8,7 @@ Places and locations, and the spatial relations between them (within, covered by
 The icons of the types are the work of others and are used under the MIT license:
 
 * **Place**: the icon "Maps" by zuMi, MIT license.
-* **Location** and the spatial relations: the icon "GCompris" by 3dEyes (from [HVIF Store](https://hvif-store.art/)), MIT license.
+* **Location** and the spatial relations: the icon "Earth", MIT license (author: to be added).
 
 The MIT license (for these two icons):
 
