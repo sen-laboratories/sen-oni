@@ -105,7 +105,7 @@ inline constexpr char kOntoStable[] = "SEN:onto:stable";
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wmultichar"
 
-/** An attribute that is queried and needs a BFS index on every volume (the type of the index is that of the attribute). */
+/** An attribute that is queried and needs a BFS index on every volume (the type of the index is that of the attribute, a time is indexed as the integer that holds it: sen::IndexTypeOf() of SenAttributes.h). */
 struct Index {
 	const char* name;
 	uint32_t    type;

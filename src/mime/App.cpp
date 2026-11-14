@@ -20,6 +20,7 @@
 #include <VolumeRoster.h>
 
 #include <sen/Sen.h>
+#include <sen/SenAttributes.h>
 #include <sen/SenOntoCore.h>
 #include <sen/SenLookup.h>
 
@@ -372,7 +373,7 @@ GetInstalledMimeTypes(const char* supertype, BMessage* types)
  * @brief Create the index for an attribute on every mounted volume that can have one (BFS, queries and attributes supported).
  *
  * @param attrName the attribute to index
- * @param attrType the type code of the attribute (an index has the type of its attribute)
+ * @param attrType the type code of the attribute (an index has the type of its attribute, a time the integer that holds it: sen::IndexTypeOf())
  */
 void
 CreateIndexOnAllVolumes(const char* attrName, uint32 attrType)
@@ -387,7 +388,7 @@ CreateIndexOnAllVolumes(const char* attrName, uint32 attrType)
         char volumeName[B_FILE_NAME_LENGTH];
         volume.GetName(volumeName);
 
-        if (fs_create_index(volume.Device(), attrName, attrType, 0) == 0) {
+        if (fs_create_index(volume.Device(), attrName, sen::IndexTypeOf(attrType), 0) == 0) {
             printf("* created index for '%s' on volume %s\n", attrName, volumeName);
         } else if (errno == B_FILE_EXISTS) {
             printf("* index for '%s' exists on volume %s, skipping.\n", attrName, volumeName);

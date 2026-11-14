@@ -8,8 +8,8 @@
 # startDate, endDate, duration), which is also what W3C OWL-Time (time:hasBeginning, time:hasEnd, time:hasDuration) says in other words; the Instants and Intervals of OWL-Time
 # are not entities of their own here, they would be one more file for every start and end.
 #
-# A time can be exact or fuzzy. The start and the end are of the type TIME (the earliest moment of the value): they sort and are shown in the columns of the file manager. (BFS cannot index the type TIME,
-# so a query cannot ask for a date: the files of the type Event are found by their type, and the engine compares the times.) A value that is fuzzy ("1994-05~", "202X", "1994?", in the Extended Date/Time Format, EDTF, ISO 8601-2) is also kept as text in the attribute beside it
+# A time can be exact or fuzzy. The start and the end are of the type TIME (the earliest moment of the value): they sort, are shown in the columns of the file manager and are found with a query. They are
+# indexed (BFS indexes a time as the 64-bit integer that holds it), so they must be written as 64-bit times (time_t). A value that is fuzzy ("1994-05~", "202X", "1994?", in the Extended Date/Time Format, EDTF, ISO 8601-2) is also kept as text in the attribute beside it
 # (Start Date EDTF, End Date EDTF), which the engine reads when it is there; an exact time has no text. The duration is the ISO 8601 text (PT2H, P3D).
 #
 # The temporal relations between two things (before, meets, overlaps, during, equals and their inverses: Allen's interval algebra, W3C OWL-Time time:intervalBefore and so on) are
@@ -52,18 +52,18 @@ slots:
     annotations: {attribute: "dc:description", viewable: false}
   start_date:
     description: >-
-      When the event starts (time:hasBeginning), as a time. For a fuzzy start (Start Date EDTF) it is the earliest moment of the value, so that the events sort.
+      When the event starts (time:hasBeginning), as a time. For a fuzzy start (Start Date EDTF) it is the earliest moment of the value, so that the events sort and are found with a query.
     title: Start
     range: datetime
     slot_uri: schema:startDate
-    annotations: {attribute: "schema:startDate", width: 120}
+    annotations: {attribute: "schema:startDate", searchable: true, width: 120}
   end_date:
     description: >-
       When the event ends (time:hasEnd), as a time. For a fuzzy end (End Date EDTF) it is the latest moment of the value. An event with a start and a duration has no end of its own.
     title: End
     range: datetime
     slot_uri: schema:endDate
-    annotations: {attribute: "schema:endDate", width: 120}
+    annotations: {attribute: "schema:endDate", searchable: true, width: 120}
   start_date_edtf:
     description: >-
       The start as it was said, when it is not exact: 1994? (the year is uncertain), 1994-05~ (about May 1994), 202X (some year of the 2020s). The text is in the Extended Date/Time Format

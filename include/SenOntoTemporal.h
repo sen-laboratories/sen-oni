@@ -20,7 +20,7 @@ namespace attr {
 inline constexpr char kTitle[] = "dc:title";
 /** What there is to say about the event. */
 inline constexpr char kDescription[] = "dc:description";
-/** When the event starts (time:hasBeginning), as a time. For a fuzzy start (Start Date EDTF) it is the earliest moment of the value, so that the events sort. */
+/** When the event starts (time:hasBeginning), as a time. For a fuzzy start (Start Date EDTF) it is the earliest moment of the value, so that the events sort and are found with a query. */
 inline constexpr char kStartDate[] = "schema:startDate";
 /** When the event ends (time:hasEnd), as a time. For a fuzzy end (End Date EDTF) it is the latest moment of the value. An event with a start and a duration has no end of its own. */
 inline constexpr char kEndDate[] = "schema:endDate";
@@ -33,6 +33,23 @@ inline constexpr char kDuration[] = "schema:duration";
 /** The relation in Allen's interval algebra as the comparison of the two intervals gave it: before, after, meets, met by, overlaps, overlapped by, during, contains, equals, starts, started by, finishes, finished by. The name in words is the property Kind. */
 inline constexpr char kAllen[] = "SEN:REL:Allen";
 }	// namespace attr
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wmultichar"
+
+/** An attribute that is queried and needs a BFS index on every volume (the type of the index is that of the attribute, a time is indexed as the integer that holds it: sen::IndexTypeOf() of SenAttributes.h). */
+struct Index {
+	const char* name;
+	uint32_t    type;
+};
+/** The indices of this ontology: created by the ontology installer and by the SEN server on every mounted volume. */
+inline constexpr Index kIndices[] = {
+	{attr::kStartDate, 'TIME'},
+	{attr::kEndDate, 'TIME'},
+};
+inline constexpr unsigned kIndexCount = sizeof(kIndices) / sizeof(kIndices[0]);
+
+#pragma GCC diagnostic pop
 
 namespace mime {
 /** Event: an event: anything that occurs in time (a meeting, a trip, a task, a shooting). Its time is a start and an end, or a start and a duration; each can be exact or fuzzy. Any file can have these properties, the event is the entity that is about nothing else */

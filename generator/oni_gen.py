@@ -375,7 +375,7 @@ def render_header(sv, classes, schema_file):
     indices = [e for s in schema.slots if not is_type_property(sv.get_slot(s)) for e in expand(read_attribute(sv, s)) if e.searchable]
     if indices:
         out += ['#pragma GCC diagnostic push', '#pragma GCC diagnostic ignored "-Wmultichar"', '',
-                '/** An attribute that is queried and needs a BFS index on every volume (the type of the index is that of the attribute). */',
+                '/** An attribute that is queried and needs a BFS index on every volume (the type of the index is that of the attribute, a time is indexed as the integer that holds it: sen::IndexTypeOf() of SenAttributes.h). */',
                 'struct Index {', '\tconst char* name;', '\tuint32_t    type;', '};',
                 '/** The indices of this ontology: created by the ontology installer and by the SEN server on every mounted volume. */',
                 'inline constexpr Index kIndices[] = {']
