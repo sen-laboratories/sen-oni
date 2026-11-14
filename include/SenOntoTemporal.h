@@ -20,6 +20,8 @@ namespace attr {
 inline constexpr char kTitle[] = "dc:title";
 /** What there is to say about the event. */
 inline constexpr char kDescription[] = "dc:description";
+/** What kind of event it is, in a word or two: a birthday, a wedding, a meeting, a phone call. The common kinds are offered (Event Type values, mapped to Wikidata); any other text is allowed. */
+inline constexpr char kEventType[] = "SEN:eventType";
 /** When the event starts (time:hasBeginning), as a time. For a fuzzy start (Start Date EDTF) it is the earliest moment of the value, so that the events sort and are found with a query. */
 inline constexpr char kStartDate[] = "schema:startDate";
 /** When the event ends (time:hasEnd), as a time. For a fuzzy end (End Date EDTF) it is the latest moment of the value. An event with a start and a duration has no end of its own. */
@@ -51,11 +53,42 @@ inline constexpr unsigned kIndexCount = sizeof(kIndices) / sizeof(kIndices[0]);
 
 #pragma GCC diagnostic pop
 
+namespace values {
+/** A common value: the text that is stored, and the Wikidata item that it stands for (empty if none). */
+struct Value {
+	const char* text;
+	const char* wikidata;
+};
+/** The common kinds of events, mapped to Wikidata. They are offered to choose from; the type of an event is text, and any other value is allowed. */
+inline constexpr Value kEventType[] = {
+	{"Anniversary", "Q238907"},
+	{"Ceremony", "Q2659904"},
+	{"Party", "Q200538"},
+	{"Birthday", "Q47223"},
+	{"Wedding anniversary", "Q2005510"},
+	{"Jubilee", "Q1908864"},
+	{"Death anniversary", "Q1208945"},
+	{"Wedding", "Q119639"},
+	{"Funeral", "Q201559"},
+	{"Graduation", "Q1928923"},
+	{"Baptism", "Q35856"},
+	{"Dinner party", "Q1753443"},
+	{"Housewarming", "Q1206109"},
+	{"Farewell party", "Q1390022"},
+	{"Baby shower", "Q797880"},
+	{"Meeting", "Q2761147"},
+	{"Conference", "Q114834437"},
+	{"Telephone call", "Q2296401"},
+	{"Video conference", "Q238354"},
+};
+inline constexpr unsigned kEventTypeCount = sizeof(kEventType) / sizeof(kEventType[0]);
+}	// namespace values
+
 namespace mime {
 /** Event: an event: anything that occurs in time (a meeting, a trip, a task, a shooting). Its time is a start and an end, or a start and a duration; each can be exact or fuzzy. Any file can have these properties, the event is the entity that is about nothing else */
 inline constexpr char kEvent[] = "entity/x-vnd.sen-labs.entity.event";
-/** Before: the thing ends before the other one begins, with a gap between them (Allen's before); seen from the other one it comes after */
-inline constexpr char kTemporalBefore[] = "relation/x-vnd.sen-labs.relation.temporal.before";
+/** Between: the thing ends before the other one begins, with a gap between them (Allen's before); seen from the other one it comes after. The relation is called Between, the directions before and after: one gap lies between the two */
+inline constexpr char kTemporalBetween[] = "relation/x-vnd.sen-labs.relation.temporal.between";
 /** Meets: the thing ends at the very moment that the other one begins (Allen's meets), like two days in a row; seen from the other one it is met by it */
 inline constexpr char kTemporalMeets[] = "relation/x-vnd.sen-labs.relation.temporal.meets";
 /** Overlaps: the thing begins before the other one and ends inside it (Allen's overlaps), the usual collision of two appointments; seen from the other one it is overlapped by it */

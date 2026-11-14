@@ -29,6 +29,7 @@ prefixes:
   dcterms: http://purl.org/dc/terms/
   schema: https://schema.org/
   time: http://www.w3.org/2006/time#
+  wd: http://www.wikidata.org/entity/
 default_prefix: sen
 default_range: string
 imports:
@@ -50,6 +51,11 @@ slots:
     title: Description
     slot_uri: dc:description
     annotations: {attribute: "dc:description", viewable: false}
+  event_type:
+    description: >-
+      What kind of event it is, in a word or two: a birthday, a wedding, a meeting, a phone call. The common kinds are offered (Event Type values, mapped to Wikidata); any other text is allowed.
+    title: Event Type
+    annotations: {attribute: "SEN:eventType", width: 110}
   start_date:
     description: >-
       When the event starts (time:hasBeginning), as a time. For a fuzzy start (Start Date EDTF) it is the earliest moment of the value, so that the events sort and are found with a query.
@@ -95,19 +101,21 @@ classes:
     title: Event
     is_a: Entity
     class_uri: schema:Event
-    slots: [title, description, start_date, start_date_edtf, end_date, end_date_edtf, duration]
+    slots: [title, event_type, description, start_date, start_date_edtf, end_date, end_date_edtf, duration]
     slot_usage: {plural: {ifabsent: "string(Events)"}}
     annotations: {mime: entity/x-vnd.sen-labs.entity.event, icon: x-vnd.sen-labs.entity.event}
 
   # ---- the relations of Allen's interval algebra (the subset of OWL-Time that people use), worked out when asked
-  TemporalBefore:
-    description: the thing ends before the other one begins, with a gap between them (Allen's before); seen from the other one it comes after
-    title: Before
+  TemporalBetween:
+    description: >-
+      the thing ends before the other one begins, with a gap between them (Allen's before); seen from the other one it comes after. The relation is called Between, the directions
+      before and after: one gap lies between the two
+    title: Between
     is_a: Relation
     slots: [rel_kind, allen]
     class_uri: time:intervalBefore
     annotations:
-      mime: relation/x-vnd.sen-labs.relation.temporal.before
+      mime: relation/x-vnd.sen-labs.relation.temporal.between
       icon: x-vnd.sen-labs.entity.event
       app: application/x-vnd.sen-plugin.sen-labs.temporal-navigator
       dynamic: true
@@ -190,3 +198,51 @@ classes:
       inverse_label: equals
       source_types: entity/x-vnd.sen-labs.entity.event
       target_types: entity/x-vnd.sen-labs.entity.event
+
+enums:
+  EventType:
+    description: The common kinds of events, mapped to Wikidata. They are offered to choose from; the type of an event is text, and any other value is allowed.
+    permissible_values:
+      # --- Root classes
+      Anniversary:
+        meaning: wd:Q238907
+      Ceremony:
+        meaning: wd:Q2659904
+      Party:
+        meaning: wd:Q200538
+      # --- Anniversaries and milestones
+      Birthday:
+        meaning: wd:Q47223
+      WeddingAnniversary:
+        meaning: wd:Q2005510
+      Jubilee:
+        meaning: wd:Q1908864
+      DeathAnniversary:
+        meaning: wd:Q1208945
+      # --- Ceremonies
+      Wedding:
+        meaning: wd:Q119639
+      Funeral:
+        meaning: wd:Q201559
+      Graduation:
+        meaning: wd:Q1928923
+      Baptism:
+        meaning: wd:Q35856
+      # --- Social gatherings
+      DinnerParty:
+        meaning: wd:Q1753443
+      Housewarming:
+        meaning: wd:Q1206109
+      FarewellParty:
+        meaning: wd:Q1390022
+      BabyShower:
+        meaning: wd:Q797880
+      # --- Business and communication
+      Meeting:
+        meaning: wd:Q2761147
+      Conference:
+        meaning: wd:Q114834437
+      TelephoneCall:
+        meaning: wd:Q2296401
+      VideoConference:
+        meaning: wd:Q238354

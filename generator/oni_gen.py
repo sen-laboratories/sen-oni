@@ -352,6 +352,12 @@ def render_ontology(sv):
     return '\n'.join(out) + '\n'
 
 
+def humanize(name):
+    """WeddingAnniversary -> Wedding anniversary: the text of a value of an enum that has no title"""
+    words = re.sub(r'(?<=[a-z0-9])(?=[A-Z])', ' ', name).split(' ')
+    return ' '.join([words[0]] + [w.lower() for w in words[1:]])
+
+
 def namespace_of(schema):
     return re.sub(r'^sen_', '', schema.name)
 
@@ -383,6 +389,22 @@ def render_header(sv, classes, schema_file):
                 for a in indices]
         out += ['};', 'inline constexpr unsigned kIndexCount = sizeof(kIndices) / sizeof(kIndices[0]);', '',
                 '#pragma GCC diagnostic pop', '']
+    # the enums of the schema: the common values of an attribute that is text (any other text is allowed too), with the Wikidata item that each stands for
+    enums = getattr(schema, 'enums', None) or {}
+    if enums:
+        out += ['namespace values {', '/** A common value: the text that is stored, and the Wikidata item that it stands for (empty if none). */',
+                'struct Value {', '\tconst char* text;', '\tconst char* wikidata;', '};']
+        for enum_name, enum in enums.items():
+            if enum.description:
+                out.append(f'/** {one_line(enum.description)} */')
+            entries = []
+            for key, pv in enum.permissible_values.items():
+                text = getattr(pv, 'title', None) or humanize(str(key))
+                meaning = str(pv.meaning) if getattr(pv, 'meaning', None) else ''
+                entries.append(f'\t{{"{text}", "{meaning.split(":", 1)[-1] if meaning else ""}"}},')
+            out += [f'inline constexpr Value k{camel(enum_name)}[] = {{'] + entries + ['};',
+                    f'inline constexpr unsigned k{camel(enum_name)}Count = sizeof(k{camel(enum_name)}) / sizeof(k{camel(enum_name)}[0]);']
+        out += ['}\t// namespace values', '']
     out += ['namespace mime {']
     for mc in classes:
         out.append(f'/** {mc.title}: {mc.description} */')

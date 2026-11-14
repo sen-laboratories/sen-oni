@@ -135,6 +135,25 @@ inline constexpr unsigned kIndexCount = sizeof(kIndices) / sizeof(kIndices[0]);
 
 #pragma GCC diagnostic pop
 
+namespace values {
+/** A common value: the text that is stored, and the Wikidata item that it stands for (empty if none). */
+struct Value {
+	const char* text;
+	const char* wikidata;
+};
+/** The kinds of a dependency (the property Kind of the relation). They are those of the relations between Haiku packages (.PackageInfo: provides, requires, supplements, conflicts, freshens, replaces), and uses, which they do not have. */
+inline constexpr Value kDependencyKind[] = {
+	{"provides", ""},
+	{"requires", ""},
+	{"uses", ""},
+	{"supplements", ""},
+	{"conflicts", ""},
+	{"freshens", ""},
+	{"replaces", ""},
+};
+inline constexpr unsigned kDependencyKindCount = sizeof(kDependencyKind) / sizeof(kDependencyKind[0]);
+}	// namespace values
+
 namespace mime {
 /** Abstract Entity: A semantic entity representing anything. */
 inline constexpr char kEntity[] = "entity";

@@ -100,6 +100,15 @@ class GeneratorTest(unittest.TestCase):
         searchable = {a.name for a in all_schema_attributes().values() if a.searchable}
         self.assertTrue({'SEN:ID', 'SEN:TO', 'SEN:META'} <= searchable)
 
+    def test_enums_become_lists_of_common_values(self):
+        # the common values of an attribute that is text (the event types, with the Wikidata item that each stands for): any other text is allowed too
+        header = read(os.path.join(ROOT, 'include', 'SenOntoTemporal.h'))
+        self.assertIn('inline constexpr Value kEventType[] = {', header)
+        self.assertIn('{"Birthday", "Q47223"},', header)
+        self.assertIn('{"Wedding anniversary", "Q2005510"},', header)		# (WeddingAnniversary: the words of a key apart)
+        self.assertIn('{"Video conference", "Q238354"},', header)
+        self.assertIn('kEventTypeCount', header)
+
     def test_relation_types_have_the_relation_supertype(self):
         for schema in SCHEMAS:
             sv = SchemaView(schema)

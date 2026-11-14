@@ -3,3 +3,4 @@
 core 2	# the ontology type has the icon of a folder of relations
 spatial 41	# SUESS is now called Spaces in the descriptions (40: Location and the spatial relations have the globe "Earth"; 39: the Place has the icon Maps by zuMi)
 people 36	# Person: foaf:nick is called Nickname (not Handle, as in People); 35: status (foaf:status), the date of the latest post (SEN:statusDate), the feed (foaf:weblog), the relation status (the posts of a person)
+temporal 2	# the relation Before is called Between, the event types, the Calendar icon (by zuMi, MIT) and the folder of the relations (1: the first version)
