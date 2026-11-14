@@ -318,6 +318,25 @@ status_t InstallMimeTypeFromResource(const char* path, BString* installedType) {
         }
     }
 
+    // the common values of the attributes that have an enum in the schema (the kinds of an event): keyed by the name of the attribute, in an attribute of the entry of the type of its own, as
+    // the plural above (the attribute info is rewritten by FileTypes and is read by position). A type that has none any more loses what an earlier version wrote.
+    {
+        BPath valuesPath;
+        if (find_directory(B_USER_SETTINGS_DIRECTORY, &valuesPath) == B_OK && valuesPath.Append("mime_db") == B_OK && valuesPath.Append(mimeType.Type()) == B_OK) {
+            BNode valuesNode(valuesPath.Path());
+            if (valuesNode.InitCheck() == B_OK) {
+                const void* values = resources.LoadResource(B_MESSAGE_TYPE, sen::attr::kAttributeValues, size);
+                if (values != NULL && *size > 0) {
+                    const ssize_t written = valuesNode.WriteAttr(sen::attr::kAttributeValues, B_MESSAGE_TYPE, 0, values, *size);
+                    if (written < (ssize_t)*size)
+                        fprintf(stderr, "error writing %s to MIME DB file %s\n", sen::attr::kAttributeValues, mimeType.Type());
+                } else {
+                    valuesNode.RemoveAttr(sen::attr::kAttributeValues);
+                }
+            }
+        }
+    }
+
     // lastly, add optional icon
     icon = resources.LoadResource(B_VECTOR_ICON_TYPE, "META:ICON", size);
     if (icon != NULL && *size > 0) {

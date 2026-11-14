@@ -109,6 +109,18 @@ class GeneratorTest(unittest.TestCase):
         self.assertIn('{"Video conference", "Q238354"},', header)
         self.assertIn('kEventTypeCount', header)
 
+    def test_values_of_an_enum_attribute_are_in_the_type(self):
+        # the common values of an attribute with an enum as its range, keyed by the NAME of the attribute (the installer keeps them in an attribute of the MIME type of its own)
+        rdef = read(os.path.join(ROOT, 'ontologies', 'temporal', 'entity', 'x-vnd.sen-labs.entity.event.rdef'))
+        self.assertIn('"SEN:ATTR:VALUES") message(233) {', rdef)
+        self.assertIn('"SEN:eventType" = message(\'SAvl\') {', rdef)
+        self.assertIn('"text" = "Wedding anniversary"', rdef)
+        self.assertIn('"meaning" = "Q47223"', rdef)
+        self.assertIn('"allow_custom" = true', rdef)
+        self.assertIn('"allow_multiple" = false', rdef)
+        # the attribute is text (the enum is no type of its own)
+        self.assertIn('"SEN:eventType"', rdef)
+
     def test_relation_types_have_the_relation_supertype(self):
         for schema in SCHEMAS:
             sv = SchemaView(schema)

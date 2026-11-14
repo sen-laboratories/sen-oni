@@ -55,7 +55,8 @@ slots:
     description: >-
       What kind of event it is, in a word or two: a birthday, a wedding, a meeting, a phone call. The common kinds are offered (Event Type values, mapped to Wikidata); any other text is allowed.
     title: Event Type
-    annotations: {attribute: "SEN:eventType", width: 110}
+    range: EventType
+    annotations: {attribute: "SEN:eventType", width: 110, allow_custom: true}
   start_date:
     description: >-
       When the event starts (time:hasBeginning), as a time. For a fuzzy start (Start Date EDTF) it is the earliest moment of the value, so that the events sort and are found with a query.

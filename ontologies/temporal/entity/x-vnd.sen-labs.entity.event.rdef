@@ -97,7 +97,51 @@ resource(4, "META:ATTR_INFO") message(233) {
 	"attr:display_as" = "",
 	"type" = "entity/x-vnd.sen-labs.entity.event"
 };
-resource(5, "META:ICON") #'VICN' array {
+resource(5, "SEN:ATTR:VALUES") message(233) {
+	"SEN:eventType" = message('SAvl') {
+		"text" = "Anniversary",
+		"text" = "Ceremony",
+		"text" = "Party",
+		"text" = "Birthday",
+		"text" = "Wedding anniversary",
+		"text" = "Jubilee",
+		"text" = "Death anniversary",
+		"text" = "Wedding",
+		"text" = "Funeral",
+		"text" = "Graduation",
+		"text" = "Baptism",
+		"text" = "Dinner party",
+		"text" = "Housewarming",
+		"text" = "Farewell party",
+		"text" = "Baby shower",
+		"text" = "Meeting",
+		"text" = "Conference",
+		"text" = "Telephone call",
+		"text" = "Video conference",
+		"meaning" = "Q238907",
+		"meaning" = "Q2659904",
+		"meaning" = "Q200538",
+		"meaning" = "Q47223",
+		"meaning" = "Q2005510",
+		"meaning" = "Q1908864",
+		"meaning" = "Q1208945",
+		"meaning" = "Q119639",
+		"meaning" = "Q201559",
+		"meaning" = "Q1928923",
+		"meaning" = "Q35856",
+		"meaning" = "Q1753443",
+		"meaning" = "Q1206109",
+		"meaning" = "Q1390022",
+		"meaning" = "Q797880",
+		"meaning" = "Q2761147",
+		"meaning" = "Q114834437",
+		"meaning" = "Q2296401",
+		"meaning" = "Q238354",
+		"allow_custom" = true,
+		"allow_multiple" = false
+	}
+};
+resource(6, "META:ICON") #'VICN' array {
 	$"6E6369660A04005E0500020006023930AC389E01BE897D3F17AB4CC3A3C72217"
 	$"005F7993FF8B9EB203496481020006023B88953D892BBF94033D936B4C947442"
 	$"A24F00F2F5F7FFDAE6F2020006023B88953D892BBF94033D936B4C947442A24F"
