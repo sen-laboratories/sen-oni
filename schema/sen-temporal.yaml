@@ -8,12 +8,14 @@
 # startDate, endDate, duration), which is also what W3C OWL-Time (time:hasBeginning, time:hasEnd, time:hasDuration) says in other words; the Instants and Intervals of OWL-Time
 # are not entities of their own here, they would be one more file for every start and end.
 #
-# A time can be exact or fuzzy. The start and the end are of the type TIME (the earliest moment of the value): they sort, are shown in the columns of the file manager and are found
-# with a query. A value that is fuzzy ("1994-05~", "202X", "1994?", in the Extended Date/Time Format, EDTF, ISO 8601-2) is also kept as text in the attribute beside it
+# A time can be exact or fuzzy. The start and the end are of the type TIME (the earliest moment of the value): they sort and are shown in the columns of the file manager. (BFS cannot index the type TIME,
+# so a query cannot ask for a date: the files of the type Event are found by their type, and the engine compares the times.) A value that is fuzzy ("1994-05~", "202X", "1994?", in the Extended Date/Time Format, EDTF, ISO 8601-2) is also kept as text in the attribute beside it
 # (Start Date EDTF, End Date EDTF), which the engine reads when it is there; an exact time has no text. The duration is the ISO 8601 text (PT2H, P3D).
 #
-# The temporal relations between two things (before, meets, overlaps, during, equals and their inverses: Allen's interval algebra) are DYNAMIC: they are not stored, the temporal
-# navigator works them out from the intervals when the relation is chosen, so they never go stale when a time is corrected.
+# The temporal relations between two things (before, meets, overlaps, during, equals and their inverses: Allen's interval algebra, W3C OWL-Time time:intervalBefore and so on) are
+# DYNAMIC: they are not stored, the temporal navigator works them out from the intervals when the relation is chosen, so they never go stale when a time is corrected. An interval
+# is the start and the end, or the start and the duration, or a start that is a day, a month or a year (the whole period); a start alone is an instant. A time that is not exact counts
+# with its widest extent. A day ends where the next one begins, so two days meet. Each relation type has two directions (before / after), as the spatial ones have (within / contains).
 id: https://sen-labs.org/ns/oni/temporal
 name: sen_temporal
 title: SEN Temporal
@@ -50,18 +52,18 @@ slots:
     annotations: {attribute: "dc:description", viewable: false}
   start_date:
     description: >-
-      When the event starts (time:hasBeginning), as a time. For a fuzzy start (Start Date EDTF) it is the earliest moment of the value, so that the events sort and are found with a query.
+      When the event starts (time:hasBeginning), as a time. For a fuzzy start (Start Date EDTF) it is the earliest moment of the value, so that the events sort.
     title: Start
     range: datetime
     slot_uri: schema:startDate
-    annotations: {attribute: "schema:startDate", searchable: true, width: 120}
+    annotations: {attribute: "schema:startDate", width: 120}
   end_date:
     description: >-
       When the event ends (time:hasEnd), as a time. For a fuzzy end (End Date EDTF) it is the latest moment of the value. An event with a start and a duration has no end of its own.
     title: End
     range: datetime
     slot_uri: schema:endDate
-    annotations: {attribute: "schema:endDate", searchable: true, width: 120}
+    annotations: {attribute: "schema:endDate", width: 120}
   start_date_edtf:
     description: >-
       The start as it was said, when it is not exact: 1994? (the year is uncertain), 1994-05~ (about May 1994), 202X (some year of the 2020s). The text is in the Extended Date/Time Format
@@ -78,6 +80,13 @@ slots:
     slot_uri: schema:duration
     annotations: {attribute: "schema:duration", width: 30}
 
+  allen:
+    description: >-
+      The relation in Allen's interval algebra as the comparison of the two intervals gave it: before, after, meets, met by, overlaps, overlapped by, during, contains, equals, starts,
+      started by, finishes, finished by. The name in words is the property Kind.
+    title: Allen
+    annotations: {attribute: "SEN:REL:Allen", viewable: false, width: 90}
+
 classes:
   Event:
     description: >-
@@ -89,3 +98,95 @@ classes:
     slots: [title, description, start_date, start_date_edtf, end_date, end_date_edtf, duration]
     slot_usage: {plural: {ifabsent: "string(Events)"}}
     annotations: {mime: entity/x-vnd.sen-labs.entity.event, icon: x-vnd.sen-labs.entity.event}
+
+  # ---- the relations of Allen's interval algebra (the subset of OWL-Time that people use), worked out when asked
+  TemporalBefore:
+    description: the thing ends before the other one begins, with a gap between them (Allen's before); seen from the other one it comes after
+    title: Before
+    is_a: Relation
+    slots: [rel_kind, allen]
+    class_uri: time:intervalBefore
+    annotations:
+      mime: relation/x-vnd.sen-labs.relation.temporal.before
+      icon: x-vnd.sen-labs.entity.event
+      app: application/x-vnd.sen-plugin.sen-labs.temporal-navigator
+      dynamic: true
+      remote: true
+      group: Temporal
+      folder_icon: x-vnd.sen-labs.relation.temporal.folder
+      label: before
+      inverse_label: after
+      source_types: entity/x-vnd.sen-labs.entity.event
+      target_types: entity/x-vnd.sen-labs.entity.event
+  TemporalMeets:
+    description: the thing ends at the very moment that the other one begins (Allen's meets), like two days in a row; seen from the other one it is met by it
+    title: Meets
+    is_a: Relation
+    slots: [rel_kind, allen]
+    class_uri: time:intervalMeets
+    annotations:
+      mime: relation/x-vnd.sen-labs.relation.temporal.meets
+      icon: x-vnd.sen-labs.entity.event
+      app: application/x-vnd.sen-plugin.sen-labs.temporal-navigator
+      dynamic: true
+      remote: true
+      group: Temporal
+      folder_icon: x-vnd.sen-labs.relation.temporal.folder
+      label: meets
+      inverse_label: met by
+      source_types: entity/x-vnd.sen-labs.entity.event
+      target_types: entity/x-vnd.sen-labs.entity.event
+  TemporalOverlaps:
+    description: the thing begins before the other one and ends inside it (Allen's overlaps), the usual collision of two appointments; seen from the other one it is overlapped by it
+    title: Overlaps
+    is_a: Relation
+    slots: [rel_kind, allen]
+    class_uri: time:intervalOverlaps
+    annotations:
+      mime: relation/x-vnd.sen-labs.relation.temporal.overlaps
+      icon: x-vnd.sen-labs.entity.event
+      app: application/x-vnd.sen-plugin.sen-labs.temporal-navigator
+      dynamic: true
+      remote: true
+      group: Temporal
+      folder_icon: x-vnd.sen-labs.relation.temporal.folder
+      label: overlaps
+      inverse_label: overlapped by
+      source_types: entity/x-vnd.sen-labs.entity.event
+      target_types: entity/x-vnd.sen-labs.entity.event
+  TemporalDuring:
+    description: the thing lies inside the other one, beginning after it and ending before it (Allen's during); seen from the other one it contains the thing
+    title: During
+    is_a: Relation
+    slots: [rel_kind, allen]
+    class_uri: time:intervalDuring
+    annotations:
+      mime: relation/x-vnd.sen-labs.relation.temporal.during
+      icon: x-vnd.sen-labs.entity.event
+      app: application/x-vnd.sen-plugin.sen-labs.temporal-navigator
+      dynamic: true
+      remote: true
+      group: Temporal
+      folder_icon: x-vnd.sen-labs.relation.temporal.folder
+      label: during
+      inverse_label: contains
+      source_types: entity/x-vnd.sen-labs.entity.event
+      target_types: entity/x-vnd.sen-labs.entity.event
+  TemporalEquals:
+    description: the thing has the same beginning and the same end as the other one (Allen's equals)
+    title: Equals
+    is_a: Relation
+    slots: [rel_kind, allen]
+    class_uri: time:intervalEquals
+    annotations:
+      mime: relation/x-vnd.sen-labs.relation.temporal.equals
+      icon: x-vnd.sen-labs.entity.event
+      app: application/x-vnd.sen-plugin.sen-labs.temporal-navigator
+      dynamic: true
+      remote: true
+      group: Temporal
+      folder_icon: x-vnd.sen-labs.relation.temporal.folder
+      label: equals
+      inverse_label: equals
+      source_types: entity/x-vnd.sen-labs.entity.event
+      target_types: entity/x-vnd.sen-labs.entity.event
