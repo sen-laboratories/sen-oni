@@ -85,7 +85,7 @@ slots:
   description:
     title: Description
     slot_uri: dc:description
-    annotations: {attribute: "dc:description", viewable: false}
+    annotations: {attribute: "dc:description", width: 200}
   location:
     description: Where the person lives or says to be (the place as the person writes it).
     title: Location

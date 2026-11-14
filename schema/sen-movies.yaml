@@ -85,7 +85,7 @@ slots:
     description: What the movie is about.
     title: Description
     slot_uri: dc:description
-    annotations: {attribute: "dc:description", viewable: false}
+    annotations: {attribute: "dc:description", width: 200}
   genre:
     title: Genres
     slot_uri: schema:genre

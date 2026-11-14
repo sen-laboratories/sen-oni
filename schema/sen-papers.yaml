@@ -53,7 +53,7 @@ slots:
     description: The abstract.
     title: Abstract
     slot_uri: dc:description
-    annotations: {attribute: "dc:description", viewable: false}
+    annotations: {attribute: "dc:description", width: 200}
   publisher:
     title: Publisher
     slot_uri: dc:publisher

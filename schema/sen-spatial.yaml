@@ -56,7 +56,7 @@ slots:
     description: What there is to say about the place.
     title: Description
     slot_uri: dc:description
-    annotations: {attribute: "dc:description", viewable: false}
+    annotations: {attribute: "dc:description", width: 200}
   place_type:
     description: >-
       What kind of place it is, in a word (the name of its type): place of worship, city, country, district. It is what is shown; the IRI of the type is in Place Type IRI.
@@ -203,7 +203,7 @@ classes:
     title: Location
     is_a: Entity
     class_uri: dcterms:Location
-    slots: [title, description, place_type, place_type_uri, same_as, latitude, longitude, elevation, box_south, box_north, box_west, box_east, geometry, address, postal_code, locality, region, country]
+    slots: [title, alternate_name, description, place_type, place_type_uri, url, same_as, image_credit, image_license, latitude, longitude, elevation, box_south, box_north, box_west, box_east, geometry, address, postal_code, locality, region, country]
     slot_usage: {plural: {ifabsent: "string(Locations)"}}
     annotations: {mime: entity/x-vnd.sen-labs.entity.location, icon: x-vnd.sen-labs.entity.location}
 

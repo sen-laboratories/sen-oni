@@ -50,7 +50,7 @@ slots:
     description: What there is to say about the event.
     title: Description
     slot_uri: dc:description
-    annotations: {attribute: "dc:description", viewable: false}
+    annotations: {attribute: "dc:description", width: 200}
   event_type:
     description: >-
       What kind of event it is, in a word or two: a birthday, a wedding, a meeting, a phone call. The common kinds are offered (Event Type values, mapped to Wikidata); any other text is allowed.
