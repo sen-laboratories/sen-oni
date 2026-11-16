@@ -142,6 +142,11 @@ slots:
     title: Instance
     annotations: {attribute: "SEN:REL:RecurrenceId", viewable: false, width: 120}
 
+  event_count:
+    description: How many events a calendar holds.
+    title: Events
+    range: integer
+    annotations: {attribute: "SEN:eventCount", width: 50}
   allen:
     description: >-
       The relation in Allen's interval algebra as the comparison of the two intervals gave it: before, after, meets, met by, overlaps, overlapped by, during, contains, equals, starts,
@@ -160,6 +165,16 @@ classes:
     slots: [title, event_type, description, uid, location, organizer, event_status, attendance_mode, url, meeting_url, meeting_type, recurrence, start_date, start_date_edtf, end_date, end_date_edtf, duration]
     slot_usage: {plural: {ifabsent: "string(Events)"}}
     annotations: {mime: entity/x-vnd.sen-labs.entity.event, icon: x-vnd.sen-labs.entity.event}
+  Calendar:
+    description: >-
+      a calendar: the umbrella for the events that a calendar file holds (an export, a subscription, a shared calendar). Its time is the time that its events cover. A file with a
+      single event is that event
+    title: Calendar
+    is_a: Entity
+    class_uri: schema:Schedule
+    slots: [title, description, url, event_count, start_date, end_date]
+    slot_usage: {plural: {ifabsent: "string(Calendars)"}}
+    annotations: {mime: entity/x-vnd.sen-labs.entity.calendar, icon: x-vnd.sen-labs.entity.event}
 
   # ---- the relations of Allen's interval algebra (the subset of OWL-Time that people use), worked out when asked
   TemporalBetween:
@@ -255,6 +270,25 @@ classes:
       source_types: entity/x-vnd.sen-labs.entity.event
       target_types: entity/x-vnd.sen-labs.entity.event
 
+  CalendarEvents:
+    description: >-
+      an event that the calendar holds, worked out from the calendar file when asked. The events are places in the same file, as the pages of a document are; each has its title, start, end and
+      identifier. Seen from the event it is part of the calendar
+    title: Events
+    is_a: Relation
+    slots: [title, start_date, end_date, uid]
+    class_uri: schema:event
+    annotations:
+      mime: relation/x-vnd.sen-labs.relation.calendar.events
+      icon: x-vnd.sen-labs.entity.event
+      app: application/x-vnd.sen-plugin.sen-labs.calendar-extractor
+      dynamic: true
+      group: Event
+      folder_icon: x-vnd.sen-labs.relation.temporal.folder
+      label: contains
+      inverse_label: part of
+      source_types: entity/x-vnd.sen-labs.entity.calendar
+      target_types: entity/x-vnd.sen-labs.entity.calendar
   # ---- what a calendar file says about an event, worked out from the file when asked
   EventAttendee:
     description: >-
@@ -275,6 +309,23 @@ classes:
       inverse_label: attends
       source_types: entity/x-vnd.sen-labs.entity.event
       target_types: entity/x-vnd.sen-labs.entity.person
+  EventDescription:
+    description: the Markdown file that holds the description of the event, beside it with the same name (made when the event is enriched); seen from the file, it describes the event
+    title: Description
+    is_a: Relation
+    slots: [rel_kind]
+    class_uri: schema:description
+    annotations:
+      mime: relation/x-vnd.sen-labs.relation.event.description
+      icon: x-vnd.sen-labs.entity.event
+      app: application/x-vnd.sen-plugin.sen-labs.calendar-extractor
+      dynamic: true
+      group: Event
+      folder_icon: x-vnd.sen-labs.relation.temporal.folder
+      label: described in
+      inverse_label: describes
+      source_types: entity/x-vnd.sen-labs.entity.event
+      target_types: text/markdown
   EventLocation:
     description: the place where the event takes place, as the calendar file says (its location text, with the coordinates if it has them); seen from the place, it hosts the event
     title: Takes place at

@@ -54,6 +54,8 @@ inline constexpr char kRecurrence[] = "SEN:recurrence";
 inline constexpr char kResponse[] = "SEN:REL:Response";
 /** Which instance of a series the relation is about, as the RECURRENCE-ID of the calendar file (20261123T090000). */
 inline constexpr char kRecurrenceId[] = "SEN:REL:RecurrenceId";
+/** How many events a calendar holds. */
+inline constexpr char kEventCount[] = "SEN:eventCount";
 /** The relation in Allen's interval algebra as the comparison of the two intervals gave it: before, after, meets, met by, overlaps, overlapped by, during, contains, equals, starts, started by, finishes, finished by. The name in words is the property Kind. */
 inline constexpr char kAllen[] = "SEN:REL:Allen";
 }	// namespace attr
@@ -148,6 +150,8 @@ inline constexpr unsigned kResponseStatusCount = sizeof(kResponseStatus) / sizeo
 namespace mime {
 /** Event: an event: anything that occurs in time (a meeting, a trip, a task, a shooting). Its time is a start and an end, or a start and a duration; each can be exact or fuzzy. Any file can have these properties, the event is the entity that is about nothing else */
 inline constexpr char kEvent[] = "entity/x-vnd.sen-labs.entity.event";
+/** Calendar: a calendar: the umbrella for the events that a calendar file holds (an export, a subscription, a shared calendar). Its time is the time that its events cover. A file with a single event is that event */
+inline constexpr char kCalendar[] = "entity/x-vnd.sen-labs.entity.calendar";
 /** Between: the thing ends before the other one begins, with a gap between them (Allen's before); seen from the other one it comes after. The relation is called Between, the directions before and after: one gap lies between the two */
 inline constexpr char kTemporalBetween[] = "relation/x-vnd.sen-labs.relation.temporal.between";
 /** Meets: the thing ends at the very moment that the other one begins (Allen's meets), like two days in a row; seen from the other one it is met by it */
@@ -158,8 +162,12 @@ inline constexpr char kTemporalOverlaps[] = "relation/x-vnd.sen-labs.relation.te
 inline constexpr char kTemporalDuring[] = "relation/x-vnd.sen-labs.relation.temporal.during";
 /** Equals: the thing has the same beginning and the same end as the other one (Allen's equals) */
 inline constexpr char kTemporalEquals[] = "relation/x-vnd.sen-labs.relation.temporal.equals";
+/** Events: an event that the calendar holds, worked out from the calendar file when asked. The events are places in the same file, as the pages of a document are; each has its title, start, end and identifier. Seen from the event it is part of the calendar */
+inline constexpr char kCalendarEvents[] = "relation/x-vnd.sen-labs.relation.calendar.events";
 /** Attendee: a person who is invited to the event or organizes it, as the calendar file says; the role is the Role of the relation (organizer, required, optional, chair, resource) and the answer to the invitation its Response (accepted, declined, tentative, needs action, delegated). Seen from the person, the person attends the event */
 inline constexpr char kEventAttendee[] = "relation/x-vnd.sen-labs.relation.event.attendee";
+/** Description: the Markdown file that holds the description of the event, beside it with the same name (made when the event is enriched); seen from the file, it describes the event */
+inline constexpr char kEventDescription[] = "relation/x-vnd.sen-labs.relation.event.description";
 /** Takes place at: the place where the event takes place, as the calendar file says (its location text, with the coordinates if it has them); seen from the place, it hosts the event */
 inline constexpr char kEventLocation[] = "relation/x-vnd.sen-labs.relation.event.location";
 /** Series: the instance of a repeating event just before or after this one, worked out from its recurrence rule (with the exceptions and moved instances of the file). The instances are places in the same calendar file, as the pages of a document are; each has its title, start and end */
