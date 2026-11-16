@@ -3,6 +3,6 @@
 core 2	# the ontology type has the icon of a folder of relations
 spatial 42	# Description is viewable, the Location has the fields of its form (42; 41: SUESS is now called Spaces; 40: Location and the spatial relations have the globe; 39: the Place has the icon Maps by zuMi)
 people 37	# Description is viewable (37; 36: Person: foaf:nick is called Nickname; 35: status, the date of the latest post, the feed, the relation status)
-temporal 4	# the event type has its values in the MIME type (SEN:ATTR:VALUES) for the list that follows the field (4; 3: Description is viewable; 2: Between, the event types, the Calendar icon by zuMi, the folder of the relations; 1: the first version)
+temporal 5	# the event has the fields of a calendar file (uid, location, organizer, status, attendance, url, meeting URL and type, recurrence) and the relations Attendee, Takes place at and Series (5; 4: the event type has its values in the MIME type (SEN:ATTR:VALUES) for the list that follows the field; 3: Description is viewable; 2: Between, the event types, the Calendar icon by zuMi, the folder of the relations; 1: the first version)
 movies 33	# Description is viewable
 papers 33	# Description is viewable

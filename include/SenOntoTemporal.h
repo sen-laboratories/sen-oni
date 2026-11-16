@@ -32,6 +32,28 @@ inline constexpr char kStartDateEdtf[] = "SEN:startDateEdtf";
 inline constexpr char kEndDateEdtf[] = "SEN:endDateEdtf";
 /** The length of the event, as an ISO 8601 duration (PT2H, PT1H55M, P3D); for an event that has a start and no end. */
 inline constexpr char kDuration[] = "schema:duration";
+/** The identifier that the calendar file gives the event (UID), the same in every copy of an invitation and every instance of a series. */
+inline constexpr char kUid[] = "dc:identifier";
+/** Where the event takes place, as the calendar file says it (an address, a room, a name). The place itself is the relation Location. */
+inline constexpr char kLocation[] = "schema:location";
+/** Who organizes the event, as Name <address>. The people of an event are the relation Attendee. */
+inline constexpr char kOrganizer[] = "schema:organizer";
+/** Whether the event is going ahead, as the calendar file says it (STATUS). */
+inline constexpr char kEventStatus[] = "schema:eventStatus";
+/** Whether the event takes place at a place, online, or both. */
+inline constexpr char kAttendanceMode[] = "schema:eventAttendanceMode";
+/** The web page of the event (URL of the calendar file). */
+inline constexpr char kUrl[] = "schema:url";
+/** The link to join an online meeting that the event has, found in the conference properties, the location or the description of the calendar file. */
+inline constexpr char kMeetingUrl[] = "SEN:meetingUrl";
+/** The service of the online meeting (Zoom, Google Meet, Microsoft Teams...), worked out from its link, so that events can be shown, sorted and searched by it. */
+inline constexpr char kMeetingType[] = "SEN:meetingType";
+/** How the event repeats, as the recurrence rule of the calendar file (FREQ=WEEKLY;BYDAY=MO). An event that does not repeat has none. */
+inline constexpr char kRecurrence[] = "SEN:recurrence";
+/** The answer of the person to the invitation, as the calendar file says it (accepted, declined, tentative, needs action, delegated). It belongs to the Attendee relation between the event and the person, not to the person. */
+inline constexpr char kResponse[] = "SEN:REL:Response";
+/** Which instance of a series the relation is about, as the RECURRENCE-ID of the calendar file (20261123T090000). */
+inline constexpr char kRecurrenceId[] = "SEN:REL:RecurrenceId";
 /** The relation in Allen's interval algebra as the comparison of the two intervals gave it: before, after, meets, met by, overlaps, overlapped by, during, contains, equals, starts, started by, finishes, finished by. The name in words is the property Kind. */
 inline constexpr char kAllen[] = "SEN:REL:Allen";
 }	// namespace attr
@@ -48,6 +70,9 @@ struct Index {
 inline constexpr Index kIndices[] = {
 	{attr::kStartDate, 'TIME'},
 	{attr::kEndDate, 'TIME'},
+	{attr::kUid, 'CSTR'},
+	{attr::kEventStatus, 'CSTR'},
+	{attr::kMeetingType, 'CSTR'},
 };
 inline constexpr unsigned kIndexCount = sizeof(kIndices) / sizeof(kIndices[0]);
 
@@ -82,6 +107,42 @@ inline constexpr Value kEventType[] = {
 	{"Video conference", "Q238354"},
 };
 inline constexpr unsigned kEventTypeCount = sizeof(kEventType) / sizeof(kEventType[0]);
+/** Whether an event is going ahead. */
+inline constexpr Value kEventStatus[] = {
+	{"Confirmed", ""},
+	{"Tentative", ""},
+	{"Cancelled", ""},
+};
+inline constexpr unsigned kEventStatusCount = sizeof(kEventStatus) / sizeof(kEventStatus[0]);
+/** How people take part in an event. */
+inline constexpr Value kAttendanceMode[] = {
+	{"Offline", ""},
+	{"Online", ""},
+	{"Mixed", ""},
+};
+inline constexpr unsigned kAttendanceModeCount = sizeof(kAttendanceMode) / sizeof(kAttendanceMode[0]);
+/** The services of online meetings that are known by their links. Any other service can be written in. */
+inline constexpr Value kMeetingType[] = {
+	{"Zoom", ""},
+	{"Google Meet", ""},
+	{"Microsoft Teams", ""},
+	{"Webex", ""},
+	{"Jitsi", ""},
+	{"GoToMeeting", ""},
+	{"Whereby", ""},
+	{"Skype", ""},
+	{"Other", ""},
+};
+inline constexpr unsigned kMeetingTypeCount = sizeof(kMeetingType) / sizeof(kMeetingType[0]);
+/** The answer of a person to an invitation. */
+inline constexpr Value kResponseStatus[] = {
+	{"Accepted", ""},
+	{"Declined", ""},
+	{"Tentative", ""},
+	{"Needs action", ""},
+	{"Delegated", ""},
+};
+inline constexpr unsigned kResponseStatusCount = sizeof(kResponseStatus) / sizeof(kResponseStatus[0]);
 }	// namespace values
 
 namespace mime {
@@ -97,6 +158,12 @@ inline constexpr char kTemporalOverlaps[] = "relation/x-vnd.sen-labs.relation.te
 inline constexpr char kTemporalDuring[] = "relation/x-vnd.sen-labs.relation.temporal.during";
 /** Equals: the thing has the same beginning and the same end as the other one (Allen's equals) */
 inline constexpr char kTemporalEquals[] = "relation/x-vnd.sen-labs.relation.temporal.equals";
+/** Attendee: a person who is invited to the event or organizes it, as the calendar file says; the role is the Role of the relation (organizer, required, optional, chair, resource) and the answer to the invitation its Response (accepted, declined, tentative, needs action, delegated). Seen from the person, the person attends the event */
+inline constexpr char kEventAttendee[] = "relation/x-vnd.sen-labs.relation.event.attendee";
+/** Takes place at: the place where the event takes place, as the calendar file says (its location text, with the coordinates if it has them); seen from the place, it hosts the event */
+inline constexpr char kEventLocation[] = "relation/x-vnd.sen-labs.relation.event.location";
+/** Series: the instance of a repeating event just before or after this one, worked out from its recurrence rule (with the exceptions and moved instances of the file). The instances are places in the same calendar file, as the pages of a document are; each has its title, start and end */
+inline constexpr char kEventSeries[] = "relation/x-vnd.sen-labs.relation.event.series";
 }	// namespace mime
 
 }	// namespace temporal

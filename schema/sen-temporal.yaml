@@ -87,6 +87,61 @@ slots:
     slot_uri: schema:duration
     annotations: {attribute: "schema:duration", width: 30}
 
+  uid:
+    description: The identifier that the calendar file gives the event (UID), the same in every copy of an invitation and every instance of a series.
+    title: Identifier
+    slot_uri: dc:identifier
+    annotations: {attribute: "dc:identifier", searchable: true, viewable: false, width: 110}
+  location:
+    description: Where the event takes place, as the calendar file says it (an address, a room, a name). The place itself is the relation Location.
+    title: Location
+    slot_uri: schema:location
+    annotations: {attribute: "schema:location", width: 160}
+  organizer:
+    description: Who organizes the event, as Name <address>. The people of an event are the relation Attendee.
+    title: Organizer
+    slot_uri: schema:organizer
+    annotations: {attribute: "schema:organizer", width: 140}
+  event_status:
+    description: Whether the event is going ahead, as the calendar file says it (STATUS).
+    title: Event Status
+    range: EventStatus
+    slot_uri: schema:eventStatus
+    annotations: {attribute: "schema:eventStatus", searchable: true, width: 80, allow_custom: false}
+  attendance_mode:
+    description: Whether the event takes place at a place, online, or both.
+    title: Attendance
+    range: AttendanceMode
+    slot_uri: schema:eventAttendanceMode
+    annotations: {attribute: "schema:eventAttendanceMode", width: 80, allow_custom: false}
+  url:
+    description: The web page of the event (URL of the calendar file).
+    title: URL
+    slot_uri: schema:url
+    annotations: {attribute: "schema:url", viewable: false, width: 160}
+  meeting_url:
+    description: The link to join an online meeting that the event has, found in the conference properties, the location or the description of the calendar file.
+    title: Meeting URL
+    annotations: {attribute: "SEN:meetingUrl", viewable: false, width: 160}
+  meeting_type:
+    description: The service of the online meeting (Zoom, Google Meet, Microsoft Teams...), worked out from its link, so that events can be shown, sorted and searched by it.
+    title: Meeting Type
+    range: MeetingType
+    annotations: {attribute: "SEN:meetingType", searchable: true, width: 100, allow_custom: true}
+  recurrence:
+    description: How the event repeats, as the recurrence rule of the calendar file (FREQ=WEEKLY;BYDAY=MO). An event that does not repeat has none.
+    title: Recurrence
+    annotations: {attribute: "SEN:recurrence", viewable: false, width: 140}
+  response:
+    description: The answer of the person to the invitation, as the calendar file says it (accepted, declined, tentative, needs action, delegated). It belongs to the Attendee relation between the event and the person, not to the person.
+    title: Response
+    range: ResponseStatus
+    annotations: {attribute: "SEN:REL:Response", width: 90, allow_custom: false}
+  recurrence_id:
+    description: Which instance of a series the relation is about, as the RECURRENCE-ID of the calendar file (20261123T090000).
+    title: Instance
+    annotations: {attribute: "SEN:REL:RecurrenceId", viewable: false, width: 120}
+
   allen:
     description: >-
       The relation in Allen's interval algebra as the comparison of the two intervals gave it: before, after, meets, met by, overlaps, overlapped by, during, contains, equals, starts,
@@ -102,7 +157,7 @@ classes:
     title: Event
     is_a: Entity
     class_uri: schema:Event
-    slots: [title, event_type, description, start_date, start_date_edtf, end_date, end_date_edtf, duration]
+    slots: [title, event_type, description, uid, location, organizer, event_status, attendance_mode, url, meeting_url, meeting_type, recurrence, start_date, start_date_edtf, end_date, end_date_edtf, duration]
     slot_usage: {plural: {ifabsent: "string(Events)"}}
     annotations: {mime: entity/x-vnd.sen-labs.entity.event, icon: x-vnd.sen-labs.entity.event}
 
@@ -200,6 +255,63 @@ classes:
       source_types: entity/x-vnd.sen-labs.entity.event
       target_types: entity/x-vnd.sen-labs.entity.event
 
+  # ---- what a calendar file says about an event, worked out from the file when asked
+  EventAttendee:
+    description: >-
+      a person who is invited to the event or organizes it, as the calendar file says; the role is the Role of the relation (organizer, required, optional, chair, resource) and the answer to the
+      invitation its Response (accepted, declined, tentative, needs action, delegated). Seen from the person, the person attends the event
+    title: Attendee
+    is_a: Relation
+    slots: [rel_role, response]
+    class_uri: schema:attendee
+    annotations:
+      mime: relation/x-vnd.sen-labs.relation.event.attendee
+      icon: x-vnd.sen-labs.entity.person
+      app: application/x-vnd.sen-plugin.sen-labs.calendar-extractor
+      dynamic: true
+      group: Event
+      folder_icon: x-vnd.sen-labs.relation.temporal.folder
+      label: attendee
+      inverse_label: attends
+      source_types: entity/x-vnd.sen-labs.entity.event
+      target_types: entity/x-vnd.sen-labs.entity.person
+  EventLocation:
+    description: the place where the event takes place, as the calendar file says (its location text, with the coordinates if it has them); seen from the place, it hosts the event
+    title: Takes place at
+    is_a: Relation
+    slots: [rel_kind]
+    class_uri: schema:location
+    annotations:
+      mime: relation/x-vnd.sen-labs.relation.event.location
+      icon: x-vnd.sen-labs.entity.place
+      app: application/x-vnd.sen-plugin.sen-labs.calendar-extractor
+      dynamic: true
+      group: Event
+      folder_icon: x-vnd.sen-labs.relation.temporal.folder
+      label: takes place at
+      inverse_label: hosts
+      source_types: entity/x-vnd.sen-labs.entity.event
+      target_types: entity/x-vnd.sen-labs.entity.place
+  EventSeries:
+    description: >-
+      the instance of a repeating event just before or after this one, worked out from its recurrence rule (with the exceptions and moved instances of the file). The instances are places
+      in the same calendar file, as the pages of a document are; each has its title, start and end
+    title: Series
+    is_a: Relation
+    slots: [title, start_date, end_date, recurrence_id]
+    class_uri: schema:eventSchedule
+    annotations:
+      mime: relation/x-vnd.sen-labs.relation.event.series
+      icon: x-vnd.sen-labs.entity.event
+      app: application/x-vnd.sen-plugin.sen-labs.calendar-extractor
+      dynamic: true
+      group: Event
+      folder_icon: x-vnd.sen-labs.relation.temporal.folder
+      label: next
+      inverse_label: previous
+      source_types: entity/x-vnd.sen-labs.entity.event
+      target_types: entity/x-vnd.sen-labs.entity.event
+
 enums:
   EventType:
     description: The common kinds of events, mapped to Wikidata. They are offered to choose from; the type of an event is text, and any other value is allowed.
@@ -247,3 +359,41 @@ enums:
         meaning: wd:Q2296401
       VideoConference:
         meaning: wd:Q238354
+  EventStatus:
+    description: Whether an event is going ahead.
+    permissible_values:
+      Confirmed:
+      Tentative:
+      Cancelled:
+  AttendanceMode:
+    description: How people take part in an event.
+    permissible_values:
+      Offline:
+        description: at a place
+      Online:
+        description: by a link
+      Mixed:
+        description: at a place and online
+  MeetingType:
+    description: The services of online meetings that are known by their links. Any other service can be written in.
+    permissible_values:
+      Zoom:
+      GoogleMeet:
+        title: Google Meet
+      MicrosoftTeams:
+        title: Microsoft Teams
+      Webex:
+      Jitsi:
+      GoToMeeting:
+        title: GoToMeeting
+      Whereby:
+      Skype:
+      Other:
+  ResponseStatus:
+    description: The answer of a person to an invitation.
+    permissible_values:
+      Accepted:
+      Declined:
+      Tentative:
+      NeedsAction:
+      Delegated:
