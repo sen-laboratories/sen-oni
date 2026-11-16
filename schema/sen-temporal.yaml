@@ -175,6 +175,12 @@ classes:
     slots: [title, description, url, event_count, start_date, end_date]
     slot_usage: {plural: {ifabsent: "string(Calendars)"}}
     annotations: {mime: entity/x-vnd.sen-labs.entity.calendar, icon: x-vnd.sen-labs.entity.event}
+  # The type that Haiku gives to calendar files (.ics, .vcs). It is not ours: only its icon is set in the MIME database of the user (an overlay), because the system has none
+  # and a calendar file would show the icon of a text file. The meaning of the file (an event, a calendar) is its semantic type.
+  CalendarFile:
+    description: the type of calendar files (iCalendar, vCalendar)
+    title: iCalendar
+    annotations: {mime: text/calendar, overlay: true, icon: x-vnd.sen-labs.entity.event}
 
   # ---- the relations of Allen's interval algebra (the subset of OWL-Time that people use), worked out when asked
   TemporalBetween:

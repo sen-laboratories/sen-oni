@@ -152,6 +152,8 @@ namespace mime {
 inline constexpr char kEvent[] = "entity/x-vnd.sen-labs.entity.event";
 /** Calendar: a calendar: the umbrella for the events that a calendar file holds (an export, a subscription, a shared calendar). Its time is the time that its events cover. A file with a single event is that event */
 inline constexpr char kCalendar[] = "entity/x-vnd.sen-labs.entity.calendar";
+/** iCalendar: the type of calendar files (iCalendar, vCalendar) */
+inline constexpr char kCalendarFile[] = "text/calendar";
 /** Between: the thing ends before the other one begins, with a gap between them (Allen's before); seen from the other one it comes after. The relation is called Between, the directions before and after: one gap lies between the two */
 inline constexpr char kTemporalBetween[] = "relation/x-vnd.sen-labs.relation.temporal.between";
 /** Meets: the thing ends at the very moment that the other one begins (Allen's meets), like two days in a row; seen from the other one it is met by it */
