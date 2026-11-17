@@ -132,6 +132,18 @@ slots:
     description: How the event repeats, as the recurrence rule of the calendar file (FREQ=WEEKLY;BYDAY=MO). An event that does not repeat has none.
     title: Recurrence
     annotations: {attribute: "SEN:recurrence", viewable: false, width: 140}
+  repeats:
+    description: How the event repeats, in words (every week on Monday, every year until 2030-12-31), worked out from its recurrence rule. An event that does not repeat has none.
+    title: Repeats
+    slot_uri: schema:repeatFrequency
+    annotations: {attribute: "schema:repeatFrequency", width: 160}
+  attendees:
+    description: >-
+      The people of the event as the calendar file says them (Name <address>, with the role and the answer to the invitation in brackets), for a list that can be read at a glance and searched. The people themselves
+      are the relation Attendee; this list is kept up to date when the file is enriched.
+    title: Attendees
+    slot_uri: schema:attendee
+    annotations: {attribute: "schema:attendee", is_list: true, list_separator: ";", editable: false, width: 220}
   response:
     description: The answer of the person to the invitation, as the calendar file says it (accepted, declined, tentative, needs action, delegated). It belongs to the Attendee relation between the event and the person, not to the person.
     title: Response
@@ -162,7 +174,7 @@ classes:
     title: Event
     is_a: Entity
     class_uri: schema:Event
-    slots: [title, event_type, description, uid, location, organizer, event_status, attendance_mode, url, meeting_url, meeting_type, recurrence, start_date, start_date_edtf, end_date, end_date_edtf, duration]
+    slots: [title, event_type, description, uid, location, organizer, event_status, attendance_mode, url, meeting_url, meeting_type, recurrence, repeats, attendees, start_date, start_date_edtf, end_date, end_date_edtf, duration]
     slot_usage: {plural: {ifabsent: "string(Events)"}}
     annotations: {mime: entity/x-vnd.sen-labs.entity.event, icon: x-vnd.sen-labs.entity.event}
   Calendar:
@@ -278,8 +290,8 @@ classes:
 
   CalendarEvents:
     description: >-
-      an event that the calendar holds, worked out from the calendar file when asked. The events are places in the same file, as the pages of a document are; each has its title, start, end and
-      identifier. Seen from the event it is part of the calendar
+      an event that the calendar holds. The events are places in the same file, as the pages of a document are (a self relation, which the calendar extractor reads from the file when it is asked); each has
+      its title, start, end and identifier. Seen from the event it is part of the calendar
     title: Events
     is_a: Relation
     slots: [title, start_date, end_date, uid]
@@ -289,7 +301,8 @@ classes:
       icon: x-vnd.sen-labs.entity.event
       app: application/x-vnd.sen-plugin.sen-labs.calendar-extractor
       dynamic: true
-      group: Event
+      contained: true
+      group: Temporal
       folder_icon: x-vnd.sen-labs.relation.temporal.folder
       label: contains
       inverse_label: part of
@@ -309,7 +322,7 @@ classes:
       icon: x-vnd.sen-labs.entity.person
       app: application/x-vnd.sen-plugin.sen-labs.calendar-extractor
       dynamic: true
-      group: Event
+      group: Temporal
       folder_icon: x-vnd.sen-labs.relation.temporal.folder
       label: attendee
       inverse_label: attends
@@ -326,7 +339,7 @@ classes:
       icon: x-vnd.sen-labs.entity.event
       app: application/x-vnd.sen-plugin.sen-labs.calendar-extractor
       dynamic: true
-      group: Event
+      group: Temporal
       folder_icon: x-vnd.sen-labs.relation.temporal.folder
       label: described in
       inverse_label: describes
@@ -343,7 +356,7 @@ classes:
       icon: x-vnd.sen-labs.entity.place
       app: application/x-vnd.sen-plugin.sen-labs.calendar-extractor
       dynamic: true
-      group: Event
+      group: Temporal
       folder_icon: x-vnd.sen-labs.relation.temporal.folder
       label: takes place at
       inverse_label: hosts
@@ -362,7 +375,7 @@ classes:
       icon: x-vnd.sen-labs.entity.event
       app: application/x-vnd.sen-plugin.sen-labs.calendar-extractor
       dynamic: true
-      group: Event
+      group: Temporal
       folder_icon: x-vnd.sen-labs.relation.temporal.folder
       label: next
       inverse_label: previous

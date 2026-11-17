@@ -3,7 +3,7 @@
 // SPDX-FileCopyrightText: 2024-2026 SEN Labs e.U.
 
 resource(0, "META:TYPE") "relation/x-vnd.sen-labs.relation.calendar.events";
-resource(1, "META:L:DESC") #'MLDC' "an event that the calendar holds, worked out from the calendar file when asked. The events are places in the same file, as the pages of a document are; each has its title, start, end and identifier. Seen from the event it is part of the calendar";
+resource(1, "META:L:DESC") #'MLDC' "an event that the calendar holds. The events are places in the same file, as the pages of a document are (a self relation, which the calendar extractor reads from the file when it is asked); each has its title, start, end and identifier. Seen from the event it is part of the calendar";
 resource(2, "META:S:DESC") #'MSDC' "Events";
 resource(3, "META:PREF_APP") #'MSIG' "application/x-vnd.sen-plugin.sen-labs.calendar-extractor";
 resource(4, "META:ATTR_INFO") message(233) {
@@ -55,12 +55,13 @@ resource(4, "META:ATTR_INFO") message(233) {
 };
 resource(5, "SEN:REL:CONFIG") message(233) {
 	"SEN:dynamic" = true,
+	"SEN:self" = true,
 	"SEN:relation" = message('SCrd') {
 		"SEN:REL:Label" = "contains"
 	},
 	"SEN:sourceTypes" = "entity/x-vnd.sen-labs.entity.calendar",
 	"SEN:targetTypes" = "entity/x-vnd.sen-labs.entity.calendar",
-	"SEN:group" = "Event",
+	"SEN:group" = "Temporal",
 	"SEN:inverse" = message('SCrd') {
 		"SEN:REL:Label" = "part of"
 	}

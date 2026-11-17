@@ -50,6 +50,10 @@ inline constexpr char kMeetingUrl[] = "SEN:meetingUrl";
 inline constexpr char kMeetingType[] = "SEN:meetingType";
 /** How the event repeats, as the recurrence rule of the calendar file (FREQ=WEEKLY;BYDAY=MO). An event that does not repeat has none. */
 inline constexpr char kRecurrence[] = "SEN:recurrence";
+/** How the event repeats, in words (every week on Monday, every year until 2030-12-31), worked out from its recurrence rule. An event that does not repeat has none. */
+inline constexpr char kRepeats[] = "schema:repeatFrequency";
+/** The people of the event as the calendar file says them (Name <address>, with the role and the answer to the invitation in brackets), for a list that can be read at a glance and searched. The people themselves are the relation Attendee; this list is kept up to date when the file is enriched. */
+inline constexpr char kAttendees[] = "schema:attendee";
 /** The answer of the person to the invitation, as the calendar file says it (accepted, declined, tentative, needs action, delegated). It belongs to the Attendee relation between the event and the person, not to the person. */
 inline constexpr char kResponse[] = "SEN:REL:Response";
 /** Which instance of a series the relation is about, as the RECURRENCE-ID of the calendar file (20261123T090000). */
@@ -164,7 +168,7 @@ inline constexpr char kTemporalOverlaps[] = "relation/x-vnd.sen-labs.relation.te
 inline constexpr char kTemporalDuring[] = "relation/x-vnd.sen-labs.relation.temporal.during";
 /** Equals: the thing has the same beginning and the same end as the other one (Allen's equals) */
 inline constexpr char kTemporalEquals[] = "relation/x-vnd.sen-labs.relation.temporal.equals";
-/** Events: an event that the calendar holds, worked out from the calendar file when asked. The events are places in the same file, as the pages of a document are; each has its title, start, end and identifier. Seen from the event it is part of the calendar */
+/** Events: an event that the calendar holds. The events are places in the same file, as the pages of a document are (a self relation, which the calendar extractor reads from the file when it is asked); each has its title, start, end and identifier. Seen from the event it is part of the calendar */
 inline constexpr char kCalendarEvents[] = "relation/x-vnd.sen-labs.relation.calendar.events";
 /** Attendee: a person who is invited to the event or organizes it, as the calendar file says; the role is the Role of the relation (organizer, required, optional, chair, resource) and the answer to the invitation its Response (accepted, declined, tentative, needs action, delegated). Seen from the person, the person attends the event */
 inline constexpr char kEventAttendee[] = "relation/x-vnd.sen-labs.relation.event.attendee";

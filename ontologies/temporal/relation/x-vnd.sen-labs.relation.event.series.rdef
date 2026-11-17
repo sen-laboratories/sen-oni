@@ -60,7 +60,7 @@ resource(5, "SEN:REL:CONFIG") message(233) {
 	},
 	"SEN:sourceTypes" = "entity/x-vnd.sen-labs.entity.event",
 	"SEN:targetTypes" = "entity/x-vnd.sen-labs.entity.event",
-	"SEN:group" = "Event",
+	"SEN:group" = "Temporal",
 	"SEN:inverse" = message('SCrd') {
 		"SEN:REL:Label" = "previous"
 	}
