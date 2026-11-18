@@ -8,10 +8,10 @@ starts, or by sen_oni --update."
 packager		"Gregor B. Rosenauer <semantic.extensions@gmail.com>"
 vendor			"SEN Labs e.U."
 copyrights		{
-	"2024-2026 SEN Labs e.U."
+@COPYRIGHTS@
 }
 licenses		{
-	"MIT"
+@LICENSES@
 }
 urls			{
 	"https://sen-labs.org"

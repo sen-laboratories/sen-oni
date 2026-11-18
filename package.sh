@@ -63,10 +63,21 @@ for folder in ontologies/*/; do
 		rc -o "$target/${rel%.rdef}.rsrc" "$file"
 	done
 	[ -f "$folder/README.md" ] && cp "$folder/README.md" $STAGE/$name/documentation/packages/sen_ontology_$name/
+	# the notices and licenses of works of others that the ontology contains (icons): <name>.COPYING
+	cp "$folder"/*.COPYING $STAGE/$name/documentation/packages/sen_ontology_$name/ 2>/dev/null || true
+	copyrights="	\"2024-2026 SEN Labs e.U.\""
+	licenses="	\"MIT\""
+	if [ "$name" = temporal ]; then
+		copyrights="$copyrights
+	\"Calendar icon: Matthew McClintock\""
+		licenses="$licenses
+	\"Design Science License\""
+	fi
 	cp LICENSE $STAGE/$name/documentation/packages/sen_ontology_$name/
 
 	sed -e "s|@NAME@|$name|g" -e "s|@VERSION@|$version-$revision|g" -e "s|@SUMMARY@|$summary|g" \
 		-e "s|@DESCRIPTION@|$description|g" -e "s|@REQUIRES@|$requires|" package/PackageInfo.ontology.in \
+		| COPYRIGHTS="$copyrights" LICENSES="$licenses" awk '/@COPYRIGHTS@/ { print ENVIRON["COPYRIGHTS"]; next } /@LICENSES@/ { print ENVIRON["LICENSES"]; next } { print }' \
 		> $STAGE/$name/.PackageInfo
 	package create -C $STAGE/$name "sen_ontology_$name-$version-$revision-any.hpkg"
 	echo "created sen_ontology_$name-$version-$revision-any.hpkg"
