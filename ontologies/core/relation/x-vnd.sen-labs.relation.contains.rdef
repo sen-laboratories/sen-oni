@@ -3,8 +3,8 @@
 // SPDX-FileCopyrightText: 2024-2026 SEN Labs e.U.
 
 resource(0, "META:TYPE") "relation/x-vnd.sen-labs.relation.contains";
-resource(1, "META:L:DESC") #'MLDC' "relates to self contained components or parts.";
-resource(2, "META:S:DESC") #'MSDC' "Contains";
+resource(1, "META:L:DESC") #'MLDC' "relates a whole to its parts (a document and its sections, a calendar and its events). The relation has a nominal name; what a particular relation says is its label (contains, contained by).";
+resource(2, "META:S:DESC") #'MSDC' "Composition";
 resource(3, "META:PREF_APP") #'MSIG' "application/x-vnd.sen-plugin.sen-labs.reference-navigator";
 resource(4, "SEN:REL:CONFIG") message(233) {
 	"SEN:dynamic" = true,

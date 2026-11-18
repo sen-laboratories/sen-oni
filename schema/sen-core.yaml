@@ -429,8 +429,8 @@ classes:
       inverse_label: referenced by
 
   Contains:
-    description: relates to self contained components or parts.
-    title: Contains
+    description: relates a whole to its parts (a document and its sections, a calendar and its events). The relation has a nominal name; what a particular relation says is its label (contains, contained by).
+    title: Composition
     is_a: Relation
     annotations:
       mime: relation/x-vnd.sen-labs.relation.contains
