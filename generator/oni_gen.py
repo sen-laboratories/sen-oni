@@ -256,11 +256,13 @@ def read_classes(sv, schema_dir):
             if icon and not os.path.exists(os.path.join(schema_dir, 'icons', icon + '.hex')):
                 raise SchemaError(f'class {cls_name}: icon file icons/{icon}.hex does not exist')
         mc.attributes = [each for slot in (cls.slots or []) if not is_type_property(sv.get_slot(slot)) for each in expand(read_attribute(sv, slot))]
-        flags = {key: annotation(cls, key) for key in ('bidir', 'dynamic', 'contained', 'remote', 'label', 'inverse_label',
+        flags = {key: annotation(cls, key) for key in ('bidir', 'dynamic', 'contained', 'remote', 'label', 'inverse_label', 'materialise_as',
                                                          'source_types', 'exclude_types', 'target_types', 'exclude_target_types', 'group')}
         if any(value is not None for value in flags.values()):
             if not (mime.startswith('relation/') or mime == 'relation'):
                 raise SchemaError(f'class {cls_name}: relation flavors on a type that is not a relation')
+            if flags['materialise_as'] and not str(flags['materialise_as']).startswith('entity/'):
+                raise SchemaError(f'class {cls_name}: materialise_as names an entity type (entity/...), not {flags["materialise_as"]}')
             mc.config = flags
         classes.append(mc)
     return classes
@@ -347,6 +349,8 @@ def render_rdef(mc, schema_file, schema_dir):
             entries.append('\t"SEN:self" = true')
         if c['remote']:
             entries.append('\t"SEN:remote" = true')
+        if c['materialise_as']:
+            entries.append(f'\t"SEN:materialiseAs" = {rdef_string(c["materialise_as"])}')
         if c['label']:
             entries.append("\t\"SEN:relation\" = message('SCrd') {\n\t\t\"SEN:REL:Label\" = " + rdef_string(c['label']) + '\n\t}')
         for key, field in (('source_types', 'SEN:sourceTypes'), ('exclude_types', 'SEN:excludeSourceTypes'),

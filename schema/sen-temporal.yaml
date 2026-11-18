@@ -291,7 +291,8 @@ classes:
   CalendarEvents:
     description: >-
       an event that the calendar holds. The events are places in the same file, as the pages of a document are (a self relation, which the calendar extractor reads from the file when it is asked); each has
-      its title, start, end and identifier. Seen from the event it is part of the calendar
+      its title, start, end and identifier. The items are only places in the file: when one is kept or its relations are asked for, the plugin makes the event of it (a file of its own,
+      found again by its identifier). Seen from the event it is part of the calendar
     title: Events
     is_a: Relation
     slots: [title, start_date, end_date, uid]
@@ -307,7 +308,8 @@ classes:
       label: contains
       inverse_label: part of
       source_types: entity/x-vnd.sen-labs.entity.calendar
-      target_types: entity/x-vnd.sen-labs.entity.calendar
+      target_types: entity/x-vnd.sen-labs.entity.event
+      materialise_as: entity/x-vnd.sen-labs.entity.event
   # ---- what a calendar file says about an event, worked out from the file when asked
   EventAttendee:
     description: >-

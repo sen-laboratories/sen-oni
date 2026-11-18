@@ -168,7 +168,7 @@ inline constexpr char kTemporalOverlaps[] = "relation/x-vnd.sen-labs.relation.te
 inline constexpr char kTemporalDuring[] = "relation/x-vnd.sen-labs.relation.temporal.during";
 /** Equals: the thing has the same beginning and the same end as the other one (Allen's equals) */
 inline constexpr char kTemporalEquals[] = "relation/x-vnd.sen-labs.relation.temporal.equals";
-/** Events: an event that the calendar holds. The events are places in the same file, as the pages of a document are (a self relation, which the calendar extractor reads from the file when it is asked); each has its title, start, end and identifier. Seen from the event it is part of the calendar */
+/** Events: an event that the calendar holds. The events are places in the same file, as the pages of a document are (a self relation, which the calendar extractor reads from the file when it is asked); each has its title, start, end and identifier. The items are only places in the file: when one is kept or its relations are asked for, the plugin makes the event of it (a file of its own, found again by its identifier). Seen from the event it is part of the calendar */
 inline constexpr char kCalendarEvents[] = "relation/x-vnd.sen-labs.relation.calendar.events";
 /** Attendee: a person who is invited to the event or organizes it, as the calendar file says; the role is the Role of the relation (organizer, required, optional, chair, resource) and the answer to the invitation its Response (accepted, declined, tentative, needs action, delegated). Seen from the person, the person attends the event */
 inline constexpr char kEventAttendee[] = "relation/x-vnd.sen-labs.relation.event.attendee";
