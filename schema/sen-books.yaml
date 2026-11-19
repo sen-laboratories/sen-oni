@@ -53,7 +53,7 @@ slots:
     description: Date of publication of the edition.
     title: Date
     slot_uri: dc:date
-    range: datetime
+    range: date
     annotations: {attribute: "dc:date", width: 30}
   book_class:
     description: Classification code of the library (Dewey, LoC, ...).

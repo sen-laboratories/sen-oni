@@ -113,7 +113,7 @@ resource(4, "META:ATTR_INFO") message(233) {
 	"attr:display_as" = "",
 	"attr:display_as" = "",
 	"attr:display_as" = "",
-	"attr:display_as" = "",
+	"attr:display_as" = "date",
 	"attr:display_as" = "",
 	"attr:display_as" = "",
 	"attr:display_as" = "",

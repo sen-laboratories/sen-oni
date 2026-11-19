@@ -76,7 +76,7 @@ slots:
   birth_date:
     title: Birthday
     slot_uri: schema:birthDate
-    range: datetime
+    range: date
     annotations: {attribute: "schema:birthDate", width: 90}
   job_title:
     title: Job Title
@@ -191,7 +191,7 @@ slots:
   rel_since:
     description: When the relationship began.
     title: Since
-    range: datetime
+    range: date
     annotations: {attribute: "SEN:REL:since", width: 90}
   rel_note:
     description: What there is to say about the relationship.

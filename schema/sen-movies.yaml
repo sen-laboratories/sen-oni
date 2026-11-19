@@ -64,7 +64,7 @@ slots:
     description: The date of the first release.
     title: Released
     slot_uri: schema:datePublished
-    range: datetime
+    range: date
     annotations: {attribute: "schema:datePublished", width: 30}
   duration:
     description: The length of the movie, as an ISO 8601 duration (PT2H28M).

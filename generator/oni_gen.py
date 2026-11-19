@@ -144,7 +144,7 @@ def read_attribute(sv, slot_name):
         viewable=bool(annotation(slot, 'viewable', True)), editable=bool(annotation(slot, 'editable', True)),
         searchable=searchable, is_list=is_list, list_separator=list_separator,
         width=column_width(int(annotation(slot, 'width', 60)), slot.title),
-        alignment=int(annotation(slot, 'alignment', 0)), display_as=str(annotation(slot, 'display_as', '')),
+        alignment=int(annotation(slot, 'alignment', 0)), display_as=str(annotation(slot, 'display_as', 'date' if range_name == 'date' else '')),
         description=one_line(slot.description), chunks=int(annotation(slot, 'chunks', 1)),
         values=enum_values(enum) if enum is not None else (), allow_custom=bool(annotation(slot, 'allow_custom', True)), allow_multiple=bool(annotation(slot, 'allow_multiple', False)))
 
@@ -257,7 +257,7 @@ def read_classes(sv, schema_dir):
                 raise SchemaError(f'class {cls_name}: icon file icons/{icon}.hex does not exist')
         mc.attributes = [each for slot in (cls.slots or []) if not is_type_property(sv.get_slot(slot)) for each in expand(read_attribute(sv, slot))]
         flags = {key: annotation(cls, key) for key in ('bidir', 'dynamic', 'contained', 'remote', 'label', 'inverse_label', 'materialise_as',
-                                                         'source_types', 'exclude_types', 'target_types', 'exclude_target_types', 'group')}
+                                                         'source_types', 'source_attributes', 'exclude_types', 'target_types', 'exclude_target_types', 'group')}
         if any(value is not None for value in flags.values()):
             if not (mime.startswith('relation/') or mime == 'relation'):
                 raise SchemaError(f'class {cls_name}: relation flavors on a type that is not a relation')
@@ -353,7 +353,7 @@ def render_rdef(mc, schema_file, schema_dir):
             entries.append(f'\t"SEN:materialiseAs" = {rdef_string(c["materialise_as"])}')
         if c['label']:
             entries.append("\t\"SEN:relation\" = message('SCrd') {\n\t\t\"SEN:REL:Label\" = " + rdef_string(c['label']) + '\n\t}')
-        for key, field in (('source_types', 'SEN:sourceTypes'), ('exclude_types', 'SEN:excludeSourceTypes'),
+        for key, field in (('source_types', 'SEN:sourceTypes'), ('source_attributes', 'SEN:sourceAttributes'), ('exclude_types', 'SEN:excludeSourceTypes'),
                            ('target_types', 'SEN:targetTypes'), ('exclude_target_types', 'SEN:excludeTargetTypes')):
             for type_name in [t.strip() for t in (c[key] or '').split(',') if t.strip()]:
                 entries.append(f'\t"{field}" = {rdef_string(type_name)}')
