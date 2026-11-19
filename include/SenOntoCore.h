@@ -185,7 +185,7 @@ inline constexpr char kAssociation[] = "relation/x-vnd.sen-labs.relation.associa
 inline constexpr char kContribution[] = "relation/x-vnd.sen-labs.relation.contribution";
 /** Generic Reference: generic reference to another entity. */
 inline constexpr char kReference[] = "relation/x-vnd.sen-labs.relation.reference";
-/** Composition: relates a whole to its parts (a document and its sections, a calendar and its events). The relation has a nominal name; what a particular relation says is its label (contains, contained by). */
+/** Composition: relates a whole to its parts (a document and its sections, a calendar and its events). The relation has a nominal name; what a particular relation says is its label (contains, contained in). */
 inline constexpr char kContains[] = "relation/x-vnd.sen-labs.relation.contains";
 /** Document Reference: structural reference to a document outline element. */
 inline constexpr char kDocumentReference[] = "relation/x-vnd.sen-labs.relation.docref";
