@@ -431,6 +431,31 @@ enums:
         meaning: wd:Q2296401
       VideoConference:
         meaning: wd:Q238354
+      # --- Holidays and observances
+      Holiday:
+        meaning: wd:Q1445650
+        description: A festive day set aside by custom or by law.
+      PublicHoliday:
+        meaning: wd:Q1197685
+        aliases:
+          - NationalHoliday
+          - StatutoryHoliday
+        description: A holiday established by law, usually a non-working day.
+      NationalDay:
+        meaning: wd:Q57598
+        description: A designated date celebrating the nationhood of a country.
+      ReligiousHoliday:
+        meaning: wd:Q375011
+        aliases:
+          - SpiritualHoliday
+          - HolyDay
+        description: A day or period of special spiritual or religious importance.
+      Festival:
+        meaning: wd:Q132241
+        description: A recurring cultural, religious, or thematic celebration.
+      Observance:
+        meaning: wd:Q16675435
+        description: A commemorative or awareness day on the calendar.
   EventStatus:
     description: Whether an event is going ahead.
     permissible_values:

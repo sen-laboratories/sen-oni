@@ -111,6 +111,12 @@ inline constexpr Value kEventType[] = {
 	{"Conference", "Q114834437"},
 	{"Telephone call", "Q2296401"},
 	{"Video conference", "Q238354"},
+	{"Holiday", "Q1445650"},
+	{"Public holiday", "Q1197685"},
+	{"National day", "Q57598"},
+	{"Religious holiday", "Q375011"},
+	{"Festival", "Q132241"},
+	{"Observance", "Q16675435"},
 };
 inline constexpr unsigned kEventTypeCount = sizeof(kEventType) / sizeof(kEventType[0]);
 /** Whether an event is going ahead. */
