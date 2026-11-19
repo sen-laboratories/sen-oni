@@ -1,6 +1,8 @@
-# sen-oni icon work (not committed)
+# sen-oni icon work
 
-From `sen-oni-logo.svg` (the owner's trace: 3154 shapes with gradients, a red oni on black). Two drawings in one HVIF: **under about 19 px a 16x16 pixel icon** (`pixelize.py` makes it from the picture:
-down-sampled, 7 colours, near-black is transparent) and **from about 19 px a trace** of the picture with 16 colours (`img2svg` of hvif-tools, `oni-trace-16-colours.svg`, 108 shapes), with the black
-background taken away. `oni.hvif` (23 KB) is the icon, `oni.iom` the same for Icon-O-Matic. The trace is busy and keeps part of the dark aura of the picture: it needs the hand of the owner.
-Where it goes: the script `oni.sh` notifies with the command `notify` (group SEN): its `--icon` option takes a file, so the icon would be a file of the package (not wired yet).
+`oni-logo_simplified.svg` is the logo as the owner traced it. Two drawings in one HVIF, chosen by the size (level of detail = size / 64): **under about 19 px a 16x16 pixel icon**
+(`oni-pixel-16.svg`, the grid in `onipx.py`, needs `shapely`) and **from there the logo**, `oni-flat.svg` (`python3 flat.py oni-logo_simplified.svg oni-flat.svg`: 81 shapes, 128 paths).
+`lodtool oni.hvif oni-pixel-16.svg 99 0 0.3 0  oni-flat.svg 0 0.3 4 0.3` (`lodtool.cpp`) joins them; `oni.hvif` is 29 KB, `oni.iom` the same for Icon-O-Matic, `oni-renders-haiku.png` shows how Haiku draws it.
+
+Where it is used: the notification of `sen_oni` (`scripts/oni.sh`, the command `notify`, group SEN) passes `--icon`, which takes a file: `assets/images/oni.png` (64 px, rendered from `oni-flat.svg`; the
+package installs it as `data/sen_oni/oni.png`). The MIME-type tool (`sen_mime`) shows nothing itself.

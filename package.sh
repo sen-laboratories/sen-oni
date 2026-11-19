@@ -20,7 +20,8 @@ OUT=$(pwd)
 rm -rf $STAGE
 
 # --- the installer
-mkdir -p $STAGE/oni/bin $STAGE/oni/documentation/packages/sen_oni
+mkdir -p $STAGE/oni/bin $STAGE/oni/data/sen_oni $STAGE/oni/documentation/packages/sen_oni
+cp -a assets/images/oni.png $STAGE/oni/data/sen_oni/oni.png
 cp -a bin/mime $STAGE/oni/bin/sen_mime
 cp -a scripts/oni.sh $STAGE/oni/bin/sen_oni
 chmod 755 $STAGE/oni/bin/sen_oni

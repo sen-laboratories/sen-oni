@@ -129,11 +129,11 @@ slots:
     range: MeetingType
     annotations: {attribute: "SEN:meetingType", searchable: true, width: 100, allow_custom: true}
   recurrence:
-    description: How the event repeats, as the recurrence rule of the calendar file (FREQ=WEEKLY;BYDAY=MO). An event that does not repeat has none.
+    description: How the event repeats, as the recurrence rule of the calendar file (FREQ=WEEKLY;BYDAY=MO), for programs; it is not shown. It is kept in step with the words of Repeats (Shoji and Akita write both). An empty one says that the event does not repeat, also when the calendar file says it does.
     title: Recurrence
     annotations: {attribute: "SEN:recurrence", viewable: false, width: 140}
   repeats:
-    description: How the event repeats, in words (every week on Monday, every year until 2030-12-31), worked out from its recurrence rule. An event that does not repeat has none.
+    description: How the event repeats, in words (every week on Monday, every year until 2030-12-31), for people. Choose a usual value or type simple words (every 2 weeks), and the recurrence rule follows. An event that does not repeat has none.
     title: Repeats
     slot_uri: schema:repeatFrequency
     range: RepeatStyle

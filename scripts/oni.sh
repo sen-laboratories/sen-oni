@@ -377,12 +377,18 @@ function reset_folder_view()
 # id replaces the notification, so it shows the progress and then says that it is done. Nothing is said when the ontologies are up to date (the update runs after every package change).
 function notify_update()
 {
-    local type=$1 message=$2 progress=$3
+    local type=$1 message=$2 progress=$3 icon="" candidate
     command -v notify >/dev/null 2>&1 || return 0
+    # the oni of SEN Ontology Native Interface: a file of the package (data/sen_oni/oni.png), or of the source tree (assets/images)
+    for candidate in "$ONI_ROOT/data/sen_oni/oni.png" "$ONI_ROOT/assets/images/oni.png"; do
+        [ -f "$candidate" ] && { icon=$candidate; break; }
+    done
+    local iconArgs=()
+    [ -n "$icon" ] && iconArgs=(--icon "$icon")
     if [ "$type" = progress ]; then
-        notify --type progress --progress "$progress" --group SEN --title "Updating the ontologies of SEN" --messageID sen-oni-update "$message" >/dev/null 2>&1 || true
+        notify --type progress --progress "$progress" --group SEN --title "Updating the ontologies of SEN" --messageID sen-oni-update "${iconArgs[@]}" "$message" >/dev/null 2>&1 || true
     else
-        notify --type "$type" --timeout 8 --group SEN --title "Updating the ontologies of SEN" --messageID sen-oni-update "$message" >/dev/null 2>&1 || true
+        notify --type "$type" --timeout 8 --group SEN --title "Updating the ontologies of SEN" --messageID sen-oni-update "${iconArgs[@]}" "$message" >/dev/null 2>&1 || true
     fi
 }
 

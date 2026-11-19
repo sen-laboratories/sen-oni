@@ -48,9 +48,9 @@ inline constexpr char kUrl[] = "schema:url";
 inline constexpr char kMeetingUrl[] = "SEN:meetingUrl";
 /** The service of the online meeting (Zoom, Google Meet, Microsoft Teams...), worked out from its link, so that events can be shown, sorted and searched by it. */
 inline constexpr char kMeetingType[] = "SEN:meetingType";
-/** How the event repeats, as the recurrence rule of the calendar file (FREQ=WEEKLY;BYDAY=MO). An event that does not repeat has none. */
+/** How the event repeats, as the recurrence rule of the calendar file (FREQ=WEEKLY;BYDAY=MO), for programs; it is not shown. It is kept in step with the words of Repeats (Shoji and Akita write both). An empty one says that the event does not repeat, also when the calendar file says it does. */
 inline constexpr char kRecurrence[] = "SEN:recurrence";
-/** How the event repeats, in words (every week on Monday, every year until 2030-12-31), worked out from its recurrence rule. An event that does not repeat has none. */
+/** How the event repeats, in words (every week on Monday, every year until 2030-12-31), for people. Choose a usual value or type simple words (every 2 weeks), and the recurrence rule follows. An event that does not repeat has none. */
 inline constexpr char kRepeats[] = "schema:repeatFrequency";
 /** The people of the event as the calendar file says them (Name <address>, with the role and the answer to the invitation in brackets), for a list that can be read at a glance and searched. The people themselves are the relation Attendee; this list is kept up to date when the file is enriched. */
 inline constexpr char kAttendees[] = "schema:attendee";
