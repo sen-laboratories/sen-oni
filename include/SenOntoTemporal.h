@@ -119,6 +119,15 @@ inline constexpr Value kEventType[] = {
 	{"Observance", "Q16675435"},
 };
 inline constexpr unsigned kEventTypeCount = sizeof(kEventType) / sizeof(kEventType[0]);
+/** The common ways in which an event repeats, in the words that the calendar extractor makes of a recurrence rule. They are offered to choose from; how an event repeats is text, and any other description is allowed (every 2 weeks on Monday and Thursday, every year until 2030-12-31). */
+inline constexpr Value kRepeatStyle[] = {
+	{"every day", ""},
+	{"every weekday", ""},
+	{"every week", ""},
+	{"every month", ""},
+	{"every year", ""},
+};
+inline constexpr unsigned kRepeatStyleCount = sizeof(kRepeatStyle) / sizeof(kRepeatStyle[0]);
 /** Whether an event is going ahead. */
 inline constexpr Value kEventStatus[] = {
 	{"Confirmed", ""},

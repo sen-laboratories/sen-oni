@@ -518,6 +518,13 @@ status_t RelateToMimeType(const char* file, const char* mimeType, const char* la
     properties.AddString(sen::attr::kRelationLabel, label);
     properties.AddString(sen::attr::kRelationKind, "provides");
     properties.AddBool(sen::attr::kRelationReadOnly, true);
+    // what the type is, as its description in the MIME database says (the long one, else the short one): the relation window shows it beside the type
+    char description[B_MIME_TYPE_LENGTH];
+    description[0] = '\0';
+    if (type.GetLongDescription(description) != B_OK || description[0] == '\0')
+        type.GetShortDescription(description);
+    if (description[0] != '\0')
+        properties.AddString(sen::onto::core::attr::kRelDesc, description);
     BMessage inverse;
     inverse.AddString(sen::attr::kRelationLabel, inverseLabel);
 

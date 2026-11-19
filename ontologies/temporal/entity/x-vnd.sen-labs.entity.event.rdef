@@ -314,6 +314,20 @@ resource(5, "SEN:ATTR:VALUES") message(233) {
 		"meaning" = "",
 		"allow_custom" = true,
 		"allow_multiple" = false
+	},
+	"schema:repeatFrequency" = message('SAvl') {
+		"text" = "every day",
+		"text" = "every weekday",
+		"text" = "every week",
+		"text" = "every month",
+		"text" = "every year",
+		"meaning" = "",
+		"meaning" = "",
+		"meaning" = "",
+		"meaning" = "",
+		"meaning" = "",
+		"allow_custom" = true,
+		"allow_multiple" = false
 	}
 };
 resource(6, "META:ICON") #'VICN' array {

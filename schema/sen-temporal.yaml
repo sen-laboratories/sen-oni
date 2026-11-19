@@ -136,6 +136,7 @@ slots:
     description: How the event repeats, in words (every week on Monday, every year until 2030-12-31), worked out from its recurrence rule. An event that does not repeat has none.
     title: Repeats
     slot_uri: schema:repeatFrequency
+    range: RepeatStyle
     annotations: {attribute: "schema:repeatFrequency", width: 160}
   attendees:
     description: >-
@@ -451,6 +452,21 @@ enums:
       Observance:
         meaning: wd:Q16675435
         description: A commemorative or awareness day on the calendar.
+  RepeatStyle:
+    description: >-
+      The common ways in which an event repeats, in the words that the calendar extractor makes of a recurrence rule. They are offered to choose from; how an event repeats is text, and any other
+      description is allowed (every 2 weeks on Monday and Thursday, every year until 2030-12-31).
+    permissible_values:
+      EveryDay:
+        title: every day
+      EveryWeekday:
+        title: every weekday
+      EveryWeek:
+        title: every week
+      EveryMonth:
+        title: every month
+      EveryYear:
+        title: every year
   EventStatus:
     description: Whether an event is going ahead.
     permissible_values:
