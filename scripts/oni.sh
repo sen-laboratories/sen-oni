@@ -380,20 +380,43 @@ function notify_update()
     local type=$1 message=$2 progress=$3 icon="" candidate
     command -v notify >/dev/null 2>&1 || return 0
     # the oni of SEN Ontology Native Interface: a file of the package (data/sen_oni/oni.png), or of the source tree (assets/images)
-    for candidate in "$ONI_ROOT/data/sen_oni/oni.png" "$ONI_ROOT/assets/images/oni.png"; do
+    for candidate in "$ONI_ROOT/data/sen_oni/oni.png" "$(finddir B_SYSTEM_DATA_DIRECTORY)/sen_oni/oni.png" "$(finddir B_USER_DATA_DIRECTORY)/sen_oni/oni.png" "$ONI_ROOT/assets/images/oni.png"; do
         [ -f "$candidate" ] && { icon=$candidate; break; }
     done
     local iconArgs=()
     [ -n "$icon" ] && iconArgs=(--icon "$icon")
     if [ "$type" = progress ]; then
-        notify --type progress --progress "$progress" --group SEN --title "Updating the ontologies of SEN" --messageID sen-oni-update "${iconArgs[@]}" "$message" >/dev/null 2>&1 || true
+        notify --type progress --progress "$progress" --group SEN --title "Updating the ontologies of SEN" --messageID sen-oni-update "${iconArgs[@]}" "$message" >/dev/null 2>&1 || echo "the notification could not be shown (notify exit $?)" >&2
     else
-        notify --type "$type" --timeout 8 --group SEN --title "Updating the ontologies of SEN" --messageID sen-oni-update "${iconArgs[@]}" "$message" >/dev/null 2>&1 || true
+        notify --type "$type" --timeout 8 --group SEN --title "Updating the ontologies of SEN" --messageID sen-oni-update "${iconArgs[@]}" "$message" >/dev/null 2>&1 || echo "the notification could not be shown (notify exit $?)" >&2
     fi
 }
 
+# The check of the installed ontologies can take a while even when nothing has to be installed (the sums of the folders, the types): if it takes longer than a second, a notification says what is going on,
+# and when it is done, that the ontologies are up to date. A check that is quicker says nothing.
 function update_ontologies()
 {
+    local finished=/tmp/sen_oni.$$.finished shown=/tmp/sen_oni.$$.shown
+    rm -f "$finished" "$shown"
+    ( for _ in 1 2 3 4 5 6 7 8 9 10; do
+          sleep 0.1
+          { [ -e "$finished" ] || [ -e "$finished.installed" ]; } && exit 0
+      done
+      touch "$shown"
+      notify_update progress "Checking the installed ontologies. Please do not restart SEN or Haiku until this is done." 0.0 ) &
+    local timer=$!
+
+    _update_ontologies "$finished"
+
+    touch "$finished"
+    wait $timer 2>/dev/null
+    [ -e "$shown" ] && [ ! -e "$finished.installed" ] && notify_update information "The ontologies are up to date."
+    rm -f "$finished" "$shown" "$finished.installed"
+}
+
+function _update_ontologies()
+{
+    local finished=$1
     reset_folder_view
 
     local present=" " dir folder name todo=()
@@ -416,6 +439,7 @@ function update_ontologies()
 
     local total=${#todo[@]} index=0
     if [ $total -gt 0 ]; then
+        touch "$finished.installed"		# (this has its own notifications: the one of the check is not wanted any more)
         notify_update progress "$total ontologies are installed or updated. This takes a while: please do not restart SEN or Haiku until it is done." 0
     fi
     for folder in "${todo[@]}"; do
