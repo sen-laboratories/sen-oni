@@ -406,9 +406,11 @@ function update_signature()
         echo "oni signature 1"
         ls -l --time-style=+%s "$0" 2>/dev/null
         local dir
-        while read -r dir; do
+        # no process substitution here: Haiku has no /dev/fd, bash uses named pipes, and inside this
+        # pipeline the update hung for good (md5sum waiting for a writer that waited for the reader)
+        for dir in $(provided_folders); do
             [ -d "$dir" ] && ls -lR --time-style=+%s "$dir" 2>/dev/null
-        done < <(provided_folders)
+        done
         ls -l --time-style=+%s "$SEN_CONFIG_ONTO" 2>/dev/null
         ls -1d "$SETTINGS"/mime_db/*/x-vnd.sen-labs.* "$SETTINGS"/mime_db/x-vnd.sen-labs.* 2>/dev/null
         true
