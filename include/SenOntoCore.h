@@ -105,7 +105,7 @@ inline constexpr char kOntoStable[] = "SEN:onto:stable";
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wmultichar"
 
-/** An attribute that is queried and needs a BFS index on every volume (the type of the index is that of the attribute). */
+/** An attribute that is queried and needs a BFS index on every volume (the type of the index is that of the attribute, a time is indexed as the integer that holds it: sen::IndexTypeOf() of SenAttributes.h). */
 struct Index {
 	const char* name;
 	uint32_t    type;
@@ -134,6 +134,25 @@ inline constexpr Index kIndices[] = {
 inline constexpr unsigned kIndexCount = sizeof(kIndices) / sizeof(kIndices[0]);
 
 #pragma GCC diagnostic pop
+
+namespace values {
+/** A common value: the text that is stored, and the Wikidata item that it stands for (empty if none). */
+struct Value {
+	const char* text;
+	const char* wikidata;
+};
+/** The kinds of a dependency (the property Kind of the relation). They are those of the relations between Haiku packages (.PackageInfo: provides, requires, supplements, conflicts, freshens, replaces), and uses, which they do not have. */
+inline constexpr Value kDependencyKind[] = {
+	{"provides", ""},
+	{"requires", ""},
+	{"uses", ""},
+	{"supplements", ""},
+	{"conflicts", ""},
+	{"freshens", ""},
+	{"replaces", ""},
+};
+inline constexpr unsigned kDependencyKindCount = sizeof(kDependencyKind) / sizeof(kDependencyKind[0]);
+}	// namespace values
 
 namespace mime {
 /** Abstract Entity: A semantic entity representing anything. */
@@ -166,7 +185,7 @@ inline constexpr char kAssociation[] = "relation/x-vnd.sen-labs.relation.associa
 inline constexpr char kContribution[] = "relation/x-vnd.sen-labs.relation.contribution";
 /** Generic Reference: generic reference to another entity. */
 inline constexpr char kReference[] = "relation/x-vnd.sen-labs.relation.reference";
-/** Contains: relates to self contained components or parts. */
+/** Composition: relates a whole to its parts (a document and its sections, a calendar and its events). The relation has a nominal name; what a particular relation says is its label (contains, contained in). */
 inline constexpr char kContains[] = "relation/x-vnd.sen-labs.relation.contains";
 /** Document Reference: structural reference to a document outline element. */
 inline constexpr char kDocumentReference[] = "relation/x-vnd.sen-labs.relation.docref";

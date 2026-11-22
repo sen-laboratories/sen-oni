@@ -20,6 +20,7 @@
 #include <VolumeRoster.h>
 
 #include <sen/Sen.h>
+#include <sen/SenAttributes.h>
 #include <sen/SenOntoCore.h>
 #include <sen/SenLookup.h>
 
@@ -317,6 +318,25 @@ status_t InstallMimeTypeFromResource(const char* path, BString* installedType) {
         }
     }
 
+    // the common values of the attributes that have an enum in the schema (the kinds of an event): keyed by the name of the attribute, in an attribute of the entry of the type of its own, as
+    // the plural above (the attribute info is rewritten by FileTypes and is read by position). A type that has none any more loses what an earlier version wrote.
+    {
+        BPath valuesPath;
+        if (find_directory(B_USER_SETTINGS_DIRECTORY, &valuesPath) == B_OK && valuesPath.Append("mime_db") == B_OK && valuesPath.Append(mimeType.Type()) == B_OK) {
+            BNode valuesNode(valuesPath.Path());
+            if (valuesNode.InitCheck() == B_OK) {
+                const void* values = resources.LoadResource(B_MESSAGE_TYPE, sen::attr::kAttributeValues, size);
+                if (values != NULL && *size > 0) {
+                    const ssize_t written = valuesNode.WriteAttr(sen::attr::kAttributeValues, B_MESSAGE_TYPE, 0, values, *size);
+                    if (written < (ssize_t)*size)
+                        fprintf(stderr, "error writing %s to MIME DB file %s\n", sen::attr::kAttributeValues, mimeType.Type());
+                } else {
+                    valuesNode.RemoveAttr(sen::attr::kAttributeValues);
+                }
+            }
+        }
+    }
+
     // lastly, add optional icon
     icon = resources.LoadResource(B_VECTOR_ICON_TYPE, "META:ICON", size);
     if (icon != NULL && *size > 0) {
@@ -372,7 +392,7 @@ GetInstalledMimeTypes(const char* supertype, BMessage* types)
  * @brief Create the index for an attribute on every mounted volume that can have one (BFS, queries and attributes supported).
  *
  * @param attrName the attribute to index
- * @param attrType the type code of the attribute (an index has the type of its attribute)
+ * @param attrType the type code of the attribute (an index has the type of its attribute, a time the integer that holds it: sen::IndexTypeOf())
  */
 void
 CreateIndexOnAllVolumes(const char* attrName, uint32 attrType)
@@ -387,7 +407,7 @@ CreateIndexOnAllVolumes(const char* attrName, uint32 attrType)
         char volumeName[B_FILE_NAME_LENGTH];
         volume.GetName(volumeName);
 
-        if (fs_create_index(volume.Device(), attrName, attrType, 0) == 0) {
+        if (fs_create_index(volume.Device(), attrName, sen::IndexTypeOf(attrType), 0) == 0) {
             printf("* created index for '%s' on volume %s\n", attrName, volumeName);
         } else if (errno == B_FILE_EXISTS) {
             printf("* index for '%s' exists on volume %s, skipping.\n", attrName, volumeName);
@@ -498,6 +518,13 @@ status_t RelateToMimeType(const char* file, const char* mimeType, const char* la
     properties.AddString(sen::attr::kRelationLabel, label);
     properties.AddString(sen::attr::kRelationKind, "provides");
     properties.AddBool(sen::attr::kRelationReadOnly, true);
+    // what the type is, as its description in the MIME database says (the long one, else the short one): the relation window shows it beside the type
+    char description[B_MIME_TYPE_LENGTH];
+    description[0] = '\0';
+    if (type.GetLongDescription(description) != B_OK || description[0] == '\0')
+        type.GetShortDescription(description);
+    if (description[0] != '\0')
+        properties.AddString(sen::onto::core::attr::kRelDesc, description);
     BMessage inverse;
     inverse.AddString(sen::attr::kRelationLabel, inverseLabel);
 

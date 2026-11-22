@@ -78,8 +78,27 @@ class Attribute:
     alignment: int = 0
     display_as: str = ''
     description: str = ''
+    values: tuple = ()   # the common values of an attribute whose range is an enum of the schema: ((text, meaning), ...), see enum_values()
+    allow_multiple: bool = False   # several of the values at once (annotation allow_multiple: true); no attribute uses it yet, the control offers it for later
+    allow_custom: bool = True   # other text than the common values is allowed too (annotation allow_custom: false makes the list the only choice)
     chunks: int = 1    # a list that continues in <name>:1, <name>:2, ... (all with the same definition)
     is_chunk: bool = False   # one of those continuation attributes
+
+
+def humanize(name):
+    """WeddingAnniversary -> Wedding anniversary: the text of a value of an enum that has no title"""
+    words = re.sub(r'(?<=[a-z0-9])(?=[A-Z])', ' ', name).split(' ')
+    return ' '.join([words[0]] + [w.lower() for w in words[1:]])
+
+
+def enum_values(enum):
+    """The values of an enum as ((text, meaning), ...): the text that is stored (the title of the value, else its key with the words apart) and what it means (the Wikidata item `Q47223` of its `meaning`, else empty)"""
+    values = []
+    for key, pv in enum.permissible_values.items():
+        text = getattr(pv, 'title', None) or humanize(str(key))
+        meaning = str(pv.meaning).split(':', 1)[-1] if getattr(pv, 'meaning', None) else ''
+        values.append((text, meaning))
+    return tuple(values)
 
 
 def camel(name):
@@ -104,11 +123,15 @@ def read_attribute(sv, slot_name):
     if not ATTR_NAME_PATTERN.match(name) or len(name) > MAX_ATTR_NAME:
         raise SchemaError(f'slot {slot_name}: "{name}" is not a valid attribute name (<prefix>:<name>)')
     type_code = annotation(slot, 'bfs_type')
+    range_name = slot.range or sv.schema.default_range or 'string'
+    enum = sv.get_enum(range_name) if range_name not in RANGE_TYPES else None
     if type_code is None:
-        range_name = slot.range or sv.schema.default_range or 'string'
-        if range_name not in RANGE_TYPES:
+        if enum is not None:
+            type_code = 'CSTR'		# (an enum is text: the attribute holds the text of one of its values, or another text if allow_custom says so)
+        elif range_name not in RANGE_TYPES:
             raise SchemaError(f'slot {slot_name}: range {range_name} has no BFS type, set the annotation bfs_type')
-        type_code = RANGE_TYPES[range_name]
+        else:
+            type_code = RANGE_TYPES[range_name]
     if type_code not in BFS_TYPES:
         raise SchemaError(f'slot {slot_name}: unknown bfs_type {type_code}')
     if not slot.title:
@@ -122,8 +145,9 @@ def read_attribute(sv, slot_name):
         viewable=bool(annotation(slot, 'viewable', True)), editable=bool(annotation(slot, 'editable', True)),
         searchable=searchable, is_list=is_list, list_separator=list_separator,
         width=column_width(int(annotation(slot, 'width', 60)), slot.title),
-        alignment=int(annotation(slot, 'alignment', 0)), display_as=str(annotation(slot, 'display_as', '')),
-        description=one_line(slot.description), chunks=int(annotation(slot, 'chunks', 1)))
+        alignment=int(annotation(slot, 'alignment', 0)), display_as=str(annotation(slot, 'display_as', 'date' if range_name == 'date' else '')),
+        description=one_line(slot.description), chunks=int(annotation(slot, 'chunks', 1)),
+        values=enum_values(enum) if enum is not None else (), allow_custom=bool(annotation(slot, 'allow_custom', True)), allow_multiple=bool(annotation(slot, 'allow_multiple', False)))
 
 
 LIST_SEPARATOR_DEFAULT = ','   # (Haiku's People keeps the groups of a person in META:group like this)
@@ -250,11 +274,13 @@ def read_classes(sv, schema_dir):
             if icon and not os.path.exists(os.path.join(schema_dir, 'icons', icon + '.hex')):
                 raise SchemaError(f'class {cls_name}: icon file icons/{icon}.hex does not exist')
         mc.attributes = [each for slot in (cls.slots or []) if not is_type_property(sv.get_slot(slot)) for each in expand(read_attribute(sv, slot))]
-        flags = {key: annotation(cls, key) for key in ('bidir', 'dynamic', 'contained', 'remote', 'label', 'inverse_label',
-                                                         'source_types', 'exclude_types', 'target_types', 'exclude_target_types', 'group')}
+        flags = {key: annotation(cls, key) for key in ('bidir', 'dynamic', 'contained', 'remote', 'label', 'inverse_label', 'materialise_as',
+                                                         'source_types', 'source_attributes', 'exclude_types', 'target_types', 'exclude_target_types', 'group')}
         if any(value is not None for value in flags.values()):
             if not (mime.startswith('relation/') or mime == 'relation'):
                 raise SchemaError(f'class {cls_name}: relation flavors on a type that is not a relation')
+            if flags['materialise_as'] and not str(flags['materialise_as']).startswith('entity/'):
+                raise SchemaError(f'class {cls_name}: materialise_as names an entity type (entity/...), not {flags["materialise_as"]}')
             mc.config = flags
         classes.append(mc)
     return classes
@@ -432,6 +458,18 @@ def render_rdef(mc, schema_file, schema_dir):
         body.append(f'\t"type" = {rdef_string(mc.mime)}')
         out.append(',\n'.join(body))
         out.append('};')
+        # the common values of the attributes that have an enum (the kinds of an event): keyed by the NAME of the attribute, not by position, and kept by the installer in an attribute of the
+        # entry of the type of its own (SEN:ATTR:VALUES), where FileTypes does not touch it; see sento SenAttrValues.h
+        valued = [a for a in mc.attributes if a.values]
+        if valued:
+            resource('"SEN:ATTR:VALUES") message(233) {')
+            entries = []
+            for a in valued:
+                inner = ([f'\t\t"text" = {rdef_string(t)}' for t, m in a.values] + [f'\t\t"meaning" = {rdef_string(m)}' for t, m in a.values]
+                         + [f'\t\t"allow_custom" = {boolean(a.allow_custom)}', f'\t\t"allow_multiple" = {boolean(a.allow_multiple)}'])
+                entries.append(f"\t{rdef_string(a.name)} = message('SAvl') {{\n" + ',\n'.join(inner) + '\n\t}')
+            out.append(',\n'.join(entries))
+            out.append('};')
     if mc.config is not None:
         c = mc.config
         resource('"SEN:REL:CONFIG") message(233) {')
@@ -444,9 +482,11 @@ def render_rdef(mc, schema_file, schema_dir):
             entries.append('\t"SEN:self" = true')
         if c['remote']:
             entries.append('\t"SEN:remote" = true')
+        if c['materialise_as']:
+            entries.append(f'\t"SEN:materialiseAs" = {rdef_string(c["materialise_as"])}')
         if c['label']:
             entries.append("\t\"SEN:relation\" = message('SCrd') {\n\t\t\"SEN:REL:Label\" = " + rdef_string(c['label']) + '\n\t}')
-        for key, field in (('source_types', 'SEN:sourceTypes'), ('exclude_types', 'SEN:excludeSourceTypes'),
+        for key, field in (('source_types', 'SEN:sourceTypes'), ('source_attributes', 'SEN:sourceAttributes'), ('exclude_types', 'SEN:excludeSourceTypes'),
                            ('target_types', 'SEN:targetTypes'), ('exclude_target_types', 'SEN:excludeTargetTypes')):
             for type_name in [t.strip() for t in (c[key] or '').split(',') if t.strip()]:
                 entries.append(f'\t"{field}" = {rdef_string(type_name)}')
@@ -508,7 +548,7 @@ def render_header(sv, classes, schema_file, types=()):
     indices = [e for s in schema.slots if not is_type_property(sv.get_slot(s)) for e in expand(read_attribute(sv, s)) if e.searchable]
     if indices:
         out += ['#pragma GCC diagnostic push', '#pragma GCC diagnostic ignored "-Wmultichar"', '',
-                '/** An attribute that is queried and needs a BFS index on every volume (the type of the index is that of the attribute). */',
+                '/** An attribute that is queried and needs a BFS index on every volume (the type of the index is that of the attribute, a time is indexed as the integer that holds it: sen::IndexTypeOf() of SenAttributes.h). */',
                 'struct Index {', '\tconst char* name;', '\tuint32_t    type;', '};',
                 '/** The indices of this ontology: created by the ontology installer and by the SEN server on every mounted volume. */',
                 'inline constexpr Index kIndices[] = {']
@@ -516,6 +556,18 @@ def render_header(sv, classes, schema_file, types=()):
                 for a in indices]
         out += ['};', 'inline constexpr unsigned kIndexCount = sizeof(kIndices) / sizeof(kIndices[0]);', '',
                 '#pragma GCC diagnostic pop', '']
+    # the enums of the schema: the common values of an attribute that is text (any other text is allowed too), with the Wikidata item that each stands for
+    enums = getattr(schema, 'enums', None) or {}
+    if enums:
+        out += ['namespace values {', '/** A common value: the text that is stored, and the Wikidata item that it stands for (empty if none). */',
+                'struct Value {', '\tconst char* text;', '\tconst char* wikidata;', '};']
+        for enum_name, enum in enums.items():
+            if enum.description:
+                out.append(f'/** {one_line(enum.description)} */')
+            entries = [f'\t{{"{text}", "{meaning}"}},' for text, meaning in enum_values(enum)]
+            out += [f'inline constexpr Value k{camel(enum_name)}[] = {{'] + entries + ['};',
+                    f'inline constexpr unsigned k{camel(enum_name)}Count = sizeof(k{camel(enum_name)}) / sizeof(k{camel(enum_name)}[0]);']
+        out += ['}\t// namespace values', '']
     out += ['namespace mime {']
     for mc in classes:
         out.append(f'/** {mc.title}: {mc.description} */')

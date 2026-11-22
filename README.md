@@ -53,7 +53,8 @@ database of the user is changed by the installer `sen_oni`, which the SEN server
 removed (the output is in `~/config/settings/sen/ontologies-update.log`). You can run it yourself, too:
 
 ```sh
-sen_oni --update            # installs new and changed ontologies, removes those whose package is gone
+sen_oni --update            # installs new and changed ontologies, removes those whose package is gone (nothing is done when nothing changed since the last complete update: a fraction of a second)
+sen_oni --update --force    # the whole check, also when nothing seems to have changed (a damaged MIME database is repaired)
 sen_oni --list              # what is installed
 sen_oni --remove books      # removes an ontology and the MIME types that no other ontology provides
 sen_oni ontologies/core     # installs an ontology folder from a source tree (rdef files), for development

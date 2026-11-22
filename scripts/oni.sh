@@ -9,7 +9,7 @@
 # In a package this is the command sen_oni. Ontology packages bring their ontologies as folders in data/sen/ontologies, which this
 # script puts into the MIME database of the user:
 #
-#   sen_oni --update                    makes the installed ontologies match the ontology folders that packages provide: new and
+#   sen_oni --update [--force]          makes the installed ontologies match the ontology folders that packages provide: new and
 #                                       changed ones are installed, those whose package is gone are removed. The SEN server runs this
 #                                       when it starts and when packages change.
 #   sen_oni [install] <folder>...       installs the given ontology folders (from a source tree: ontologies/core, ontologies/*)
@@ -211,7 +211,8 @@ function types_present()
 function folder_sum()
 {
     # (the number says how the types are installed: a new one makes the installed ontologies be installed again, e.g. 2: the plural of the entity types is written)
-    (echo "installer 2"; cd "$1" && find . -type f | sort | while read -r f; do md5sum "$f"; done) | md5sum | cut -d' ' -f1
+    # (one md5sum for all the files of the folder, not one process for each: the lines are the same)
+    (echo "installer 2"; cd "$1" && find . -type f -print0 | sort -z | xargs -0 md5sum) | md5sum | cut -d' ' -f1
 }
 
 function install_ontology()
@@ -412,17 +413,84 @@ function reset_folder_view()
 # id replaces the notification, so it shows the progress and then says that it is done. Nothing is said when the ontologies are up to date (the update runs after every package change).
 function notify_update()
 {
-    local type=$1 message=$2 progress=$3
+    local type=$1 message=$2 progress=$3 icon="" candidate
     command -v notify >/dev/null 2>&1 || return 0
+    # the oni of SEN Ontology Native Interface: a file of the package (data/sen_oni/oni.png), or of the source tree (assets/images)
+    for candidate in "$ONI_ROOT/data/sen_oni/oni.png" "$(finddir B_SYSTEM_DATA_DIRECTORY)/sen_oni/oni.png" "$(finddir B_USER_DATA_DIRECTORY)/sen_oni/oni.png" "$ONI_ROOT/assets/images/oni.png"; do
+        [ -f "$candidate" ] && { icon=$candidate; break; }
+    done
+    local iconArgs=()
+    [ -n "$icon" ] && iconArgs=(--icon "$icon")
     if [ "$type" = progress ]; then
-        notify --type progress --progress "$progress" --group SEN --title "Updating the ontologies of SEN" --messageID sen-oni-update "$message" >/dev/null 2>&1 || true
+        notify --type progress --progress "$progress" --group SEN --title "Updating the ontologies of SEN" --messageID sen-oni-update "${iconArgs[@]}" "$message" >/dev/null 2>&1 || echo "the notification could not be shown (notify exit $?)" >&2
     else
-        notify --type "$type" --timeout 8 --group SEN --title "Updating the ontologies of SEN" --messageID sen-oni-update "$message" >/dev/null 2>&1 || true
+        notify --type "$type" --timeout 8 --group SEN --title "Updating the ontologies of SEN" --messageID sen-oni-update "${iconArgs[@]}" "$message" >/dev/null 2>&1 || echo "the notification could not be shown (notify exit $?)" >&2
     fi
 }
 
+# What the installed ontologies depend on, as one number: the ontology folders of the packages (names, sizes, times), the placeholders of the installed ontologies, the MIME types of SEN that are in the
+# database of the user, and this script. After a complete update the number is kept: an update that finds the same number has nothing to do (it costs a fraction of a second instead of seconds, which matters
+# because the server repeats the update for a while after every package change). `--update --force` does the whole check anyway.
+SIGNATURE_FILE=$SETTINGS/sen/ontologies-update.signature
+FORCE_UPDATE=0
+UPDATE_FAILED=0
+
+function update_signature()
+{
+    {
+        echo "oni signature 1"
+        ls -l --time-style=+%s "$0" 2>/dev/null
+        local dir
+        # no process substitution here: Haiku has no /dev/fd, bash uses named pipes, and inside this
+        # pipeline the update hung for good (md5sum waiting for a writer that waited for the reader)
+        for dir in $(provided_folders); do
+            [ -d "$dir" ] && ls -lR --time-style=+%s "$dir" 2>/dev/null
+        done
+        ls -l --time-style=+%s "$SEN_CONFIG_ONTO" 2>/dev/null
+        ls -1d "$SETTINGS"/mime_db/*/x-vnd.sen-labs.* "$SETTINGS"/mime_db/x-vnd.sen-labs.* 2>/dev/null
+        true
+    } | md5sum | cut -d' ' -f1
+}
+
+# The check of the installed ontologies can take a while even when nothing has to be installed (the sums of the folders, the types): if it takes longer than a second, a notification says what is going on,
+# and when it is done, that the ontologies are up to date. A check that is quicker says nothing. The update runs again and again for a while after a package changed (the server repeats it, as a package is
+# activated some seconds after its file appears): the notice is made once in two minutes, not for each of those runs.
 function update_ontologies()
 {
+    local finished=/tmp/sen_oni.$$.finished shown=/tmp/sen_oni.$$.shown stamp=/tmp/sen_oni.check-notice
+    # (nothing has changed since the last complete update: there is nothing to do)
+    if [ "$FORCE_UPDATE" != 1 ] && [ -f "$SIGNATURE_FILE" ] && [ "$(cat "$SIGNATURE_FILE")" = "$(update_signature)" ]; then
+        return 0
+    fi
+    rm -f "$finished" "$shown"
+    ( for _ in 1 2 3 4 5 6 7 8 9 10; do
+          sleep 0.1
+          { [ -e "$finished" ] || [ -e "$finished.installed" ]; } && exit 0
+      done
+      if [ -e "$stamp" ] && [ -z "$(find "$stamp" -mmin +2 2>/dev/null)" ]; then
+          exit 0		# (a notice of an earlier check is still current)
+      fi
+      touch "$stamp" "$shown"
+      notify_update progress "Checking the installed ontologies. Please do not restart SEN or Haiku until this is done." 0.0 ) &
+    local timer=$!
+
+    _update_ontologies "$finished"
+
+    touch "$finished"
+    wait $timer 2>/dev/null
+    [ -e "$shown" ] && [ ! -e "$finished.installed" ] && notify_update information "The ontologies are up to date."
+    rm -f "$finished" "$shown" "$finished.installed"
+    # (only a complete update is kept: one that could not install an ontology is tried again by the next)
+    if [ "$UPDATE_FAILED" = 0 ]; then
+        update_signature > "$SIGNATURE_FILE"
+    else
+        rm -f "$SIGNATURE_FILE"
+    fi
+}
+
+function _update_ontologies()
+{
+    local finished=$1
     reset_folder_view
 
     local present=" " dir folder name todo=()
@@ -432,7 +500,7 @@ function update_ontologies()
         [ -d "$dir" ] || continue
         for folder in "$dir"/*; do
             [ -f "$folder/ontology.rsrc" ] || [ -f "$folder/ontology.rdef" ] || continue
-            name=$(basename "$folder")
+            name=${folder%/}; name=${name##*/}
             present="$present$name "
             if [ -e "$SEN_CONFIG_ONTO/$name" ] && [ "$(get_attr $ATTR_SUM "$SEN_CONFIG_ONTO/$name")" = "$(folder_sum "$folder")" ] \
                     && { [ -f "$folder/ontology.rdef" ] || types_present "$folder"; }; then
@@ -445,14 +513,15 @@ function update_ontologies()
 
     local total=${#todo[@]} index=0
     if [ $total -gt 0 ]; then
+        touch "$finished.installed"		# (this has its own notifications: the one of the check is not wanted any more)
         notify_update progress "$total ontologies are installed or updated. This takes a while: please do not restart SEN or Haiku until it is done." 0
     fi
     for folder in "${todo[@]}"; do
-        name=$(basename "$folder")
+        name=${folder%/}; name=${name##*/}
         notify_update progress "$name ($((index + 1)) of $total). Please do not restart SEN or Haiku until this is done." "$(awk "BEGIN { printf \"%.2f\", $index / $total }")"
         index=$((index + 1))
         # (one that cannot be installed does not keep the others from it: it has no sum, so the next update tries it again)
-        install_ontology "$folder" || echo "$name could not be installed, it is tried again by the next update."
+        install_ontology "$folder" || { echo "$name could not be installed, it is tried again by the next update."; UPDATE_FAILED=1; }
     done
     if [ $total -gt 0 ]; then
         notify_update information "The ontologies are up to date."
@@ -462,7 +531,7 @@ function update_ontologies()
     local placeholder source gone=()
     for placeholder in "$SEN_CONFIG_ONTO"/*; do
         [ -f "$placeholder" ] || continue
-        name=$(basename "$placeholder")
+        name=${placeholder##*/}
         case "$present" in *" $name "*) continue;; esac
         source=$(get_attr $ATTR_SOURCE "$placeholder")
         case "$source" in
@@ -493,7 +562,7 @@ function list_ontologies()
     local placeholder name
     for placeholder in "$SEN_CONFIG_ONTO"/*; do
         [ -f "$placeholder" ] || continue
-        name=$(basename "$placeholder")
+        name=${placeholder##*/}
         echo "$name  ($("$SEN_MIME" provides "$placeholder" 2>/dev/null | wc -l | tr -d ' ') types, from $(get_attr $ATTR_SOURCE "$placeholder"))"
     done
 }
@@ -510,7 +579,9 @@ if [ $# -eq 0 ]; then
 fi
 
 case "$1" in
-    --update) update_ontologies; exit 0;;
+    --update)
+        [ "${2:-}" = --force ] && FORCE_UPDATE=1
+        update_ontologies; exit 0;;
     --list) list_ontologies; exit 0;;
     --remove)
         shift

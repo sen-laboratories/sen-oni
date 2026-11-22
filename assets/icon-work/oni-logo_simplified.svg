@@ -1,0 +1,163 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-label="Oni Logo Icon">
+  <defs>
+    <!-- Primary Crimson Gradients -->
+    <linearGradient id="ringGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#e33245" />
+      <stop offset="50%" stop-color="#a81324" />
+      <stop offset="100%" stop-color="#690814" />
+    </linearGradient>
+
+    <radialGradient id="faceGrad" cx="50%" cy="38%" r="60%">
+      <stop offset="0%" stop-color="#e82e42" />
+      <stop offset="65%" stop-color="#a61223" />
+      <stop offset="100%" stop-color="#5e0712" />
+    </radialGradient>
+
+    <linearGradient id="hornGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#f05a68" />
+      <stop offset="45%" stop-color="#b81629" />
+      <stop offset="100%" stop-color="#590611" />
+    </linearGradient>
+
+    <linearGradient id="tendrilBright" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#cf1b30" />
+      <stop offset="70%" stop-color="#8a0c1b" />
+      <stop offset="100%" stop-color="#4d050e" />
+    </linearGradient>
+
+    <linearGradient id="tendrilDark" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#9e1122" />
+      <stop offset="70%" stop-color="#610713" />
+      <stop offset="100%" stop-color="#36030a" />
+    </linearGradient>
+
+    <!-- Glowing Eye Gradient -->
+    <radialGradient id="eyeGlow" cx="50%" cy="50%" r="55%">
+      <stop offset="0%" stop-color="#fff8b0" />
+      <stop offset="45%" stop-color="#ffb833" />
+      <stop offset="85%" stop-color="#e04619" />
+      <stop offset="100%" stop-color="#7a0d0e" />
+    </radialGradient>
+
+    <!-- Fang Gradient -->
+    <linearGradient id="fangGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#fff5eb" />
+      <stop offset="100%" stop-color="#d9b2a7" />
+    </linearGradient>
+  </defs>
+
+  <!-- 1. Trefoil Halo Rings -->
+  <g id="halo-rings" fill="none">
+    <!-- Top Ring Pair -->
+    <circle cx="256" cy="142" r="92" stroke="#240307" stroke-width="14" />
+    <circle cx="256" cy="142" r="92" stroke="url(#ringGrad)" stroke-width="8" />
+    <circle cx="256" cy="142" r="46" stroke="#240307" stroke-width="34" />
+    <circle cx="256" cy="142" r="46" stroke="url(#ringGrad)" stroke-width="26" />
+
+    <!-- Left Ring Pair -->
+    <circle cx="136" cy="278" r="90" stroke="#240307" stroke-width="14" />
+    <circle cx="136" cy="278" r="90" stroke="url(#ringGrad)" stroke-width="8" />
+    <circle cx="136" cy="278" r="45" stroke="#240307" stroke-width="34" />
+    <circle cx="136" cy="278" r="45" stroke="url(#ringGrad)" stroke-width="26" />
+
+    <!-- Right Ring Pair -->
+    <circle cx="376" cy="278" r="90" stroke="#240307" stroke-width="14" />
+    <circle cx="376" cy="278" r="90" stroke="url(#ringGrad)" stroke-width="8" />
+    <circle cx="376" cy="278" r="45" stroke="#240307" stroke-width="34" />
+    <circle cx="376" cy="278" r="45" stroke="url(#ringGrad)" stroke-width="26" />
+  </g>
+
+  <!-- 2. Flowing Flame-Tendril Beard -->
+  <g id="tendrils" stroke="#210206" stroke-width="4.5" stroke-linejoin="round" stroke-linecap="round">
+    <!-- Back Layer -->
+    <path fill="url(#tendrilDark)" d="M 226 372 C 216 420, 232 454, 240 492 C 248 462, 286 434, 294 374 Z" />
+    <path fill="url(#tendrilDark)" d="M 218 352 C 184 378, 178 414, 206 446 C 204 418, 224 398, 244 370 Z" />
+    <path fill="url(#tendrilDark)" d="M 294 352 C 328 378, 334 414, 306 446 C 308 418, 288 398, 268 370 Z" />
+
+    <!-- Outer Sweeping Side Tendrils -->
+    <path fill="url(#tendrilDark)" d="M 192 252 C 154 270, 128 262, 92 248 C 118 282, 152 292, 198 278 Z" />
+    <path fill="url(#tendrilDark)" d="M 320 252 C 358 270, 386 254, 422 238 C 396 274, 360 288, 314 278 Z" />
+
+    <!-- Mid Layer Tendrils -->
+    <path fill="url(#tendrilDark)" d="M 198 280 C 166 312, 140 318, 124 304 C 132 332, 166 338, 212 308 Z" />
+    <path fill="url(#tendrilDark)" d="M 314 280 C 346 312, 376 318, 396 326 C 374 342, 342 336, 300 308 Z" />
+
+    <path fill="url(#tendrilBright)" d="M 206 302 C 166 334, 122 346, 108 380 C 138 366, 174 372, 218 332 Z" />
+    <path fill="url(#tendrilBright)" d="M 306 302 C 346 334, 384 348, 396 382 C 368 364, 334 366, 294 332 Z" />
+
+    <!-- Lower Inner Flames -->
+    <path fill="url(#tendrilBright)" d="M 224 332 C 188 362, 162 384, 168 418 C 186 392, 216 394, 240 356 Z" />
+    <path fill="url(#tendrilBright)" d="M 288 332 C 324 362, 350 384, 344 418 C 326 392, 296 394, 272 356 Z" />
+    <path fill="url(#tendrilBright)" d="M 244 344 C 228 382, 236 410, 266 440 C 284 412, 286 380, 268 344 Z" />
+
+    <!-- Front Layer (Directly Beneath Jaw) -->
+    <path fill="url(#tendrilBright)" d="M 218 274 C 194 308, 190 332, 174 344 C 204 352, 232 330, 240 282 Z" />
+    <path fill="url(#tendrilBright)" d="M 294 274 C 318 308, 324 332, 340 344 C 310 352, 282 330, 272 282 Z" />
+    <path fill="url(#tendrilBright)" d="M 240 278 C 228 320, 242 356, 286 352 C 272 336, 276 310, 272 278 Z" />
+  </g>
+
+  <!-- 3. Oni Head & Horns -->
+  <g id="oni-head" stroke="#210206" stroke-width="5" stroke-linejoin="round" stroke-linecap="round">
+    <!-- Left Horn -->
+    <path fill="url(#hornGrad)" d="M 192 174 C 162 162, 150 128, 168 82 C 170 112, 184 130, 212 138 Z" />
+    <!-- Right Horn -->
+    <path fill="url(#hornGrad)" d="M 320 174 C 350 162, 362 128, 344 82 C 342 112, 328 130, 300 138 Z" />
+
+    <!-- Head Silhouette -->
+    <path fill="url(#faceGrad)" d="M 206 136 Q 256 122, 306 136 C 324 148, 334 176, 330 202 C 338 218, 334 240, 316 258 C 296 276, 276 284, 256 284 C 236 284, 216 276, 196 258 C 178 240, 174 218, 182 202 C 178 176, 188 148, 206 136 Z" />
+  </g>
+
+  <!-- 4. Facial Features -->
+  <g id="face-features">
+    <!-- Forehead Creases -->
+    <path fill="none" stroke="#520510" stroke-width="3.5" stroke-linecap="round" d="M 226 148 Q 230 158, 240 156 M 286 148 Q 282 158, 272 156" />
+
+    <!-- Eye Sockets -->
+    <path fill="#290308" d="M 196 184 Q 218 172, 244 196 Q 222 214, 198 200 Q 190 192, 196 184 Z" />
+    <path fill="#290308" d="M 316 184 Q 294 172, 268 196 Q 290 214, 314 200 Q 322 192, 316 184 Z" />
+
+    <!-- Glowing Eyes -->
+    <path fill="url(#eyeGlow)" d="M 202 186 Q 219 178, 239 196 Q 222 208, 204 198 Q 198 192, 202 186 Z" />
+    <path fill="url(#eyeGlow)" d="M 310 186 Q 293 178, 273 196 Q 290 208, 308 198 Q 314 192, 310 186 Z" />
+
+    <!-- Pupils & Catchlights -->
+    <circle cx="222" cy="193" r="4.5" fill="#70100a" />
+    <circle cx="220.5" cy="191.5" r="1.8" fill="#fff9cc" />
+    <circle cx="290" cy="193" r="4.5" fill="#70100a" />
+    <circle cx="288.5" cy="191.5" r="1.8" fill="#fff9cc" />
+
+    <!-- Furrowed Brow Ridge -->
+    <path fill="none" stroke="#240307" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" d="M 192 178 Q 218 168, 248 194 M 320 178 Q 294 168, 264 194" />
+    <path fill="none" stroke="#f05a68" stroke-width="2" stroke-linecap="round" opacity="0.65" d="M 198 173 Q 220 165, 245 186 M 314 173 Q 292 165, 267 186" />
+
+    <!-- Nose -->
+    <path fill="#7a0918" stroke="#240307" stroke-width="3.5" stroke-linejoin="round" d="M 239 212 Q 256 202, 273 212 Q 270 224, 256 224 Q 242 224, 239 212 Z" />
+    <ellipse cx="247" cy="216" rx="4.5" ry="2.6" transform="rotate(14 247 216)" fill="#210206" />
+    <ellipse cx="265" cy="216" rx="4.5" ry="2.6" transform="rotate(-14 265 216)" fill="#210206" />
+
+    <!-- Snarling Mouth -->
+    <path fill="#1c0206" stroke="#240307" stroke-width="4.5" stroke-linejoin="round" d="M 192 210 Q 226 232, 256 232 Q 286 232, 320 210 C 314 246, 290 270, 256 270 C 222 270, 198 246, 192 210 Z" />
+
+    <!-- Tongue -->
+    <path fill="#b8182b" stroke="#240307" stroke-width="3" d="M 232 260 Q 256 244, 280 260 Q 256 272, 232 260 Z" />
+
+    <!-- Upper Fangs -->
+    <g fill="url(#fangGrad)" stroke="#240307" stroke-width="2.5" stroke-linejoin="round">
+      <!-- Outer Corner Teeth -->
+      <path d="M 196 213 L 204 218 L 201 230 Z" />
+      <path d="M 316 213 L 308 218 L 311 230 Z" />
+      <!-- Main Canines -->
+      <path d="M 208 220 L 220 226 L 222 256 Z" />
+      <path d="M 304 220 L 292 226 L 290 256 Z" />
+      <!-- Inner Fangs -->
+      <path d="M 228 229 L 239 231 L 235 245 Z" />
+      <path d="M 284 229 L 273 231 L 277 245 Z" />
+      <!-- Lower Fangs -->
+      <path d="M 226 261 L 236 264 L 232 248 Z" />
+      <path d="M 286 261 L 276 264 L 280 248 Z" />
+    </g>
+
+    <!-- Subtle Lower Lip Highlight -->
+    <path fill="none" stroke="#e84a5b" stroke-width="2.5" stroke-linecap="round" opacity="0.6" d="M 218 272 Q 256 282, 294 272" />
+  </g>
+</svg>

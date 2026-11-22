@@ -1,0 +1,443 @@
+// Generated from schema/sen-temporal.yaml by oni_gen.py: do not edit.
+// SPDX-License-Identifier: MIT
+// SPDX-FileCopyrightText: 2024-2026 SEN Labs e.U.
+
+resource(0, "META:TYPE") "entity/x-vnd.sen-labs.entity.event";
+resource(1, "META:L:DESC") #'MLDC' "an event: anything that occurs in time (a meeting, a trip, a task, a shooting). Its time is a start and an end, or a start and a duration; each can be exact or fuzzy. Any file can have these properties, the event is the entity that is about nothing else";
+resource(2, "META:S:DESC") #'MSDC' "Event";
+resource(3, "SEN:PLURAL") "Events";
+resource(4, "META:ATTR_INFO") message(233) {
+	"attr:name" = "dc:title",
+	"attr:name" = "SEN:eventType",
+	"attr:name" = "dc:description",
+	"attr:name" = "dc:identifier",
+	"attr:name" = "schema:location",
+	"attr:name" = "schema:organizer",
+	"attr:name" = "schema:eventStatus",
+	"attr:name" = "schema:eventAttendanceMode",
+	"attr:name" = "schema:url",
+	"attr:name" = "SEN:meetingUrl",
+	"attr:name" = "SEN:meetingType",
+	"attr:name" = "SEN:recurrence",
+	"attr:name" = "schema:repeatFrequency",
+	"attr:name" = "schema:attendee",
+	"attr:name" = "schema:startDate",
+	"attr:name" = "SEN:startDateEdtf",
+	"attr:name" = "schema:endDate",
+	"attr:name" = "SEN:endDateEdtf",
+	"attr:name" = "schema:duration",
+	"attr:public_name" = "Title",
+	"attr:public_name" = "Event Type",
+	"attr:public_name" = "Description",
+	"attr:public_name" = "Identifier",
+	"attr:public_name" = "Location",
+	"attr:public_name" = "Organizer",
+	"attr:public_name" = "Event Status",
+	"attr:public_name" = "Attendance",
+	"attr:public_name" = "URL",
+	"attr:public_name" = "Meeting URL",
+	"attr:public_name" = "Meeting Type",
+	"attr:public_name" = "Recurrence",
+	"attr:public_name" = "Repeats",
+	"attr:public_name" = "Attendees",
+	"attr:public_name" = "Start",
+	"attr:public_name" = "Start (EDTF)",
+	"attr:public_name" = "End",
+	"attr:public_name" = "End (EDTF)",
+	"attr:public_name" = "Duration",
+	"attr:type" = 'CSTR',
+	"attr:type" = 'CSTR',
+	"attr:type" = 'CSTR',
+	"attr:type" = 'CSTR',
+	"attr:type" = 'CSTR',
+	"attr:type" = 'CSTR',
+	"attr:type" = 'CSTR',
+	"attr:type" = 'CSTR',
+	"attr:type" = 'CSTR',
+	"attr:type" = 'CSTR',
+	"attr:type" = 'CSTR',
+	"attr:type" = 'CSTR',
+	"attr:type" = 'CSTR',
+	"attr:type" = 'CSTR',
+	"attr:type" = 'TIME',
+	"attr:type" = 'CSTR',
+	"attr:type" = 'TIME',
+	"attr:type" = 'CSTR',
+	"attr:type" = 'CSTR',
+	"attr:viewable" = true,
+	"attr:viewable" = true,
+	"attr:viewable" = true,
+	"attr:viewable" = false,
+	"attr:viewable" = true,
+	"attr:viewable" = true,
+	"attr:viewable" = true,
+	"attr:viewable" = true,
+	"attr:viewable" = false,
+	"attr:viewable" = false,
+	"attr:viewable" = true,
+	"attr:viewable" = false,
+	"attr:viewable" = true,
+	"attr:viewable" = true,
+	"attr:viewable" = true,
+	"attr:viewable" = false,
+	"attr:viewable" = true,
+	"attr:viewable" = false,
+	"attr:viewable" = true,
+	"attr:editable" = true,
+	"attr:editable" = true,
+	"attr:editable" = true,
+	"attr:editable" = true,
+	"attr:editable" = true,
+	"attr:editable" = true,
+	"attr:editable" = true,
+	"attr:editable" = true,
+	"attr:editable" = true,
+	"attr:editable" = true,
+	"attr:editable" = true,
+	"attr:editable" = true,
+	"attr:editable" = true,
+	"attr:editable" = false,
+	"attr:editable" = true,
+	"attr:editable" = true,
+	"attr:editable" = true,
+	"attr:editable" = true,
+	"attr:editable" = true,
+	"SEN:searchable" = false,
+	"SEN:searchable" = false,
+	"SEN:searchable" = false,
+	"SEN:searchable" = true,
+	"SEN:searchable" = false,
+	"SEN:searchable" = false,
+	"SEN:searchable" = true,
+	"SEN:searchable" = false,
+	"SEN:searchable" = false,
+	"SEN:searchable" = false,
+	"SEN:searchable" = true,
+	"SEN:searchable" = false,
+	"SEN:searchable" = false,
+	"SEN:searchable" = false,
+	"SEN:searchable" = true,
+	"SEN:searchable" = false,
+	"SEN:searchable" = true,
+	"SEN:searchable" = false,
+	"SEN:searchable" = false,
+	"SEN:is_list" = false,
+	"SEN:is_list" = false,
+	"SEN:is_list" = false,
+	"SEN:is_list" = false,
+	"SEN:is_list" = false,
+	"SEN:is_list" = false,
+	"SEN:is_list" = false,
+	"SEN:is_list" = false,
+	"SEN:is_list" = false,
+	"SEN:is_list" = false,
+	"SEN:is_list" = false,
+	"SEN:is_list" = false,
+	"SEN:is_list" = false,
+	"SEN:is_list" = true,
+	"SEN:is_list" = false,
+	"SEN:is_list" = false,
+	"SEN:is_list" = false,
+	"SEN:is_list" = false,
+	"SEN:is_list" = false,
+	"SEN:list_separator" = "",
+	"SEN:list_separator" = "",
+	"SEN:list_separator" = "",
+	"SEN:list_separator" = "",
+	"SEN:list_separator" = "",
+	"SEN:list_separator" = "",
+	"SEN:list_separator" = "",
+	"SEN:list_separator" = "",
+	"SEN:list_separator" = "",
+	"SEN:list_separator" = "",
+	"SEN:list_separator" = "",
+	"SEN:list_separator" = "",
+	"SEN:list_separator" = "",
+	"SEN:list_separator" = ";",
+	"SEN:list_separator" = "",
+	"SEN:list_separator" = "",
+	"SEN:list_separator" = "",
+	"SEN:list_separator" = "",
+	"SEN:list_separator" = "",
+	"attr:width" = 150,
+	"attr:width" = 110,
+	"attr:width" = 200,
+	"attr:width" = 110,
+	"attr:width" = 160,
+	"attr:width" = 140,
+	"attr:width" = 108,
+	"attr:width" = 94,
+	"attr:width" = 160,
+	"attr:width" = 160,
+	"attr:width" = 108,
+	"attr:width" = 140,
+	"attr:width" = 160,
+	"attr:width" = 220,
+	"attr:width" = 120,
+	"attr:width" = 110,
+	"attr:width" = 120,
+	"attr:width" = 110,
+	"attr:width" = 80,
+	"attr:alignment" = 0,
+	"attr:alignment" = 0,
+	"attr:alignment" = 0,
+	"attr:alignment" = 0,
+	"attr:alignment" = 0,
+	"attr:alignment" = 0,
+	"attr:alignment" = 0,
+	"attr:alignment" = 0,
+	"attr:alignment" = 0,
+	"attr:alignment" = 0,
+	"attr:alignment" = 0,
+	"attr:alignment" = 0,
+	"attr:alignment" = 0,
+	"attr:alignment" = 0,
+	"attr:alignment" = 0,
+	"attr:alignment" = 0,
+	"attr:alignment" = 0,
+	"attr:alignment" = 0,
+	"attr:alignment" = 0,
+	"attr:display_as" = "",
+	"attr:display_as" = "",
+	"attr:display_as" = "",
+	"attr:display_as" = "",
+	"attr:display_as" = "",
+	"attr:display_as" = "",
+	"attr:display_as" = "",
+	"attr:display_as" = "",
+	"attr:display_as" = "",
+	"attr:display_as" = "",
+	"attr:display_as" = "",
+	"attr:display_as" = "",
+	"attr:display_as" = "",
+	"attr:display_as" = "",
+	"attr:display_as" = "",
+	"attr:display_as" = "",
+	"attr:display_as" = "",
+	"attr:display_as" = "",
+	"attr:display_as" = "",
+	"type" = "entity/x-vnd.sen-labs.entity.event"
+};
+resource(5, "SEN:ATTR:VALUES") message(233) {
+	"SEN:eventType" = message('SAvl') {
+		"text" = "Anniversary",
+		"text" = "Ceremony",
+		"text" = "Party",
+		"text" = "Birthday",
+		"text" = "Wedding anniversary",
+		"text" = "Jubilee",
+		"text" = "Death anniversary",
+		"text" = "Wedding",
+		"text" = "Funeral",
+		"text" = "Graduation",
+		"text" = "Baptism",
+		"text" = "Dinner party",
+		"text" = "Housewarming",
+		"text" = "Farewell party",
+		"text" = "Baby shower",
+		"text" = "Meeting",
+		"text" = "Conference",
+		"text" = "Telephone call",
+		"text" = "Video conference",
+		"text" = "Holiday",
+		"text" = "Public holiday",
+		"text" = "National day",
+		"text" = "Religious holiday",
+		"text" = "Festival",
+		"text" = "Observance",
+		"meaning" = "Q238907",
+		"meaning" = "Q2659904",
+		"meaning" = "Q200538",
+		"meaning" = "Q47223",
+		"meaning" = "Q2005510",
+		"meaning" = "Q1908864",
+		"meaning" = "Q1208945",
+		"meaning" = "Q119639",
+		"meaning" = "Q201559",
+		"meaning" = "Q1928923",
+		"meaning" = "Q35856",
+		"meaning" = "Q1753443",
+		"meaning" = "Q1206109",
+		"meaning" = "Q1390022",
+		"meaning" = "Q797880",
+		"meaning" = "Q2761147",
+		"meaning" = "Q114834437",
+		"meaning" = "Q2296401",
+		"meaning" = "Q238354",
+		"meaning" = "Q1445650",
+		"meaning" = "Q1197685",
+		"meaning" = "Q57598",
+		"meaning" = "Q375011",
+		"meaning" = "Q132241",
+		"meaning" = "Q16675435",
+		"allow_custom" = true,
+		"allow_multiple" = false
+	},
+	"schema:eventStatus" = message('SAvl') {
+		"text" = "Confirmed",
+		"text" = "Tentative",
+		"text" = "Cancelled",
+		"meaning" = "",
+		"meaning" = "",
+		"meaning" = "",
+		"allow_custom" = false,
+		"allow_multiple" = false
+	},
+	"schema:eventAttendanceMode" = message('SAvl') {
+		"text" = "Offline",
+		"text" = "Online",
+		"text" = "Mixed",
+		"meaning" = "",
+		"meaning" = "",
+		"meaning" = "",
+		"allow_custom" = false,
+		"allow_multiple" = false
+	},
+	"SEN:meetingType" = message('SAvl') {
+		"text" = "Zoom",
+		"text" = "Google Meet",
+		"text" = "Microsoft Teams",
+		"text" = "Webex",
+		"text" = "Jitsi",
+		"text" = "GoToMeeting",
+		"text" = "Whereby",
+		"text" = "Skype",
+		"text" = "Other",
+		"meaning" = "",
+		"meaning" = "",
+		"meaning" = "",
+		"meaning" = "",
+		"meaning" = "",
+		"meaning" = "",
+		"meaning" = "",
+		"meaning" = "",
+		"meaning" = "",
+		"allow_custom" = true,
+		"allow_multiple" = false
+	},
+	"schema:repeatFrequency" = message('SAvl') {
+		"text" = "every day",
+		"text" = "every weekday",
+		"text" = "every week",
+		"text" = "every month",
+		"text" = "every year",
+		"meaning" = "",
+		"meaning" = "",
+		"meaning" = "",
+		"meaning" = "",
+		"meaning" = "",
+		"allow_custom" = true,
+		"allow_multiple" = false
+	}
+};
+resource(6, "META:ICON") #'VICN' array {
+	$"6E6369660A05000400330200060236DBA8B656A13656A136DBA848B78D48D91B"
+	$"00F8FAEDFFFFFFD40200060239446A3A8141BA814139446A46B8BF4B1BA400FF"
+	$"FF66FFEBF2F704004C020006023934663A74FABA74FA39346646AB0F4B0FAE00"
+	$"FFFFA4FFFFFFDC03F7900302000604B997F52E52D9AE52D9B997F54AD2A84A74"
+	$"D000FFFFE33DFCFAD1BAF4EFA2FCF0E88602001602B6740FB8E9D138E9D1B674"
+	$"0F49EEAE4B72CB00FFFF00039200001E060BF6BE26B316B63DC614B49BC722B4"
+	$"9BC722B94CCA88BC7BD052BC3ECDF8BC7BD052BCC7D1EBBDD4D0A3BDD4D0A3BE"
+	$"33D00CBEE1CE57BE8DCF45BEFACE61C0A4CF81C5B5CC28BC20B825B2E30A05C4"
+	$"FCC7EACC38CB3FC5C3CF8DC0A5CF81C4DFCB8F0A04C0A7BF5FB3D1B6A1B824B3"
+	$"C5C4F9BC830A04C0A7CE9FB3D1C5B2B3D1B6A4C0A7BF5F0605BA02C0A4C4D5BF"
+	$"CACE01BE80CD76BF5DCDA5BD6FCD3CBC30CD53C0A7BF5F0604ABBD35D03FBFDB"
+	$"CC07BCBCCB7DB3D1C5B2B3D1B6A4C0A7BF5F0A04B3D1BA43C05BC2DDC063C294"
+	$"B3CFB9F40A04C0A7CE9FC4F9CBC3C4F9BC83C0A7BF5F0A03C11ECE49C13AC5C2"
+	$"C163CE110A03C2F6CD09C2CDC7FCC32ECD090A07B7EFC6C7B672C5C6B672BFA9"
+	$"B573BEFEB573BEA4B6ECBE8FB7EFBF3E0217BD9AC88DBDACC815BD72C8F8BCB6"
+	$"C9B3BD33C975BB00C9F2B94BC742BA06C87AB94BC703B94BC609B94B51BA06C6"
+	$"C5BBFBC7BFBB00C83CBD72C703BA4AC4F4BB00C58CBA4AC4F4BA4AC420BA4AC4"
+	$"20BA71C43ABACDC478BA9CC458BAFEC499BB58C4D6BB2CC4B8BBBCC50FBC61C4"
+	$"7ABC39C58CBC61C429BC0FC386BC46C3D8BBD8C335BB27C2A4BB8BC2E9BAE7C2"
+	$"79BA63C239BAA6C255BA21C21DB98EC205B9DAC20CB98EC205B98EC11CB98EC1"
+	$"1CB98EC11CBA6EC10ABA6EC10ABA88C111BAE4C13FBAAFC123BB19C15CBB57C1"
+	$"82BB3FC172BC06C1F9BD0DC335BC98C289BD47C38ABD90C42FBD72C3DEBDADC4"
+	$"81BDB9C51DBDBBC4D0BDEFC609BC78C609BD33C648BCF5C648BD6FC72CBD33C6"
+	$"C5BD9FC79F0A0AB735B9BBB845BA6EB842BAAEB767BA1EB760BABEB81FBB3DB8"
+	$"1CBB7BB75CBAFDB750BBEDB71BBBC9060EFAFFFF0AB862BB13B88FBB31B88CBB"
+	$"74B88CBB74B890BB6AB8AABB57B89ABB60B8BABB4EB8DFBB5DB8CBBB51B8E035"
+	$"B8E4BB61B8E1BB5FB8E6BB62B8EFBB6AB8EABB65B8EFBB6AB8EBBBAEB8EBBBAE"
+	$"B8E8BBABB8E3BBA7B8E6BBA9B8E1BBA5B8DBBBA1B8DEBBA3B8C3BB91B8A1BB9B"
+	$"B8AFBB8FB893BBA8B889BBD7B88BBBBBB889BBD7B87EBCB3B84FBC940A04B925"
+	$"BB97B955BBB6B942BD34B912BD150A04B92CBB05B95CBB25B958BB6EB929BB4E"
+	$"060DAFFAFF03BA3ABC5732BC41BA42BC64BA55BC8FBA4BBC77BA55BC8FBA5FBB"
+	$"CFBA8DBBEEBA72BDFDBA47BDE1BA4ABDACBA4ABDACBA3EBDBCBA20BDC5BA30BD"
+	$"C5BA10BDC5B9EBBDB2B9FFBDBFB9CCBD9EB99CBD46B9B1BD79B987BD13B980BC"
+	$"A0B97DBCDBB983BC68B9A7BC23B990BC3EB9BEBC08BA05BC21B9DDBC07BA1ABC"
+	$"2F0208B9C1BD32B9B5BD0DB9CCBD56B9FCBD84B9E0BD71BA12BD92BA34BD81BA"
+	$"25BD91BA43BD70BA4FBD1FBA4CBD50BA51BCEFBA3EBCA5BA4CBCC6BA31BC84BA"
+	$"0ABC5EBA20BC6CB9F2BC4EB9CEBC5DB9DFBC4EB9BEBC6DB9B3BCBDB9B5BC8DB9"
+	$"B1BCE7021C35BDA835BDA8BB69BDADBB75BDA4BB71BDACBB78BDA0BB7ABD8EBB"
+	$"79BD98BB7BBD78BB6BBD53BB76BD64BB5FBD41BB39BD23BB4FBD31BB20BD12BB"
+	$"02BD1BBB0EBD10BAFCBD21BAF5BD3F34BD2DBAF5BD3FBAC8BD22BAC8BD22BACC"
+	$"BCF3BAEFBCD6BAD9BCDABB06BCD1BB3DBCECBB20BCD935BD02BB8DBD3CBB79BD"
+	$"1DBBA1BD5BBBA8BDA1BBAABD7DBBA8BDA1BB9DBE7EBB9DBE7EBB9DBE85BBA0BE"
+	$"90BB9EBE8BBBA2BE96BBACBE9FBBA6BE9BBBAFBEA0BBB4BEA3BBB1BEA2BBB6BE"
+	$"A5BBBCBEA7BBB9BEA6BBBCBEA7BBBABED7BBBABED7BBB2BED5BBA9BED1BBADBE"
+	$"D3BBA5BECFBB99BEC7BBA0BECCBB88BEBCBB76BE98BB7DBEADBB72BE8DBB6FBE"
+	$"6FBB70BE7FBB65BE7ABB43BE81BB56BE80BB30BE82BB06BE6CBB1CBE7BBAEBBE"
+	$"5BBAC6BE21BAD6BE42BAB7BE00BAB1BDBFBAB0BDE0BAB3BD9BBACEBD7CBABDBD"
+	$"85BAE0BD73BB11BD82BAF6BD75BB11BD82020ABAF0BE14BAE6BE02BAF9BE25BB"
+	$"13BE3CBB05BE33BB24BE47BB45BE4DBB35BE4DBB61BE4DBB71BE11BB6FBE39BB"
+	$"71BE11BB74BDDDBB74BDDDBB6EBDDEBB5DBDDBBB66BDDEBB53BDD9BB41BDD0BB"
+	$"4ABDD5BB41BDD0BB243BBB243BBB12BDB9BAFCBDB6BB05BDB6BAECBDB8BAE3BD"
+	$"DEBAE4BDC5BAE2BDF00612FEFFFFBF0ABCA6BDE0BCDBBE03BCDBBE03BCD3BE17"
+	$"BCA53DBCC1BE4538BEC5BC71BF13BC7FBEF1BC51BF63BC2DBFA0BC3ABF92BC21"
+	$"BFAEBBF1BF9ABC0DBFACBBEABF95BBE1BF8EBBE5BF91BBDEBF8BBBD4BF81BBD9"
+	$"BF87BBD4BF81BBD7BF46BBD7BF46BBDFBF4FBBE9BF58BBE5BF55BBEDBF5BBBF3"
+	$"BF5FBBF0BF5EBBFCBF65BC07BF66BC02BF68BC0BBF65BC12BF5FBC0FBF63BC13"
+	$"BF5EBC1DBF48BC17BF56BC24BF3ABC2BBF28BC28BF2FBC2BBF28BBD5BD56BC0C"
+	$"BD7ABC49BEE60A0AB735B9BBB845BA6EB842BAAEB767BA1EB760BABEB81FBB3D"
+	$"B81CBB7BB75CBAFDB750BBEDB71BBBC9060EFAFFFF0AB862BB13B88FBB31B88C"
+	$"BB74B88CBB74B890BB6AB8AABB57B89ABB60B8BABB4EB8DFBB5DB8CBBB51B8E0"
+	$"35B8E4BB61B8E1BB5FB8E6BB62B8EFBB6AB8EABB65B8EFBB6AB8EBBBAEB8EBBB"
+	$"AEB8E8BBABB8E3BBA7B8E6BBA9B8E1BBA5B8DBBBA1B8DEBBA3B8C3BB91B8A1BB"
+	$"9BB8AFBB8FB893BBA8B889BBD7B88BBBBBB889BBD7B87EBCB3B84FBC940A04B9"
+	$"25BB97B955BBB6B942BD34B912BD150A04B92CBB05B95CBB25B958BB6EB929BB"
+	$"4E060DAFFAFF03BA3ABC5732BC41BA42BC64BA55BC8FBA4BBC77BA55BC8FBA5F"
+	$"BBCFBA8DBBEEBA72BDFDBA47BDE1BA4ABDACBA4ABDACBA3EBDBCBA20BDC5BA30"
+	$"BDC5BA10BDC5B9EBBDB2B9FFBDBFB9CCBD9EB99CBD46B9B1BD79B987BD13B980"
+	$"BCA0B97DBCDBB983BC68B9A7BC23B990BC3EB9BEBC08BA05BC21B9DDBC07BA1A"
+	$"BC2F0208B9C1BD32B9B5BD0DB9CCBD56B9FCBD84B9E0BD71BA12BD92BA34BD81"
+	$"BA25BD91BA43BD70BA4FBD1FBA4CBD50BA51BCEFBA3EBCA5BA4CBCC6BA31BC84"
+	$"BA0ABC5EBA20BC6CB9F2BC4EB9CEBC5DB9DFBC4EB9BEBC6DB9B3BCBDB9B5BC8D"
+	$"B9B1BCE7021C35BDA835BDA8BB69BDADBB75BDA4BB71BDACBB78BDA0BB7ABD8E"
+	$"BB79BD98BB7BBD78BB6BBD53BB76BD64BB5FBD41BB39BD23BB4FBD31BB20BD12"
+	$"BB02BD1BBB0EBD10BAFCBD21BAF5BD3F34BD2DBAF5BD3FBAC8BD22BAC8BD22BA"
+	$"CCBCF3BAEFBCD6BAD9BCDABB06BCD1BB3DBCECBB20BCD935BD02BB8DBD3CBB79"
+	$"BD1DBBA1BD5BBBA8BDA1BBAABD7DBBA8BDA1BB9DBE7EBB9DBE7EBB9DBE85BBA0"
+	$"BE90BB9EBE8BBBA2BE96BBACBE9FBBA6BE9BBBAFBEA0BBB4BEA3BBB1BEA2BBB6"
+	$"BEA5BBBCBEA7BBB9BEA6BBBCBEA7BBBABED7BBBABED7BBB2BED5BBA9BED1BBAD"
+	$"BED3BBA5BECFBB99BEC7BBA0BECCBB88BEBCBB76BE98BB7DBEADBB72BE8DBB6F"
+	$"BE6FBB70BE7FBB65BE7ABB43BE81BB56BE80BB30BE82BB06BE6CBB1CBE7BBAEB"
+	$"BE5BBAC6BE21BAD6BE42BAB7BE00BAB1BDBFBAB0BDE0BAB3BD9BBACEBD7CBABD"
+	$"BD85BAE0BD73BB11BD82BAF6BD75BB11BD82020ABAF0BE14BAE6BE02BAF9BE25"
+	$"BB13BE3CBB05BE33BB24BE47BB45BE4DBB35BE4DBB61BE4DBB71BE11BB6FBE39"
+	$"BB71BE11BB74BDDDBB74BDDDBB6EBDDEBB5DBDDBBB66BDDEBB53BDD9BB41BDD0"
+	$"BB4ABDD5BB41BDD0BB243BBB243BBB12BDB9BAFCBDB6BB05BDB6BAECBDB8BAE3"
+	$"BDDEBAE4BDC5BAE2BDF00612FEFFFFBF0ABCA6BDE0BCDBBE03BCDBBE03BCD3BE"
+	$"17BCA53DBCC1BE4538BEC5BC71BF13BC7FBEF1BC51BF63BC2DBFA0BC3ABF92BC"
+	$"21BFAEBBF1BF9ABC0DBFACBBEABF95BBE1BF8EBBE5BF91BBDEBF8BBBD4BF81BB"
+	$"D9BF87BBD4BF81BBD7BF46BBD7BF46BBDFBF4FBBE9BF58BBE5BF55BBEDBF5BBB"
+	$"F3BF5FBBF0BF5EBBFCBF65BC07BF66BC02BF68BC0BBF65BC12BF5FBC0FBF63BC"
+	$"13BF5EBC1DBF48BC17BF56BC24BF3ABC2BBF28BC28BF2FBC2BBF28BBD5BD56BC"
+	$"0CBD7ABC49BEE6180A000100023F6DE40000000000003F55104601FE3FD0D30A"
+	$"010101023F6DE40000000000003F55104601FE3FD0D30A020102023F6DE40000"
+	$"000000003F55104601FE3FD0D30A030103023F6DE40000000000003F55104601"
+	$"FE3FD0D30A040104023F6DE40000000000003F55104601FE3FD0D30A05010502"
+	$"3F6DE40000000000003F55104601FE3FD0D30A060106023F6DE4000000000000"
+	$"3F55104601FE3FD0D30A070107023F6DE40000000000003F55104601FE3FD0D3"
+	$"0A010108023F6DE40000000000003F55104601FE3FD0D30A010109023F6DE400"
+	$"00000000003F55104601FE3FD0D30A00010A023F6DE40000000000003F551046"
+	$"01FE3FD0D30A08010B023F6DE40000000000003F55104601FE3FD0D30A09010C"
+	$"023F6DE40000000000003F55104601FE3FD0D30A09010D023F6DE40000000000"
+	$"003F55104601FE3FD0D30A09020E0F023F6DE40000000000003F55104601FE3F"
+	$"D0D30A09021011023F6DE40000000000003F55104601FE3FD0D30A0902121302"
+	$"3F6DE40000000000003F55104601FE3FD0D30A090114023F6DE4000000000000"
+	$"3F55104601FE3FD0D30A090115023F6DE40000000000003F55104601FE3FD0D3"
+	$"0A090116023F6DE40000000000003F55104601FE3FD0D30A09021718023F6DE4"
+	$"0000000000003F55104601FE3FD0D30A0902191A023F6DE40000000000003F55"
+	$"104601FE3FD0D30A09021B1C023F6DE40000000000003F55104601FE3FD0D30A"
+	$"09011D023F6DE40000000000003F55104601FE3FD0D3"
+};
