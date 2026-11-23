@@ -47,6 +47,8 @@ inline constexpr char kInstitutionType[] = "SEN:institutionType";
 inline constexpr char kLocality[] = "schema:addressLocality";
 /** The country, as its two-letter code (ISO 3166-1). */
 inline constexpr char kCountry[] = "schema:addressCountry";
+/** The topics that the institution works on most (OpenAlex), the most frequent first, as a list. */
+inline constexpr char kSubject[] = "dc:subject";
 /** How many works OpenAlex has of the institution, when it was enriched. */
 inline constexpr char kWorksCount[] = "SEN:worksCount";
 /** How often the works of the institution are cited, when it was enriched. */

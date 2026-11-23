@@ -136,6 +136,11 @@ slots:
     title: Country
     slot_uri: schema:addressCountry
     annotations: {attribute: "schema:addressCountry", width: 60}
+  subject:
+    description: The topics that the institution works on most (OpenAlex), the most frequent first, as a list.
+    title: Topics
+    slot_uri: dc:subject
+    annotations: {attribute: "dc:subject", is_list: true, viewable: false, width: 200}
   works_count:
     description: How many works OpenAlex has of the institution, when it was enriched.
     title: Works
@@ -283,7 +288,7 @@ classes:
     title: Institution
     is_a: Organization
     class_uri: schema:ResearchOrganization
-    slots: [name, alternate_name, ror, institution_type, homepage, mbox, phone, locality, country, description, works_count, citation_count, same_as]
+    slots: [name, alternate_name, ror, institution_type, homepage, mbox, phone, locality, country, description, subject, works_count, citation_count, same_as]
     slot_usage: {plural: {ifabsent: "string(Institutions)"}}
     annotations: {mime: entity/x-vnd.sen-labs.entity.institution, icon: x-vnd.sen-labs.entity.institution}
 
