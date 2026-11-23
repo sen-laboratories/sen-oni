@@ -9,6 +9,7 @@ resource(3, "META:PREF_APP") #'MSIG' "application/x-vnd.sen-plugin.sen-labs.refe
 resource(4, "SEN:REL:CONFIG") message(233) {
 	"SEN:dynamic" = true,
 	"SEN:self" = true,
+	"SEN:inverseOnly" = true,
 	"SEN:relation" = message('SCrd') {
 		"SEN:REL:Label" = "contains"
 	},

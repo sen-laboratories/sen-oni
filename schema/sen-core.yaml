@@ -439,6 +439,8 @@ classes:
       # only meta info for SEN: the attributes come from the extracted types
       dynamic: true
       contained: true
+      # what a file contains is what "Open contained" shows (a self relation): the relation is offered from the side of the part only (an event: contained in its calendar)
+      inverse_only: true
       label: contains
       inverse_label: contained in
 

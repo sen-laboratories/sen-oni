@@ -256,7 +256,7 @@ def read_classes(sv, schema_dir):
             if icon and not os.path.exists(os.path.join(schema_dir, 'icons', icon + '.hex')):
                 raise SchemaError(f'class {cls_name}: icon file icons/{icon}.hex does not exist')
         mc.attributes = [each for slot in (cls.slots or []) if not is_type_property(sv.get_slot(slot)) for each in expand(read_attribute(sv, slot))]
-        flags = {key: annotation(cls, key) for key in ('bidir', 'dynamic', 'contained', 'remote', 'label', 'inverse_label', 'materialise_as',
+        flags = {key: annotation(cls, key) for key in ('bidir', 'dynamic', 'contained', 'remote', 'inverse_only', 'label', 'inverse_label', 'materialise_as',
                                                          'source_types', 'source_attributes', 'exclude_types', 'target_types', 'exclude_target_types', 'group')}
         if any(value is not None for value in flags.values()):
             if not (mime.startswith('relation/') or mime == 'relation'):
@@ -349,6 +349,8 @@ def render_rdef(mc, schema_file, schema_dir):
             entries.append('\t"SEN:self" = true')
         if c['remote']:
             entries.append('\t"SEN:remote" = true')
+        if c['inverse_only']:
+            entries.append('\t"SEN:inverseOnly" = true')
         if c['materialise_as']:
             entries.append(f'\t"SEN:materialiseAs" = {rdef_string(c["materialise_as"])}')
         if c['label']:

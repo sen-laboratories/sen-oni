@@ -215,6 +215,7 @@ classes:
       label: before
       inverse_label: after
       source_attributes: schema:startDate
+      exclude_types: entity/x-vnd.sen-labs.entity.calendar
   TemporalMeets:
     description: the thing ends at the very moment that the other one begins (Allen's meets), like two days in a row; seen from the other one it is met by it
     title: Meets
@@ -232,6 +233,7 @@ classes:
       label: meets
       inverse_label: met by
       source_attributes: schema:startDate
+      exclude_types: entity/x-vnd.sen-labs.entity.calendar
   TemporalOverlaps:
     description: the thing begins before the other one and ends inside it (Allen's overlaps), the usual collision of two appointments; seen from the other one it is overlapped by it
     title: Overlaps
@@ -249,6 +251,7 @@ classes:
       label: overlaps
       inverse_label: overlapped by
       source_attributes: schema:startDate
+      exclude_types: entity/x-vnd.sen-labs.entity.calendar
   TemporalDuring:
     description: the thing lies inside the other one, beginning after it and ending before it (Allen's during); seen from the other one it contains the thing
     title: During
@@ -266,6 +269,7 @@ classes:
       label: during
       inverse_label: contains
       source_attributes: schema:startDate
+      exclude_types: entity/x-vnd.sen-labs.entity.calendar
   TemporalEquals:
     description: the thing has the same beginning and the same end as the other one (Allen's equals)
     title: Equals
@@ -283,6 +287,7 @@ classes:
       label: equals
       inverse_label: equals
       source_attributes: schema:startDate
+      exclude_types: entity/x-vnd.sen-labs.entity.calendar
 
   CalendarEvents:
     description: >-

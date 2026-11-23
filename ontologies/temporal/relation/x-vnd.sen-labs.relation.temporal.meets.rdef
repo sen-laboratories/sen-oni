@@ -38,6 +38,7 @@ resource(5, "SEN:REL:CONFIG") message(233) {
 		"SEN:REL:Label" = "meets"
 	},
 	"SEN:sourceAttributes" = "schema:startDate",
+	"SEN:excludeSourceTypes" = "entity/x-vnd.sen-labs.entity.calendar",
 	"SEN:group" = "Temporal",
 	"SEN:inverse" = message('SCrd') {
 		"SEN:REL:Label" = "met by"
