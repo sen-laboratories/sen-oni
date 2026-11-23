@@ -37,6 +37,20 @@ inline constexpr char kWorksFor[] = "schema:worksFor";
 inline constexpr char kOrcid[] = "vivo:orcidId";
 /** Where else the person is known (ORCID, Wikidata, OpenAlex...), as a list of IRIs. */
 inline constexpr char kSameAs[] = "schema:sameAs";
+/** The ROR id of the institution (Research Organization Registry, ror.org), bare (04d836q62). It is indexed, so that the institution that a paper names is found on the computer; OpenAlex and the other identifiers (Wikidata, ISNI, GRID) are Same As. */
+inline constexpr char kRor[] = "dc:identifier";
+/** The other names of the institution (the acronym, names in other languages, older names), as a list. */
+inline constexpr char kAlternateName[] = "schema:alternateName";
+/** What kind of institution it is, as the Research Organization Registry and OpenAlex say (the registry can name several: a university that funds research is Education and Funder), as a list. */
+inline constexpr char kInstitutionType[] = "SEN:institutionType";
+/** The city, town or village that the institution is in. */
+inline constexpr char kLocality[] = "schema:addressLocality";
+/** The country, as its two-letter code (ISO 3166-1). */
+inline constexpr char kCountry[] = "schema:addressCountry";
+/** How many works OpenAlex has of the institution, when it was enriched. */
+inline constexpr char kWorksCount[] = "SEN:worksCount";
+/** How often the works of the institution are cited, when it was enriched. */
+inline constexpr char kCitationCount[] = "SEN:citationCount";
 /** The page of the photo of the person (the thumbnail is the photo itself). */
 inline constexpr char kImage[] = "schema:image";
 /** The license of the photo. */
@@ -70,15 +84,58 @@ inline constexpr char kBeNickname[] = "META:nickname";
 inline constexpr char kRelSince[] = "SEN:REL:since";
 /** What there is to say about the relationship. */
 inline constexpr char kRelNote[] = "SEN:REL:note";
+/** When the relationship ended; empty while it goes on. */
+inline constexpr char kRelUntil[] = "SEN:REL:until";
+/** How many works of the institution are about the topic (OpenAlex), which says how much it is a focus of the institution. */
+inline constexpr char kRelWorksCount[] = "SEN:REL:worksCount";
 }	// namespace attr
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wmultichar"
+
+/** An attribute that is queried and needs a BFS index on every volume (the type of the index is that of the attribute, a time is indexed as the integer that holds it: sen::IndexTypeOf() of SenAttributes.h). */
+struct Index {
+	const char* name;
+	uint32_t    type;
+};
+/** The indices of this ontology: created by the ontology installer and by the SEN server on every mounted volume. */
+inline constexpr Index kIndices[] = {
+	{attr::kRor, 'CSTR'},
+};
+inline constexpr unsigned kIndexCount = sizeof(kIndices) / sizeof(kIndices[0]);
+
+#pragma GCC diagnostic pop
+
+namespace values {
+/** A common value: the text that is stored, and the Wikidata item that it stands for (empty if none). */
+struct Value {
+	const char* text;
+	const char* wikidata;
+};
+/** The kinds of institutions of the Research Organization Registry (ROR), which OpenAlex uses, too. */
+inline constexpr Value kInstitutionType[] = {
+	{"Education", ""},
+	{"Facility", ""},
+	{"Government", ""},
+	{"Nonprofit", ""},
+	{"Company", ""},
+	{"Healthcare", ""},
+	{"Funder", ""},
+	{"Archive", ""},
+	{"Other", ""},
+};
+inline constexpr unsigned kInstitutionTypeCount = sizeof(kInstitutionType) / sizeof(kInstitutionType[0]);
+}	// namespace values
 
 namespace mime {
 /** Person: a person */
 inline constexpr char kPerson[] = "entity/x-vnd.sen-labs.entity.person";
 /** Person: a person of the People application of Haiku */
 inline constexpr char kPeoplePerson[] = "application/x-person";
-/** Organization: a company, institution, club or any other group of people with a name */
+/** Organization: a company, club or any other group of people with a name (a university or an institute is an Institution) */
 inline constexpr char kOrganization[] = "entity/x-vnd.sen-labs.entity.organization";
+/** Institution: a university, research institute, laboratory, library, museum or any other institution of research, education and culture: an organization, kept apart for the research use (the affiliation of an author, the publisher of a work, the home of a collection). It is what the Research Organization Registry (ROR) and OpenAlex call an institution. */
+inline constexpr char kInstitution[] = "entity/x-vnd.sen-labs.entity.institution";
 /** Personal Relation: what people are to one another, in no particular way ("knows"), the relation that all the other kinds of personal relations are special cases of */
 inline constexpr char kPersonalRelation[] = "relation/x-vnd.sen-labs.relation.person";
 /** Acquaintance: people who have met and know each other a little */
@@ -109,6 +166,12 @@ inline constexpr char kClient[] = "relation/x-vnd.sen-labs.relation.person.clien
 inline constexpr char kEmployment[] = "relation/x-vnd.sen-labs.relation.person.employment";
 /** Membership: a person is a member of an organization or group */
 inline constexpr char kMembership[] = "relation/x-vnd.sen-labs.relation.person.membership";
+/** Affiliation: a person is affiliated with an institution for a time (the institution that a researcher names on a paper, a position, a visit): since when and until when (empty while it goes on), and in which role (Postdoctoral Researcher, Professor, Visiting Scholar). Employment is the job, Membership the belonging; this is what a paper says */
+inline constexpr char kAffiliation[] = "relation/x-vnd.sen-labs.relation.person.affiliation";
+/** Part Of: an institution is a part of a larger one (a faculty, a department, an institute or a laboratory of a university) */
+inline constexpr char kPartOfInstitution[] = "relation/x-vnd.sen-labs.relation.institution.part-of";
+/** Research Focus: a topic that an institution works on; the number of works says how much (the topics of an institution in OpenAlex, the most frequent first) */
+inline constexpr char kResearchFocus[] = "relation/x-vnd.sen-labs.relation.institution.research-focus";
 /** Status: recent status messages and microfeed posts of a person */
 inline constexpr char kStatusRelation[] = "relation/x-vnd.sen-labs.relation.person.status";
 }	// namespace mime

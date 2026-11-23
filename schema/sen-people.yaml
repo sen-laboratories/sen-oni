@@ -106,6 +106,46 @@ slots:
     title: Same As
     slot_uri: schema:sameAs
     annotations: {attribute: "schema:sameAs", is_list: true, viewable: false, width: 150}
+  # ---- what an institution has (besides what every organization has)
+  ror:
+    description: >-
+      The ROR id of the institution (Research Organization Registry, ror.org), bare (04d836q62). It is indexed, so that the institution that a paper names is found on the computer; OpenAlex and
+      the other identifiers (Wikidata, ISNI, GRID) are Same As.
+    title: ROR
+    slot_uri: dc:identifier
+    annotations: {attribute: "dc:identifier", searchable: true, width: 90}
+  alternate_name:
+    description: The other names of the institution (the acronym, names in other languages, older names), as a list.
+    title: Other Names
+    slot_uri: schema:alternateName
+    annotations: {attribute: "schema:alternateName", is_list: true, viewable: false, width: 150}
+  institution_type:
+    description: >-
+      What kind of institution it is, as the Research Organization Registry and OpenAlex say (the registry can name several: a university that funds research is Education and Funder),
+      as a list.
+    title: Institution Type
+    range: InstitutionType
+    annotations: {attribute: "SEN:institutionType", is_list: true, list_separator: ",", allow_custom: false, allow_multiple: true, width: 120}
+  locality:
+    description: The city, town or village that the institution is in.
+    title: City
+    slot_uri: schema:addressLocality
+    annotations: {attribute: "schema:addressLocality", width: 110}
+  country:
+    description: The country, as its two-letter code (ISO 3166-1).
+    title: Country
+    slot_uri: schema:addressCountry
+    annotations: {attribute: "schema:addressCountry", width: 60}
+  works_count:
+    description: How many works OpenAlex has of the institution, when it was enriched.
+    title: Works
+    range: integer
+    annotations: {attribute: "SEN:worksCount", editable: false, width: 60, alignment: 1}
+  citation_count:
+    description: How often the works of the institution are cited, when it was enriched.
+    title: Citations
+    range: integer
+    annotations: {attribute: "SEN:citationCount", editable: false, width: 60, alignment: 1}
   image:
     description: The page of the photo of the person (the thumbnail is the photo itself).
     title: Photo
@@ -197,6 +237,16 @@ slots:
     description: What there is to say about the relationship.
     title: Note
     annotations: {attribute: "SEN:REL:note", width: 160}
+  rel_until:
+    description: When the relationship ended; empty while it goes on.
+    title: Until
+    range: date
+    annotations: {attribute: "SEN:REL:until", width: 90}
+  rel_works_count:
+    description: How many works of the institution are about the topic (OpenAlex), which says how much it is a focus of the institution.
+    title: Works
+    range: integer
+    annotations: {attribute: "SEN:REL:worksCount", editable: false, width: 60, alignment: 1}
 
 classes:
   Person:
@@ -218,13 +268,24 @@ classes:
     annotations: {mime: application/x-person, overlay: true}
 
   Organization:
-    description: a company, institution, club or any other group of people with a name
+    description: a company, club or any other group of people with a name (a university or an institute is an Institution)
     title: Organization
     is_a: Entity
     class_uri: foaf:Organization
     slots: [name, mbox, phone, homepage, description]
     slot_usage: {plural: {ifabsent: "string(Organizations)"}}
     annotations: {mime: entity/x-vnd.sen-labs.entity.organization, icon: x-vnd.sen-labs.entity.organization}
+
+  Institution:
+    description: >-
+      a university, research institute, laboratory, library, museum or any other institution of research, education and culture: an organization, kept apart for the research use (the
+      affiliation of an author, the publisher of a work, the home of a collection). It is what the Research Organization Registry (ROR) and OpenAlex call an institution.
+    title: Institution
+    is_a: Organization
+    class_uri: schema:ResearchOrganization
+    slots: [name, alternate_name, ror, institution_type, homepage, mbox, phone, locality, country, description, works_count, citation_count, same_as]
+    slot_usage: {plural: {ifabsent: "string(Institutions)"}}
+    annotations: {mime: entity/x-vnd.sen-labs.entity.institution, icon: x-vnd.sen-labs.entity.institution}
 
   # ---- what two people know of each other, from least to most close
   PersonalRelation:
@@ -436,7 +497,7 @@ classes:
       group: Organizations
       # stored at the person only: what points to an organization is found by query (the person is not the kind of file that an organization can be)
       bidir: false
-      target_types: entity/x-vnd.sen-labs.entity.organization
+      target_types: entity/x-vnd.sen-labs.entity.organization,entity/x-vnd.sen-labs.entity.institution
       label: works for
       inverse_label: employs
       source_types: entity/x-vnd.sen-labs.entity.person,application/x-person
@@ -454,10 +515,61 @@ classes:
       group: Organizations
       # stored at the person only: what points to an organization is found by query (the person is not the kind of file that an organization can be)
       bidir: false
-      target_types: entity/x-vnd.sen-labs.entity.organization
+      target_types: entity/x-vnd.sen-labs.entity.organization,entity/x-vnd.sen-labs.entity.institution
       label: member of
       inverse_label: has member
       source_types: entity/x-vnd.sen-labs.entity.person,application/x-person
+
+  # ---- research: where a researcher works, how the institutions are built up, what they work on (the plugin that enriches an institution fills them from ROR and OpenAlex)
+  Affiliation:
+    description: >-
+      a person is affiliated with an institution for a time (the institution that a researcher names on a paper, a position, a visit): since when and until when (empty while it goes on),
+      and in which role (Postdoctoral Researcher, Professor, Visiting Scholar). Employment is the job, Membership the belonging; this is what a paper says
+    title: Affiliation
+    is_a: Relation
+    class_uri: schema:affiliation
+    slots: [rel_since, rel_until, rel_role, rel_note]
+    annotations:
+      mime: relation/x-vnd.sen-labs.relation.person.affiliation
+      app: application/x-vnd.sen-plugin.sen-labs.personal-relation-navigator
+      icon: x-vnd.sen-labs.entity.institution
+      group: Organizations
+      # stored at the person only, as Employment is
+      bidir: false
+      target_types: entity/x-vnd.sen-labs.entity.institution
+      label: affiliated with
+      inverse_label: researchers
+      source_types: entity/x-vnd.sen-labs.entity.person,application/x-person
+
+  PartOfInstitution:
+    description: an institution is a part of a larger one (a faculty, a department, an institute or a laboratory of a university)
+    title: Part Of
+    is_a: Relation
+    class_uri: schema:parentOrganization
+    slots: [rel_note]
+    annotations:
+      mime: relation/x-vnd.sen-labs.relation.institution.part-of
+      icon: x-vnd.sen-labs.entity.institution
+      group: Organizations
+      label: part of
+      inverse_label: has unit
+      source_types: entity/x-vnd.sen-labs.entity.institution
+      target_types: entity/x-vnd.sen-labs.entity.institution
+
+  ResearchFocus:
+    description: a topic that an institution works on; the number of works says how much (the topics of an institution in OpenAlex, the most frequent first)
+    title: Research Focus
+    is_a: Relation
+    class_uri: schema:knowsAbout
+    slots: [rel_works_count]
+    annotations:
+      mime: relation/x-vnd.sen-labs.relation.institution.research-focus
+      icon: x-vnd.sen-labs.entity.topic
+      group: Organizations
+      label: researches
+      inverse_label: researched by
+      source_types: entity/x-vnd.sen-labs.entity.institution
+      target_types: classification/x-vnd.sen-labs.entity.topic
 
   StatusRelation:
     description: recent status messages and microfeed posts of a person
@@ -473,3 +585,26 @@ classes:
       inverse_label: status of
       dynamic: true
       source_types: entity/x-vnd.sen-labs.entity.person,application/x-person
+
+enums:
+  InstitutionType:
+    description: The kinds of institutions of the Research Organization Registry (ROR), which OpenAlex uses, too.
+    permissible_values:
+      Education:
+        description: a university or a school
+      Facility:
+        description: a research facility (an observatory, a laboratory, a research center)
+      Government:
+        description: an agency or a department of a government
+      Nonprofit:
+        description: a nonprofit organization (a foundation, a society)
+      Company:
+        description: a company
+      Healthcare:
+        description: a hospital or another institution of healthcare
+      Funder:
+        description: an organization that funds research
+      Archive:
+        description: an archive, a library or a museum
+      Other:
+        description: any other kind

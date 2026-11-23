@@ -77,8 +77,8 @@ when it is higher than the general one), so that `pkgman` updates that package w
 
 ## The people ontology
 
-`people` (`schema/sen-people.yaml`) has the entities **Person** and **Organization** (attributes of FOAF and schema.org: name, given and family name, nickname, e-mail,
-phone, homepage, birthday, job title) and the relationships between them, one relation type for each kind, after the Relationship vocabulary (REL, an extension of FOAF):
+`people` (`schema/sen-people.yaml`) has the entities **Person**, **Organization** and **Institution** (attributes of FOAF and schema.org: name, given and family name, nickname, e-mail,
+phone, homepage, birthday, job title; an Institution (`schema:ResearchOrganization`) is an organization of research, education or culture, a university or a library: kept apart for the research use, the affiliation of an author, the publisher of a work; it has the ROR id, the types of ROR and OpenAlex (a list), city, country and the counts of its works) and the relationships between them, one relation type for each kind, after the Relationship vocabulary (REL, an extension of FOAF):
 
 | | Relation | Labels (and the opposite direction) |
 |---|---|---|
@@ -86,11 +86,15 @@ phone, homepage, birthday, job title) and the relationships between them, one re
 | family | Parent, Sibling, Relative | parent of / child of, sibling of, relative of |
 | professional | Colleague, Superior, Mentor, Collaborator, Client | colleague of, superior of / subordinate of, mentor of / mentee of, collaborates with, client of / provider of |
 | organizations | Employment, Membership (person to organization) | works for / employs, member of / has member |
+| research | Affiliation (person to institution, with Since, Until and Role), Part Of (institution to institution), Research Focus (institution to topic, with the number of works) | affiliated with / researchers, part of / has unit, researches / researched by |
 
-What is the same in both directions has one label; the relations have the properties *Since* and *Note*. A new kind is a class in the schema (`is_a: Relation`,
+What is the same in both directions has one label; the personal relations have the properties *Since* and *Note*. A new kind is a class in the schema (`is_a: Relation`,
 `class_uri` names the term of the vocabulary), so the list can be extended without code.
 
 ## Credits
 
 The icon of `document/scientific-paper` (`schema/icons/document.scientific-paper.hex`) is `File_Text_Open.svg` of [haiku-icons](https://github.com/darealshinji/haiku-icons/blob/master/svg/File_Text_Open.svg)
 by darealshinji (MIT license), converted to HVIF.
+
+The icon of `entity/x-vnd.sen-labs.entity.institution` (`schema/icons/x-vnd.sen-labs.entity.institution.hex`) was drawn by Gregor B. Rosenauer with Google Gemini (Neon) as co-author
+(`assets/icon-work/institution.svg`), converted to HVIF.

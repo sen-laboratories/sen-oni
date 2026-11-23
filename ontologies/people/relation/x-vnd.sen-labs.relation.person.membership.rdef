@@ -39,6 +39,7 @@ resource(5, "SEN:REL:CONFIG") message(233) {
 	"SEN:sourceTypes" = "entity/x-vnd.sen-labs.entity.person",
 	"SEN:sourceTypes" = "application/x-person",
 	"SEN:targetTypes" = "entity/x-vnd.sen-labs.entity.organization",
+	"SEN:targetTypes" = "entity/x-vnd.sen-labs.entity.institution",
 	"SEN:group" = "Organizations",
 	"SEN:inverse" = message('SCrd') {
 		"SEN:REL:Label" = "has member"

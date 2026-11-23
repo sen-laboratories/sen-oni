@@ -416,7 +416,7 @@ classes:
       icon: x-vnd.sen-labs.entity.person
       label: contributed to
       inverse_label: contributors
-      source_types: entity/x-vnd.sen-labs.entity.person,entity/x-vnd.sen-labs.entity.organization,application/x-person
+      source_types: entity/x-vnd.sen-labs.entity.person,entity/x-vnd.sen-labs.entity.organization,entity/x-vnd.sen-labs.entity.institution,application/x-person
 
   Reference:
     description: generic reference to another entity.

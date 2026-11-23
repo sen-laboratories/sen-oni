@@ -3,7 +3,7 @@
 // SPDX-FileCopyrightText: 2024-2026 SEN Labs e.U.
 
 resource(0, "META:TYPE") "entity/x-vnd.sen-labs.entity.organization";
-resource(1, "META:L:DESC") #'MLDC' "a company, institution, club or any other group of people with a name";
+resource(1, "META:L:DESC") #'MLDC' "a company, club or any other group of people with a name (a university or an institute is an Institution)";
 resource(2, "META:S:DESC") #'MSDC' "Organization";
 resource(3, "SEN:PLURAL") "Organizations";
 resource(4, "META:ATTR_INFO") message(233) {
