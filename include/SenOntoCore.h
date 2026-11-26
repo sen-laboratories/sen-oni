@@ -49,6 +49,8 @@ inline constexpr char kRelLabel[] = "SEN:REL:Label";
 inline constexpr char kRelKind[] = "SEN:REL:Kind";
 inline constexpr char kRelDesc[] = "SEN:REL:Desc";
 inline constexpr char kRelRole[] = "SEN:REL:Role";
+/** How sure the program that made the relation is that it is right, from 0 to 1 (an estimate that can be read as a percentage or a probability, not a measured one). A relation without a value was made or confirmed by a person, or by a source that states it: it counts as 1. An enrichment never lowers a value or changes a confirmed one. */
+inline constexpr char kRelConfidence[] = "SEN:REL:Confidence";
 /** Who or what made the relation, as the signature of the application or plugin (application/x-vnd.sen-plugin.sen-labs.movie-enricher), or as the IRI of the source that it was taken from (https://www.wikidata.org/wiki/Property:P131 for the places that Wikidata says contain a place); the server sets it from the sender of the request, so every relation has it. A relation that is made again by another program keeps the one that made it first. */
 inline constexpr char kRelProvenance[] = "prov:wasAttributedTo";
 /** The character that an actor plays (a Contribution with the role Actor). */

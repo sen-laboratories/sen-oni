@@ -133,6 +133,13 @@ slots:
   rel_role:
     title: Role
     annotations: {attribute: "SEN:REL:Role", width: 110}
+  rel_confidence:
+    description: >-
+      How sure the program that made the relation is that it is right, from 0 to 1 (an estimate that can be read as a percentage or a probability, not a measured one).
+      A relation without a value was made or confirmed by a person, or by a source that states it: it counts as 1. An enrichment never lowers a value or changes a confirmed one.
+    title: Confidence
+    range: float
+    annotations: {attribute: "SEN:REL:Confidence", width: 70}
   rel_provenance:
     description: Who or what made the relation, as the signature of the application or plugin (application/x-vnd.sen-plugin.sen-labs.movie-enricher), or as the IRI of the source that it was taken from (https://www.wikidata.org/wiki/Property:P131 for the places that Wikidata says contain a place); the server sets it from the sender of the request, so every relation has it. A relation that is made again by another program keeps the one that made it first.
     title: Provenance
@@ -326,7 +333,7 @@ classes:
     description: a semantic relationship between files and entities in SEN.
     title: SEN Relation
     abstract: true
-    slots: [rel_source, rel_target, rel_source_ref, rel_target_ref, rel_id, rel_label, rel_kind, rel_desc, rel_role, rel_provenance, rel_type, rel_readonly, rel_missing]
+    slots: [rel_source, rel_target, rel_source_ref, rel_target_ref, rel_id, rel_label, rel_kind, rel_desc, rel_role, rel_confidence, rel_provenance, rel_type, rel_readonly, rel_missing]
     annotations:
       mime: relation
       supertype: true
