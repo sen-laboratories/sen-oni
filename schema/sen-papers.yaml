@@ -130,3 +130,21 @@ classes:
       inverse_label: cited by
       source_types: entity/x-vnd.sen-labs.entity.book,entity/x-vnd.sen-labs.entity.movie,entity/x-vnd.sen-labs.entity.person,application/x-person,video/,document/,application/pdf,application/epub+zip
       target_types: entity/x-vnd.sen-labs.entity.book,entity/x-vnd.sen-labs.entity.movie,entity/x-vnd.sen-labs.entity.person,application/x-person,video/,document/,application/pdf,application/epub+zip
+
+  SourceInstitution:
+    description: >-
+      the institution that a paper comes from: where its authors worked on it, as the paper names it (schema:sourceOrganization, "the organization on whose behalf the creator was working";
+      bibliometrics says the institutional affiliation of a paper). The paper says it and holds it; the institution does not list its papers (thousands of them): they are found by query
+    title: Source Institution
+    is_a: Relation
+    class_uri: schema:sourceOrganization
+    annotations:
+      mime: relation/x-vnd.sen-labs.relation.source-institution
+      app: application/x-vnd.sen-plugin.sen-labs.personal-relation-navigator
+      icon: x-vnd.sen-labs.entity.institution
+      group: Organizations
+      bidir: false
+      label: produced at
+      inverse_label: produced
+      source_types: document/scientific-paper,application/pdf,application/epub+zip
+      target_types: entity/x-vnd.sen-labs.entity.institution

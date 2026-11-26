@@ -68,6 +68,8 @@ inline constexpr char kDocument[] = "document";
 inline constexpr char kScientificPaper[] = "document/scientific-paper";
 /** Citation: a work that a paper cites (the generic reference, with what is known about the cited work). */
 inline constexpr char kCitation[] = "relation/x-vnd.sen-labs.relation.citation";
+/** Source Institution: the institution that a paper comes from: where its authors worked on it, as the paper names it (schema:sourceOrganization, "the organization on whose behalf the creator was working"; bibliometrics says the institutional affiliation of a paper). The paper says it and holds it; the institution does not list its papers (thousands of them): they are found by query */
+inline constexpr char kSourceInstitution[] = "relation/x-vnd.sen-labs.relation.source-institution";
 }	// namespace mime
 
 }	// namespace papers

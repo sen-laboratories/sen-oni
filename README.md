@@ -86,7 +86,7 @@ phone, homepage, birthday, job title; an Institution (`schema:ResearchOrganizati
 | family | Parent, Sibling, Relative | parent of / child of, sibling of, relative of |
 | professional | Colleague, Superior, Mentor, Collaborator, Client | colleague of, superior of / subordinate of, mentor of / mentee of, collaborates with, client of / provider of |
 | organizations | Employment, Membership (person to organization) | works for / employs, member of / has member |
-| research | Affiliation (person to institution, with Since, Until and Role), Part Of (institution to institution), Research Focus (institution to topic, with the number of works) | affiliated with / researchers, part of / has unit, researches / researched by |
+| research | Affiliation (person to institution, with Since, Until and Role), Part Of (institution to institution), Research Focus (institution to topic, with the number of works), Source Institution (paper to institution, `schema:sourceOrganization`, in the papers ontology) | affiliated with / researchers, part of / has unit, researches / researched by, produced at / produced |
 
 What is the same in both directions has one label; the personal relations have the properties *Since* and *Note*. A new kind is a class in the schema (`is_a: Relation`,
 `class_uri` names the term of the vocabulary), so the list can be extended without code.
